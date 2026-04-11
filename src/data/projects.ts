@@ -14,7 +14,6 @@ export const projects: Project[] = [
     role: "Senior Engineer",
     roleType: "professional",
     tech: [".NET 8", "Angular", "GraphQL", "Kubernetes"],
-    url: "https://portacapena.com/en/projects",
   },
   {
     name: "PurpleApp",
