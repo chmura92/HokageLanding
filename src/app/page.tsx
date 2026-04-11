@@ -1,28 +1,25 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import TechStack from "@/components/TechStack";
+import SectionTransition from "@/components/SectionTransition";
+import FeaturedProject from "@/components/FeaturedProject";
+import ProjectGrid from "@/components/ProjectGrid";
+import CareerTimeline from "@/components/CareerTimeline";
+import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
-      <Hero />
-      <section id="stack" className="min-h-screen flex items-center justify-center">
-        <h2 className="text-3xl font-semibold">Tech Stack</h2>
-      </section>
-      <section id="featured-project" className="min-h-screen flex items-center justify-center">
-        <h2 className="text-3xl font-semibold">Featured Project</h2>
-      </section>
-      <section id="projects" className="min-h-screen flex items-center justify-center">
-        <h2 className="text-3xl font-semibold">Projects</h2>
-      </section>
-      <section id="career" className="min-h-screen flex items-center justify-center">
-        <h2 className="text-3xl font-semibold">Career Timeline</h2>
-      </section>
-      <section id="contact" className="min-h-screen flex items-center justify-center">
-        <h2 className="text-3xl font-semibold">Contact</h2>
-      </section>
-    </main>
+        <Hero />
+        <TechStack />
+        <SectionTransition />
+        <FeaturedProject />
+        <ProjectGrid />
+        <CareerTimeline />
+        <Contact />
+      </main>
     </>
   );
 }
