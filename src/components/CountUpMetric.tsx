@@ -39,7 +39,7 @@ export default function CountUpMetric({ value, label }: CountUpMetricProps) {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-4xl font-extrabold text-ink-heading"
+          className="text-lg font-bold text-ink-heading leading-tight"
         >
           {value}
         </motion.span>
