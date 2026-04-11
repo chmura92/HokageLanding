@@ -45,7 +45,7 @@ export default function Hero() {
               width={160}
               height={160}
               priority
-              className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover ring-2 ring-accent-blue/30"
+              className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover object-[center_15%] ring-2 ring-accent-blue/30"
             />
           </motion.div>
 

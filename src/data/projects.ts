@@ -14,6 +14,7 @@ export const projects: Project[] = [
     role: "Senior Engineer",
     roleType: "professional",
     tech: [".NET 8", "Angular", "GraphQL", "Kubernetes"],
+    url: "https://portacapena.com/en/projects",
   },
   {
     name: "PurpleApp",
@@ -21,6 +22,7 @@ export const projects: Project[] = [
     role: "Domain Lead",
     roleType: "professional",
     tech: [".NET 6", "React", "React Native"],
+    url: "https://portacapena.com/en/projects",
   },
   {
     name: "Axon",
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     role: "Core Developer",
     roleType: "professional",
     tech: [".NET Core", "Angular", "Xamarin"],
+    url: "https://portacapena.com/en/projects",
   },
   {
     name: "StablyPro",
