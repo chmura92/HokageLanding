@@ -26,7 +26,7 @@ export default function ProjectCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:-translate-y-1 hover:shadow-md transition-all duration-200"
+      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:-translate-y-1.5 hover:shadow-lg hover:shadow-accent-blue/10 hover:border-gray-200 transition-all duration-300"
     >
       {/* Placeholder image area */}
       <div
