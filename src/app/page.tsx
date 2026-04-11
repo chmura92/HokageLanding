@@ -1,10 +1,14 @@
+import Navbar from "@/components/Navbar";
+
 export default function Home() {
   return (
-    <main>
+    <>
+      <Navbar />
+      <main>
       <section id="hero" className="min-h-screen flex items-center justify-center">
         <h1 className="text-4xl font-bold">Hero</h1>
       </section>
-      <section id="tech-stack" className="min-h-screen flex items-center justify-center">
+      <section id="stack" className="min-h-screen flex items-center justify-center">
         <h2 className="text-3xl font-semibold">Tech Stack</h2>
       </section>
       <section id="featured-project" className="min-h-screen flex items-center justify-center">
@@ -20,5 +24,6 @@ export default function Home() {
         <h2 className="text-3xl font-semibold">Contact</h2>
       </section>
     </main>
+    </>
   );
 }
