@@ -1,13 +1,12 @@
 import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 
 export default function Home() {
   return (
     <>
       <Navbar />
       <main>
-      <section id="hero" className="min-h-screen flex items-center justify-center">
-        <h1 className="text-4xl font-bold">Hero</h1>
-      </section>
+      <Hero />
       <section id="stack" className="min-h-screen flex items-center justify-center">
         <h2 className="text-3xl font-semibold">Tech Stack</h2>
       </section>
