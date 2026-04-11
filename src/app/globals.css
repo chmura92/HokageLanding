@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-space-deep: #0B1221;
+  --color-space-lifted: #111827;
+  --color-surface-light: #F8FAFC;
+  --color-accent-blue: #4A9EE5;
+  --color-accent-teal: #2DD4BF;
+  --color-ink-heading: #0F1E2B;
+  --color-ink-body: #2D3E4D;
+  --color-ink-muted: #5C7080;
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass-bg: rgba(255, 255, 255, 0.05);
+
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
