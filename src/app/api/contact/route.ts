@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     });
 
     await transporter.sendMail({
-      from: `"hokage.pl Contact" <${process.env.SMTP_USER}>`,
+      from: `"hokage.pl Contact" <${process.env.SMTP_FROM}>`,
       to: "romduz@gmail.com",
       replyTo: email,
       subject: `[hokage.pl] Message from ${name}`,
