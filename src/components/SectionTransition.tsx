@@ -178,6 +178,8 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const sizeRef = useRef({ W: 0, H: 0 });
+
   // All mutable animation state lives here — avoids stale closure issues
   const animRef = useRef({
     startTime: -1,   // timestamp of first visibility; -1 = not started
@@ -195,11 +197,16 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
 
     // ---- Resize --------------------------------------------------------
     function resize() {
+      const dpr = window.devicePixelRatio || 1;
       const W = wrapper!.clientWidth;
       const H = wrapper!.clientHeight;
-      // Re-setting width/height clears the canvas and resets ctx transforms
-      canvas!.width = W;
-      canvas!.height = H;
+      canvas!.width  = Math.round(W * dpr);
+      canvas!.height = Math.round(H * dpr);
+      canvas!.style.width  = `${W}px`;
+      canvas!.style.height = `${H}px`;
+      // Re-apply scale after every resize — setting canvas.width resets ctx state
+      ctx!.scale(dpr, dpr);
+      sizeRef.current = { W, H };
     }
 
     resize();
@@ -210,8 +217,11 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     function render(timestamp: number) {
       const anim = animRef.current;
 
-      const W = wrapper!.clientWidth;
-      const H = wrapper!.clientHeight;
+      const { W, H } = sizeRef.current;
+      if (W === 0 || H === 0) {
+        anim.rafId = requestAnimationFrame(render);
+        return;
+      }
 
       ctx!.clearRect(0, 0, W, H);
 
@@ -230,14 +240,14 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       if (anim.startTime >= 0) {
         const elapsed = timestamp - anim.startTime;
 
+        ctx!.lineCap = "round";
+        ctx!.lineJoin = "round";
         for (const branch of BRANCHES) {
           const branchElapsed = elapsed - branch.startDelay;
           if (branchElapsed <= 0) continue;
 
           ctx!.strokeStyle = branch.color;
           ctx!.lineWidth = branch.lineWidth;
-          ctx!.lineCap = "round";
-          ctx!.lineJoin = "round";
 
           const totalProgress = Math.min(branchElapsed / DRAW_DURATION_MS, 1);
           const segCount = branch.segments.length;
