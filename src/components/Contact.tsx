@@ -2,18 +2,20 @@
 
 import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
+import SectionTransition from "./SectionTransition";
 
 export default function Contact() {
   return (
     <section id="contact">
       {/* Gradient transition from light to dark */}
-      <div className="h-[200px] bg-gradient-to-b from-[#F8FAFC] to-[#0B1221]" />
+      <SectionTransition direction="light-to-dark" />
 
       {/* Main contact area */}
       <div className="bg-space-deep py-24 px-6">
         <div className="max-w-6xl mx-auto">
           {/* Section title */}
-          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-12 text-center">
+          <p className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-12 text-center flex items-center justify-center gap-2.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-ember shadow-[0_0_8px_rgba(232,93,58,0.6)]" aria-hidden />
             Get in Touch
           </p>
 
