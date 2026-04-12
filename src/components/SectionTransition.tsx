@@ -71,7 +71,7 @@ const fragmentShader = /* glsl */ `
     vec3 light = vec3(0.9725, 0.9804, 0.9882); // #F8FAFC  (surface-light)
     vec3 color = mix(light, dark, blend);
 
-    // Luminous accent glow at the edge boundary
+    // Luminous accent glow at the edge boundary (18.0 tuned for fixed 240px height)
     float glowStr = exp(-abs(uv.y - edge) * 18.0);
     vec3 accentTeal = vec3(0.176, 0.831, 0.749); // #2DD4BF
     vec3 accentBlue = vec3(0.290, 0.620, 0.898); // #4A9EE5
@@ -153,6 +153,7 @@ function SectionTransitionInner() {
 
 const SectionTransition = dynamic(() => Promise.resolve(SectionTransitionInner), {
   ssr: false,
+  loading: () => <div className="h-[240px]" style={{ background: "#111827" }} />,
 });
 
 export default SectionTransition;
