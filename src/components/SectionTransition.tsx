@@ -230,7 +230,7 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
         // Draw commit nodes — pop as sweep reaches each one
         for (const dot of DOTS) {
           if (sweepX < dot.x) continue;
-          const dotAge = elapsed - dot.x * SWEEP_MS;
+          const dotAge = Math.max(0, elapsed - dot.x * SWEEP_MS); // clamp: float mul may produce tiny negatives at boundary
           const fade   = Math.min(dotAge / FADE_MS, 1);
           // Once faded in, add a gentle idle pulse
           const pulse  = fade < 1 ? fade : 0.75 + 0.25 * Math.sin((elapsed / 1800) * Math.PI);
