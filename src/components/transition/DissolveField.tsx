@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
 
 const IS_MOBILE =
@@ -24,21 +24,19 @@ const COLOR_TEAL = new THREE.Color(0.176, 0.831, 0.749);
 const COLOR_PURPLE = new THREE.Color(0.388, 0.4, 0.945);
 
 function pickParticleColor(rng: number): THREE.Color {
-  if (rng < 0.45) return COLOR_WHITE.clone();
-  if (rng < 0.8) return COLOR_LIGHT_BLUE.clone();
-  if (rng < 0.92) return COLOR_TEAL.clone();
-  return COLOR_PURPLE.clone();
+  if (rng < 0.45) return COLOR_WHITE;
+  if (rng < 0.8) return COLOR_LIGHT_BLUE;
+  if (rng < 0.92) return COLOR_TEAL;
+  return COLOR_PURPLE;
 }
 
 const pointVertexShader = /* glsl */ `
   attribute float aSize;
   attribute vec3 aColor;
   varying vec3 vColor;
-  varying float vLocalY;
 
   void main() {
     vColor = aColor;
-    vLocalY = position.y;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_PointSize = aSize * (60.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
@@ -47,7 +45,6 @@ const pointVertexShader = /* glsl */ `
 
 const pointFragmentShader = /* glsl */ `
   varying vec3 vColor;
-  varying float vLocalY;
 
   void main() {
     vec2 center = gl_PointCoord - vec2(0.5);
@@ -106,8 +103,6 @@ function seedParticleState(): ParticleState {
 }
 
 function ParticleField() {
-  const pointsRef = useRef<THREE.Points>(null);
-
   const state = useMemo(() => seedParticleState(), []);
 
   const geometry = useMemo(() => {
@@ -150,7 +145,7 @@ function ParticleField() {
     posAttr.needsUpdate = true;
   });
 
-  return <points ref={pointsRef} geometry={geometry} material={material} />;
+  return <points geometry={geometry} material={material} />;
 }
 
 export default function DissolveField() {
