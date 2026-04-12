@@ -69,7 +69,7 @@ const fragmentShader = /* glsl */ `
     // Section colors
     vec3 dark  = vec3(0.0667, 0.0941, 0.1529); // #111827  (space-lifted)
     vec3 light = vec3(0.9725, 0.9804, 0.9882); // #F8FAFC  (surface-light)
-    vec3 color = mix(dark, light, blend);
+    vec3 color = mix(light, dark, blend);
 
     // Luminous accent glow at the edge boundary
     float glowStr = exp(-abs(uv.y - edge) * 18.0);
@@ -123,7 +123,7 @@ function TransitionScene() {
 // ---------------------------------------------------------------------------
 
 function SectionTransitionInner() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
