@@ -34,9 +34,11 @@ const pointVertexShader = /* glsl */ `
   attribute float aSize;
   attribute vec3 aColor;
   varying vec3 vColor;
+  varying float vLocalY;
 
   void main() {
     vColor = aColor;
+    vLocalY = position.y;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
     gl_PointSize = aSize * (60.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
@@ -45,6 +47,7 @@ const pointVertexShader = /* glsl */ `
 
 const pointFragmentShader = /* glsl */ `
   varying vec3 vColor;
+  varying float vLocalY;
 
   void main() {
     vec2 center = gl_PointCoord - vec2(0.5);
@@ -53,9 +56,18 @@ const pointFragmentShader = /* glsl */ `
 
     float core = 1.0 - smoothstep(0.08, 0.18, dist);
     float halo = (1.0 - smoothstep(0.18, 0.50, dist)) * 0.22;
-    float alpha = core + halo;
+    float shape = core + halo;
 
-    gl_FragColor = vec4(vColor, alpha * 0.6);
+    // Normalize local Y from band-bottom (0) to band-top (1).
+    // SPREAD_Y is [-3, 3] so we map that to [0, 1].
+    float localY01 = clamp((vLocalY + 3.0) / 6.0, 0.0, 1.0);
+
+    // Dissolve: 0 at the bottom third, 1 by the top.
+    float dissolve = smoothstep(0.0, 0.65, localY01);
+
+    float alpha = shape * dissolve * 0.6;
+
+    gl_FragColor = vec4(vColor, alpha);
   }
 `;
 
