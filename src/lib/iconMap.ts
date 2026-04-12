@@ -25,6 +25,9 @@ import {
   siNuget,
   siAnthropic,
   siGithubcopilot,
+  siNgrx,
+  siBlazor,
+  siMoq,
 } from 'simple-icons';
 
 const iconMap: Record<string, SimpleIcon> = {
@@ -54,6 +57,9 @@ const iconMap: Record<string, SimpleIcon> = {
   'NuGet':                siNuget,
   'Claude':               siAnthropic,
   'GitHub Copilot':       siGithubcopilot,
+  'NgRx':                 siNgrx,
+  'Blazor':               siBlazor,
+  'Moq':                  siMoq,
 };
 
 export function getIcon(name: string): SimpleIcon | null {

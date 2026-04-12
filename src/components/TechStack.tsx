@@ -24,11 +24,12 @@ function TechCard({ name, index }: { name: string; index: number }) {
           xmlns="http://www.w3.org/2000/svg"
           className="w-10 h-10 fill-white/70 group-hover:fill-[var(--brand-color)] transition-[fill] duration-300"
           aria-label={name}
-          dangerouslySetInnerHTML={{ __html: icon.svg }}
-        />
+        >
+          <path d={icon.path} />
+        </svg>
       ) : (
         <div className="w-10 h-10 flex items-center justify-center text-[10px] font-bold text-gray-400 group-hover:text-white transition-colors duration-300 text-center leading-tight px-1">
-          {name.split(/[\s.]+/).map(w => w[0]).filter(Boolean).join('').toUpperCase().slice(0, 4)}
+          {name.split(/[\s.\-_]+/).map(w => w[0]).filter(Boolean).join('').toUpperCase().slice(0, 4)}
         </div>
       )}
       <span className="text-[10px] uppercase tracking-wide text-gray-400 group-hover:text-gray-200 transition-colors duration-300 text-center leading-tight w-full break-words">
@@ -48,8 +49,9 @@ const buzzwordVariants = {
   }),
 };
 
+const primaryGroups = new Set(["Backend"]);
+
 export default function TechStack() {
-  const primaryGroups = new Set(["Backend"]);
 
   return (
     <section id="stack" className="bg-space-lifted py-24 px-6">
