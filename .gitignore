@@ -42,3 +42,10 @@ next-env.d.ts
 
 # worktrees
 .worktrees
+
+# tooling state
+.claude/
+.playwright-mcp/
+
+# iteration screenshots (root-level test artifacts)
+/*.png
