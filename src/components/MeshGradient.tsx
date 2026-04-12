@@ -56,6 +56,58 @@ const fragmentShader = /* glsl */ `
     return v;
   }
 
+  // ---------- Storms (distant lightning behind clouds) ----------
+  float h11(float n) {
+    return fract(sin(n * 91.345) * 47453.5453);
+  }
+  vec2 h21(float n) {
+    return vec2(h11(n), h11(n + 53.7));
+  }
+
+  // Lightning brightness envelope: sharp rise (~25ms) then exp decay.
+  // Branchless so the shader stays uniform across pixels.
+  float strikeEnv(float u, float dur) {
+    float r = u / dur;
+    float alive = step(0.0, u) * step(u, dur);
+    float rise = smoothstep(0.0, 0.06, r);
+    float fall = exp(-max(r - 0.06, 0.0) * 5.0);
+    return alive * rise * fall;
+  }
+
+  // 3.5s windows. Each window: 1 always-on strike + 40% chance of a paired
+  // follow-up flash 0.10–0.32s later at a nearby position. Loop covers the
+  // current and previous window so flashes never get cut at boundaries.
+  float storms(vec2 sp, float t) {
+    const float WIN = 3.5;
+    float wNow = floor(t / WIN);
+    float total = 0.0;
+
+    for (int k = 0; k < 2; k++) {
+      float w = wNow - float(k);
+      float wStart = w * WIN;
+      float seed = w * 17.31;
+
+      float t1 = 0.4 + h11(seed + 1.1) * 2.5;
+      vec2 pos1 = (h21(seed + 2.7) - 0.5) * vec2(4.4, 2.6);
+      float u1 = t - (wStart + t1);
+      float flash1 = strikeEnv(u1, 0.42);
+      float d1 = length(sp - pos1);
+      float g1 = exp(-d1 * d1 * 0.32);
+
+      float pair = step(0.60, h11(seed + 4.9));
+      float dt2 = 0.10 + h11(seed + 6.3) * 0.22;
+      vec2 pos2 = pos1 + (h21(seed + 7.9) - 0.5) * 1.6;
+      float u2 = t - (wStart + t1 + dt2);
+      float flash2 = strikeEnv(u2, 0.36) * pair;
+      float d2 = length(sp - pos2);
+      float g2 = exp(-d2 * d2 * 0.36);
+
+      total += flash1 * g1 + flash2 * g2;
+    }
+
+    return total;
+  }
+
   void main() {
     vec2 uv = vUv;
     float aspect = uResolution.x / max(uResolution.y, 1.0);
@@ -88,6 +140,12 @@ const fragmentShader = /* glsl */ `
     float lift = exp(-dM * dM * 0.6) * 0.28;
     d = clamp(d + lift, 0.0, 1.0);
 
+    // ---- Storms: distant lightning flashing behind the clouds ----
+    float storm = storms(p, uTime);
+    // Backlit through cloud density — clouds catch and scatter the light
+    float backlit = storm * (0.35 + d * 0.65);
+    d = clamp(d + backlit * 0.50, 0.0, 1.0);
+
     // ---- 4-stop palette: near-black → indigo → mid blue → cyan-white ----
     vec3 col0 = vec3(0.025, 0.038, 0.068);
     vec3 col1 = vec3(0.062, 0.088, 0.190);
@@ -97,6 +155,9 @@ const fragmentShader = /* glsl */ `
     vec3 color = mix(col0, col1, smoothstep(0.00, 0.40, d));
     color      = mix(color, col2, smoothstep(0.40, 0.72, d));
     color      = mix(color, col3, smoothstep(0.78, 0.98, d));
+
+    // Direct flash overlay — cool blue-white, modulated by backlit
+    color += vec3(0.55, 0.72, 0.92) * backlit * 1.10;
 
     // ---- Vignette: darken edges, protect the headline area a touch ----
     vec2 vc = uv - 0.5;
