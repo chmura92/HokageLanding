@@ -17,10 +17,10 @@ const HOTFIX = 0.18;
 const MAIN   = 0.42;
 const FEAT   = 0.72;
 
-// Accent colours from globals.css
-const BLUE  = "#4A9EE5";
-const TEAL  = "#2DD4BF";
-const EMBER = "#E85D3A";
+// Muted accent colours — desaturated so they read as technical, not decorative
+const BLUE  = "#7BADC8";
+const TEAL  = "#5BBCAC";
+const EMBER = "#C47A5A";
 
 interface Seg {
   x0: number; y0: number;
@@ -42,21 +42,21 @@ interface Dot {
 // ---------------------------------------------------------------------------
 const SEGS: Seg[] = [
   // Main: full width horizontal
-  { x0: 0,    y0: MAIN,   x1: 1,    y1: MAIN,   color: BLUE,  lw: 3   },
+  { x0: 0,    y0: MAIN,   x1: 1,    y1: MAIN,   color: BLUE,  lw: 4   },
 
   // Feature: spawn diagonal from main at x=0.18, lands on FEAT at x=0.26
-  { x0: 0.18, y0: MAIN,   x1: 0.26, y1: FEAT,   color: TEAL,  lw: 2.5 },
+  { x0: 0.18, y0: MAIN,   x1: 0.26, y1: FEAT,   color: TEAL,  lw: 3 },
   // Feature: horizontal run
-  { x0: 0.26, y0: FEAT,   x1: 0.65, y1: FEAT,   color: TEAL,  lw: 2.5 },
+  { x0: 0.26, y0: FEAT,   x1: 0.65, y1: FEAT,   color: TEAL,  lw: 3 },
   // Feature: merge diagonal back to main at x=0.73
-  { x0: 0.65, y0: FEAT,   x1: 0.73, y1: MAIN,   color: TEAL,  lw: 2.5 },
+  { x0: 0.65, y0: FEAT,   x1: 0.73, y1: MAIN,   color: TEAL,  lw: 3 },
 
   // Hotfix: spawn diagonal from main at x=0.42, rises to HOTFIX at x=0.50
-  { x0: 0.42, y0: MAIN,   x1: 0.50, y1: HOTFIX, color: EMBER, lw: 2.5 },
+  { x0: 0.42, y0: MAIN,   x1: 0.50, y1: HOTFIX, color: EMBER, lw: 3 },
   // Hotfix: horizontal run
-  { x0: 0.50, y0: HOTFIX, x1: 0.75, y1: HOTFIX, color: EMBER, lw: 2.5 },
+  { x0: 0.50, y0: HOTFIX, x1: 0.75, y1: HOTFIX, color: EMBER, lw: 3 },
   // Hotfix: merge diagonal back to main at x=0.83
-  { x0: 0.75, y0: HOTFIX, x1: 0.83, y1: MAIN,   color: EMBER, lw: 2.5 },
+  { x0: 0.75, y0: HOTFIX, x1: 0.83, y1: MAIN,   color: EMBER, lw: 3 },
 ];
 
 const DOTS: Dot[] = [
@@ -203,18 +203,7 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       }
 
       ctx!.clearRect(0, 0, W, H);
-
-      // Background gradient
-      const grad = ctx!.createLinearGradient(0, 0, 0, H);
-      if (direction === "dark-to-light") {
-        grad.addColorStop(0, "#111827");
-        grad.addColorStop(1, "#F8FAFC");
-      } else {
-        grad.addColorStop(0, "#F8FAFC");
-        grad.addColorStop(1, "#0B1221");
-      }
-      ctx!.fillStyle = grad;
-      ctx!.fillRect(0, 0, W, H);
+      // No background fill — wrapper CSS colour shows through
 
       if (anim.startTime >= 0) {
         const elapsed = timestamp - anim.startTime;
@@ -276,12 +265,13 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     };
   }, [direction]);
 
+  // Solid background matching the section this transition sits at the bottom of
   const ssrBg = direction === "dark-to-light" ? "#111827" : "#F8FAFC";
 
   return (
     <div
       ref={wrapperRef}
-      className="relative overflow-hidden h-[240px]"
+      className="relative overflow-hidden h-[320px]"
       style={{ background: ssrBg }}
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
