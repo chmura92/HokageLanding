@@ -5,6 +5,7 @@ export interface CareerEntry {
   period: string;
   description: string;
   highlights: string[];
+  isEducation?: boolean;
 }
 
 export const career: CareerEntry[] = [
@@ -54,5 +55,14 @@ export const career: CareerEntry[] = [
       "Contributed to commercial ASP.NET MVC platform for Santander Group (UK finance)",
       "Learned discipline in a large regulated codebase with strict deadlines",
     ],
+  },
+  {
+    company: "Opole University of Technology",
+    location: "Opole",
+    role: "Engineer in Computer Science",
+    period: "2012 – 2016",
+    description: "Computer Science degree. Spent a semester abroad on Erasmus at Instituto Politécnico de Bragança, Portugal.",
+    highlights: [],
+    isEducation: true,
   },
 ];

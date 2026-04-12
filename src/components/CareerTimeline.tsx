@@ -9,10 +9,11 @@ interface TimelineEntryProps {
   index: number;
   isCurrent: boolean;
   isLeft: boolean;
+  isEducation: boolean;
   onReveal: (dotEl: HTMLDivElement) => void;
 }
 
-function TimelineEntry({ entry, index, isCurrent, isLeft, onReveal }: TimelineEntryProps) {
+function TimelineEntry({ entry, index, isCurrent, isLeft, isEducation, onReveal }: TimelineEntryProps) {
   const rowRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(rowRef, { once: true, margin: "-80px 0px" });
@@ -41,7 +42,7 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, onReveal }: TimelineEn
           viewport={{ once: true }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className={`relative w-4 h-4 rounded-full border-[3px] border-white shadow-sm ${
-            isCurrent ? "bg-accent-ember" : "bg-accent-blue"
+            isCurrent ? "bg-accent-ember" : isEducation ? "bg-accent-teal" : "bg-accent-blue"
           }`}
         />
       </div>
@@ -71,8 +72,8 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, onReveal }: TimelineEn
             {entry.company}{" "}
             <span className="font-normal text-ink-muted">&middot; {entry.location}</span>
           </p>
-          <p className="text-sm font-medium text-accent-blue mt-0.5">{entry.role}</p>
-          <span className="inline-block text-xs bg-accent-blue/10 text-accent-blue px-2.5 py-0.5 rounded-full font-medium mt-1.5">
+          <p className={`text-sm font-medium mt-0.5 ${isEducation ? "text-accent-teal" : "text-accent-blue"}`}>{entry.role}</p>
+          <span className={`inline-block text-xs px-2.5 py-0.5 rounded-full font-medium mt-1.5 ${isEducation ? "bg-accent-teal/10 text-accent-teal" : "bg-accent-blue/10 text-accent-blue"}`}>
             {entry.period}
           </span>
           <p className="text-sm text-ink-body mt-2 font-medium">{entry.description}</p>
@@ -80,7 +81,7 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, onReveal }: TimelineEn
             <ul className="mt-3 space-y-1.5">
               {entry.highlights.map((h, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="w-1 h-1 rounded-full bg-accent-blue mt-1.5 shrink-0" />
+                  <span className={`w-1 h-1 rounded-full mt-1.5 shrink-0 ${isEducation ? "bg-accent-teal" : "bg-accent-blue"}`} />
                   <span className="text-xs text-ink-muted">{h}</span>
                 </li>
               ))}
@@ -136,6 +137,7 @@ export default function CareerTimeline() {
                 index={index}
                 isCurrent={index === 0}
                 isLeft={index % 2 === 0}
+                isEducation={!!entry.isEducation}
                 onReveal={handleReveal}
               />
             ))}

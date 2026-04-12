@@ -135,7 +135,8 @@ export default function Hero() {
                 View Projects
               </button>
               <a
-                href="#"
+                href="/resume.pdf"
+                download
                 className="bg-accent-ember/15 border border-accent-ember/50 text-accent-ember-soft px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-accent-ember hover:border-accent-ember hover:text-white"
               >
                 Download CV
