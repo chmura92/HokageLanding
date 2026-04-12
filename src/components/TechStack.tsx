@@ -2,15 +2,10 @@
 
 import { motion } from "framer-motion";
 import { techGroups, methodologies } from "../data/skills";
+import { getIcon } from "../lib/iconMap";
 
-const RING_SIZE = 72;
-const RING_STROKE = 4;
-const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-
-function TechRing({ name, level, index }: { name: string; level: number; index: number }) {
-  const fillPercent = level / 5;
-  const isExpert = level === 5;
+function TechCard({ name, index }: { name: string; index: number }) {
+  const icon = getIcon(name);
 
   return (
     <motion.div
@@ -18,42 +13,26 @@ function TechRing({ name, level, index }: { name: string; level: number; index: 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
-      className="flex flex-col items-center gap-2 group"
+      className="group flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-3 w-[88px] cursor-default
+        hover:border-accent-teal/30 hover:shadow-[0_0_16px_rgba(45,212,191,0.15)] hover:scale-105 transition-all duration-300"
+      style={icon ? ({ '--brand-color': `#${icon.hex}` } as React.CSSProperties) : {}}
     >
-      <div className="relative">
-        <svg width={RING_SIZE} height={RING_SIZE} className="transform -rotate-90">
-          {/* Background ring */}
-          <circle
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={RING_RADIUS}
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth={RING_STROKE}
-          />
-          {/* Animated fill ring */}
-          <motion.circle
-            cx={RING_SIZE / 2}
-            cy={RING_SIZE / 2}
-            r={RING_RADIUS}
-            fill="none"
-            stroke={isExpert ? "#2DD4BF" : "#4A9EE5"}
-            strokeWidth={RING_STROKE}
-            strokeLinecap="round"
-            strokeDasharray={RING_CIRCUMFERENCE}
-            initial={{ strokeDashoffset: RING_CIRCUMFERENCE }}
-            whileInView={{ strokeDashoffset: RING_CIRCUMFERENCE * (1 - fillPercent) }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.06 + 0.2, duration: 0.8, ease: "easeOut" }}
-            className="group-hover:drop-shadow-[0_0_6px_rgba(74,158,229,0.5)] transition-[filter] duration-300"
-          />
+      {icon ? (
+        <svg
+          role="img"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-10 h-10 fill-white/70 group-hover:fill-[var(--brand-color)] transition-[fill] duration-300"
+          aria-label={name}
+        >
+          <path d={icon.path} />
         </svg>
-        {/* Level number in center */}
-        <span className={`absolute inset-0 flex items-center justify-center text-sm font-bold ${isExpert ? "text-accent-teal" : "text-accent-blue"}`}>
-          {level}
-        </span>
-      </div>
-      <span className="text-xs text-gray-400 text-center leading-tight group-hover:text-gray-200 transition-colors duration-300">
+      ) : (
+        <div className="w-10 h-10 flex items-center justify-center text-[10px] font-bold text-gray-400 group-hover:text-white transition-colors duration-300 text-center leading-tight px-1">
+          {name.split(/[\s.\-_]+/).map(w => w[0]).filter(Boolean).join('').toUpperCase().slice(0, 4)}
+        </div>
+      )}
+      <span className="text-[10px] uppercase tracking-wide text-gray-400 group-hover:text-gray-200 transition-colors duration-300 text-center leading-tight w-full break-words">
         {name}
       </span>
     </motion.div>
@@ -70,8 +49,9 @@ const buzzwordVariants = {
   }),
 };
 
+const primaryGroups = new Set(["Backend"]);
+
 export default function TechStack() {
-  const primaryGroups = new Set(["Backend"]);
 
   return (
     <section id="stack" className="bg-space-lifted py-24 px-6">
@@ -79,7 +59,6 @@ export default function TechStack() {
         Stack
       </h2>
 
-      {/* Technology rings by group */}
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {techGroups.map((group) => {
           const isPrimary = primaryGroups.has(group.label);
@@ -102,9 +81,9 @@ export default function TechStack() {
                   }`}
                 />
               </div>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 {group.technologies.map((tech, i) => (
-                  <TechRing key={tech.name} name={tech.name} level={tech.level} index={i} />
+                  <TechCard key={tech.name} name={tech.name} index={i} />
                 ))}
               </div>
             </div>
@@ -112,7 +91,6 @@ export default function TechStack() {
         })}
       </div>
 
-      {/* Methodology buzzword tags */}
       <div className="max-w-3xl mx-auto mt-16">
         <h3 className="text-xs uppercase tracking-wider font-semibold text-gray-500 text-center mb-6">
           Practices & Methodologies

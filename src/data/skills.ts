@@ -1,6 +1,5 @@
 export interface Technology {
   name: string;
-  level: number; // 1-5, used as ring fill percentage (level/5 * 100)
 }
 
 export interface TechGroup {
@@ -12,56 +11,90 @@ export const techGroups: TechGroup[] = [
   {
     label: "Backend",
     technologies: [
-      { name: ".NET 8", level: 5 },
-      { name: "C#", level: 5 },
-      { name: "ASP.NET Core", level: 5 },
-      { name: "EF Core", level: 4 },
-      { name: "SignalR", level: 4 },
-      { name: "GraphQL", level: 3 },
-      { name: "Hangfire", level: 3 },
+      { name: ".NET 8" },
+      { name: "C#" },
+      { name: "ASP.NET Core" },
+      { name: "EF Core" },
+      { name: "SignalR" },
+      { name: "GraphQL" },
+      { name: "Hangfire" },
+      { name: "MediatR" },
+      { name: "Polly" },
+      { name: "AutoMapper" },
+      { name: "RabbitMQ" },
+      { name: "MassTransit" },
     ],
   },
   {
     label: "Frontend",
     technologies: [
-      { name: "Angular", level: 5 },
-      { name: "React", level: 4 },
-      { name: "RxJS", level: 4 },
-      { name: "Blazor", level: 3 },
+      { name: "Angular" },
+      { name: "React" },
+      { name: "RxJS" },
+      { name: "Blazor" },
+      { name: "TypeScript" },
+      { name: "NgRx" },
+      { name: "SCSS" },
     ],
   },
   {
     label: "Cloud & DevOps",
     technologies: [
-      { name: "Azure", level: 4 },
-      { name: "Docker", level: 4 },
-      { name: "Kubernetes", level: 3 },
-      { name: "Azure Pipelines", level: 4 },
-      { name: "Jenkins", level: 3 },
+      { name: "Azure" },
+      { name: "Docker" },
+      { name: "Kubernetes" },
+      { name: "Azure Pipelines" },
+      { name: "Jenkins" },
+      { name: "Railway" },
     ],
   },
   {
     label: "Databases",
     technologies: [
-      { name: "SQL Server", level: 5 },
-      { name: "PostgreSQL", level: 4 },
-      { name: "Redis", level: 3 },
-      { name: "MongoDB", level: 3 },
+      { name: "SQL Server" },
+      { name: "PostgreSQL" },
+      { name: "Redis" },
+      { name: "MongoDB" },
     ],
   },
   {
     label: "Mobile",
     technologies: [
-      { name: "React Native", level: 4 },
-      { name: "Xamarin", level: 3 },
+      { name: "React Native" },
+      { name: "Xamarin" },
+      { name: ".NET MAUI" },
     ],
   },
   {
     label: "Tooling",
     technologies: [
-      { name: "Git", level: 5 },
-      { name: "Azure DevOps", level: 5 },
-      { name: "Jira", level: 4 },
+      { name: "Git" },
+      { name: "Azure DevOps" },
+      { name: "Jira" },
+      { name: "Visual Studio" },
+      { name: "Rider" },
+      { name: "Postman" },
+      { name: "Swagger" },
+      { name: "SonarQube" },
+      { name: "NuGet" },
+      { name: "Application Insights" },
+    ],
+  },
+  {
+    label: "Testing",
+    technologies: [
+      { name: "xUnit" },
+      { name: "Moq" },
+      { name: "Playwright" },
+    ],
+  },
+  {
+    label: "AI",
+    technologies: [
+      { name: "Claude" },
+      { name: "OpenAI" },
+      { name: "GitHub Copilot" },
+      { name: "DALL-E" },
     ],
   },
 ];
