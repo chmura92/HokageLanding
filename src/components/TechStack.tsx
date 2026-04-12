@@ -55,7 +55,8 @@ export default function TechStack() {
 
   return (
     <section id="stack" className="bg-space-lifted py-24 px-6">
-      <h2 className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-12 text-center">
+      <h2 className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-500 mb-12 text-center flex items-center justify-center gap-2.5">
+        <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-ember shadow-[0_0_8px_rgba(232,93,58,0.6)]" aria-hidden />
         Stack
       </h2>
 
@@ -91,7 +92,8 @@ export default function TechStack() {
         })}
       </div>
 
-      <div className="max-w-3xl mx-auto mt-16">
+      {/* Methodology buzzword tags */}
+      <div className="max-w-5xl mx-auto mt-16">
         <h3 className="text-xs uppercase tracking-wider font-semibold text-gray-500 text-center mb-6">
           Practices & Methodologies
         </h3>

@@ -4,18 +4,22 @@ import { motion } from "framer-motion";
 import CountUpMetric from "./CountUpMetric";
 
 const metrics = [
-  { value: 5, label: "Modules" },
+  { value: 4, label: "Modules" },
   { value: 5, label: "Engineers Led" },
-  { value: 4, label: "Years" },
+  { value: 3, label: "Years" },
   { value: "On Time & On Budget", label: "Delivery" },
 ] as const;
 
 const techTags = [
   ".NET Core 3.1",
+  "EF Core",
+  "SQL Server",
   "Angular",
   "RxJS",
   "SignalR",
   "Redis",
+  "Xamarin Forms",
+  "SQLite",
   "Docker",
   "Azure CI/CD",
 ];
@@ -43,8 +47,8 @@ export default function FeaturedProject() {
           {/* Left column — text (~60%) */}
           <div className="lg:w-[60%] w-full">
             {/* Badge */}
-            <span className="inline-block bg-accent-blue/10 text-accent-blue text-xs font-semibold px-3 py-1 rounded-full mb-4">
-              Featured Project &middot; 4 Years
+            <span className="inline-block bg-transparent text-accent-ember border border-accent-ember/40 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              Featured Project &middot; 3 Years
             </span>
 
             {/* Title */}
@@ -61,7 +65,8 @@ export default function FeaturedProject() {
             <p className="text-ink-body mt-4 leading-relaxed">
               Modular monolith handling truck fleet management, route
               optimization, GPS geofencing, real-time driver tracking, ERP
-              integration, automated reporting, and trip cost optimization. SSO
+              integration, automated reporting, and trip cost optimization.
+              Xamarin Forms mobile app with offline mode and live sync. SSO
               across web and mobile.
             </p>
 

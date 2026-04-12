@@ -56,7 +56,7 @@ export default function Hero() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white"
+              className="relative text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white before:absolute before:-inset-x-12 before:-inset-y-6 before:-z-10 before:rounded-full before:bg-accent-ember/30 before:blur-[80px] before:pointer-events-none"
             >
               {["Single", "Man", "Army"].map((word, i) => (
                 <motion.span
@@ -126,7 +126,7 @@ export default function Hero() {
               </button>
               <a
                 href="#"
-                className="border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/5 transition-colors"
+                className="border border-white/20 text-white px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-white/5 hover:border-accent-ember hover:text-accent-ember-soft"
               >
                 Download CV
               </a>

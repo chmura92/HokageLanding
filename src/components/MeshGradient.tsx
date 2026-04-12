@@ -1,400 +1,230 @@
 "use client";
 
-import { useRef, useMemo, useCallback, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState, useCallback } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import dynamic from "next/dynamic";
 
 // ---------------------------------------------------------------------------
-// Constants
+// Silk mesh gradient — fullscreen fragment shader.
+// Domain-warped value-noise FBM, 4-stop dark→cyan palette, mouse-warp uniform,
+// soft vignette, fine film grain. No geometry, no particles, no lines.
 // ---------------------------------------------------------------------------
 
-const IS_MOBILE = typeof window !== "undefined" && window.innerWidth < 768;
-const PARTICLE_COUNT = IS_MOBILE ? 150 : 300;
-const MAX_CONNECTIONS = 600;
-const CONNECTION_DISTANCE = 1.4;
-const CONNECTION_DISTANCE_SQ = CONNECTION_DISTANCE * CONNECTION_DISTANCE;
-const MAX_BONDS_PER_PARTICLE = 4;
-const MOUSE_RADIUS = 3.0;
-const MOUSE_FORCE = 0.035;
-const DAMPING = 0.97;
-const AMBIENT_SPEED = 0.12;
-const SPREAD_X = 8;
-const SPREAD_Y = 5;
-const SPREAD_Z = 2.5;
-const RETURN_STRENGTH = 0.003;
-
-// ---------------------------------------------------------------------------
-// Shaders
-// ---------------------------------------------------------------------------
-
-const pointVertexShader = /* glsl */ `
-  attribute float aSize;
-  attribute vec3 aColor;
-  varying vec3 vColor;
-  varying float vDepth;
-
+const vertexShader = /* glsl */ `
+  varying vec2 vUv;
   void main() {
-    vColor = aColor;
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    vDepth = -mvPosition.z;
-    gl_PointSize = aSize * (120.0 / -mvPosition.z);
-    gl_Position = projectionMatrix * mvPosition;
+    vUv = uv;
+    // Bypass camera projection — fill NDC directly.
+    gl_Position = vec4(position.xy, 0.0, 1.0);
   }
 `;
 
-const pointFragmentShader = /* glsl */ `
-  varying vec3 vColor;
-  varying float vDepth;
+const fragmentShader = /* glsl */ `
+  precision highp float;
 
-  void main() {
-    vec2 center = gl_PointCoord - vec2(0.5);
-    float dist = length(center);
-    if (dist > 0.5) discard;
+  varying vec2 vUv;
 
-    float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
-    float depthFade = clamp(1.0 - (vDepth - 3.0) / 6.0, 0.15, 0.8);
-    alpha *= depthFade * 0.4;
+  uniform float uTime;
+  uniform vec2  uResolution;
+  uniform vec2  uMouse;        // 0..1 in viewport space — always live
 
-    gl_FragColor = vec4(vColor, alpha);
+  // ---------- Hash & value noise ----------
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
-`;
 
-const lineVertexShader = /* glsl */ `
-  attribute vec3 aLineColor;
-  attribute float aLineAlpha;
-  varying vec3 vColor;
-  varying float vAlpha;
-
-  void main() {
-    vColor = aLineColor;
-    vAlpha = aLineAlpha;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  float vnoise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(
+      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
+      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+      u.y
+    );
   }
-`;
 
-const lineFragmentShader = /* glsl */ `
-  varying vec3 vColor;
-  varying float vAlpha;
+  float fbm(vec2 p) {
+    float v = 0.0;
+    float a = 0.5;
+    for (int i = 0; i < 5; i++) {
+      v += a * vnoise(p);
+      p  = p * 2.02 + vec2(1.7, 9.2);
+      a *= 0.5;
+    }
+    return v;
+  }
 
   void main() {
-    gl_FragColor = vec4(vColor, vAlpha);
+    vec2 uv = vUv;
+    float aspect = uResolution.x / max(uResolution.y, 1.0);
+    vec2 p = (uv - 0.5) * vec2(aspect, 1.0) * 2.4;
+    vec2 m = (uMouse - 0.5) * vec2(aspect, 1.0) * 2.4;
+
+    float t = uTime * 0.06;
+
+    // ---- Mouse warp: gentle pull of the noise field toward cursor ----
+    vec2 toMouse = p - m;
+    float dM = length(toMouse);
+    float warp = exp(-dM * dM * 0.45);
+    p -= toMouse * warp * 0.28;
+
+    // ---- Domain-warped FBM (Inigo Quilez style) ----
+    vec2 q = vec2(
+      fbm(p + vec2(0.0,  t)),
+      fbm(p + vec2(5.2, -t))
+    );
+    vec2 r = vec2(
+      fbm(p + q * 1.6 + vec2(1.7,  9.2) + t * 0.5),
+      fbm(p + q * 1.6 + vec2(8.3,  2.8) - t * 0.5)
+    );
+    float d = fbm(p * 0.9 + r * 1.4 + t * 0.3);
+
+    // Push contrast so most of the screen sits dark with rare highlights
+    d = smoothstep(0.18, 0.95, d);
+
+    // Soft luminous lift in the cursor's neighborhood
+    float lift = exp(-dM * dM * 0.6) * 0.28;
+    d = clamp(d + lift, 0.0, 1.0);
+
+    // ---- 4-stop palette: near-black → indigo → mid blue → cyan-white ----
+    vec3 col0 = vec3(0.025, 0.038, 0.068);
+    vec3 col1 = vec3(0.062, 0.088, 0.190);
+    vec3 col2 = vec3(0.140, 0.260, 0.470);
+    vec3 col3 = vec3(0.560, 0.790, 0.960);
+
+    vec3 color = mix(col0, col1, smoothstep(0.00, 0.40, d));
+    color      = mix(color, col2, smoothstep(0.40, 0.72, d));
+    color      = mix(color, col3, smoothstep(0.78, 0.98, d));
+
+    // ---- Vignette: darken edges, protect the headline area a touch ----
+    vec2 vc = uv - 0.5;
+    float vig = 1.0 - smoothstep(0.42, 1.05, length(vc * vec2(1.25, 1.55)));
+    vig = pow(vig, 1.4);
+    color *= mix(0.55, 1.0, vig);
+
+    // ---- Fine film grain (animated) ----
+    float g = hash(gl_FragCoord.xy * 0.5 + vec2(uTime * 31.0, uTime * 17.0));
+    color += (g - 0.5) * 0.022;
+
+    gl_FragColor = vec4(color, 1.0);
   }
 `;
 
 // ---------------------------------------------------------------------------
-// Colors
-// ---------------------------------------------------------------------------
 
-const COLOR_WHITE = new THREE.Color(0.9, 0.92, 0.95);
-const COLOR_LIGHT_BLUE = new THREE.Color(0.7, 0.85, 1.0);
-const COLOR_TEAL = new THREE.Color(0.176, 0.831, 0.749);
-const COLOR_PURPLE = new THREE.Color(0.388, 0.4, 0.945);
-const LINE_COLOR_IDLE = new THREE.Color(0.4, 0.55, 0.7);
-const LINE_COLOR_ACTIVE = new THREE.Color(0.45, 0.7, 0.85);
-
-function pickParticleColor(rng: number): THREE.Color {
-  if (rng < 0.45) return COLOR_WHITE.clone();
-  if (rng < 0.75) return COLOR_LIGHT_BLUE.clone();
-  if (rng < 0.9) return COLOR_TEAL.clone();
-  return COLOR_PURPLE.clone();
+interface MouseRef {
+  x: number; // 0..1, relative to canvas wrapper
+  y: number; // 0..1
 }
 
-// ---------------------------------------------------------------------------
-// Particle System
-// ---------------------------------------------------------------------------
+function SilkPlane({ mouse }: { mouse: React.RefObject<MouseRef> }) {
+  const matRef = useRef<THREE.ShaderMaterial>(null);
+  const { size } = useThree();
 
-interface ParticleMouseRef {
-  x: number;
-  y: number;
-  active: boolean;
-}
-
-function ParticleField({ mouse }: { mouse: React.RefObject<ParticleMouseRef> }) {
-  const pointsRef = useRef<THREE.Points>(null);
-  const linesRef = useRef<THREE.LineSegments>(null);
-  const { camera } = useThree();
-
-  const state = useMemo(() => {
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const homePositions = new Float32Array(PARTICLE_COUNT * 3);
-    const velocities = new Float32Array(PARTICLE_COUNT * 3);
-    const sizes = new Float32Array(PARTICLE_COUNT);
-    const colors = new Float32Array(PARTICLE_COUNT * 3);
-    const phases = new Float32Array(PARTICLE_COUNT);
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
-      const x = (Math.random() - 0.5) * SPREAD_X;
-      const y = (Math.random() - 0.5) * SPREAD_Y;
-      const z = (Math.random() - 0.5) * SPREAD_Z;
-      positions[i3] = x;
-      positions[i3 + 1] = y;
-      positions[i3 + 2] = z;
-      homePositions[i3] = x;
-      homePositions[i3 + 1] = y;
-      homePositions[i3 + 2] = z;
-      velocities[i3] = 0;
-      velocities[i3 + 1] = 0;
-      velocities[i3 + 2] = 0;
-
-      // Vary sizes more: some larger "atoms", most smaller
-      const sizeRng = Math.random();
-      sizes[i] = sizeRng < 0.1 ? 1.8 + Math.random() * 1.0 : 0.4 + Math.random() * 1.0;
-
-      const col = pickParticleColor(Math.random());
-      colors[i3] = col.r;
-      colors[i3 + 1] = col.g;
-      colors[i3 + 2] = col.b;
-      phases[i] = Math.random() * Math.PI * 2;
-    }
-
-    return { positions, homePositions, velocities, sizes, colors, phases };
-  }, []);
-
-  const pointsGeometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(state.positions, 3));
-    geo.setAttribute("aSize", new THREE.BufferAttribute(state.sizes, 1));
-    geo.setAttribute("aColor", new THREE.BufferAttribute(state.colors, 3));
-    return geo;
-  }, [state]);
-
-  const pointsMaterial = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader: pointVertexShader,
-        fragmentShader: pointFragmentShader,
-        transparent: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      }),
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uResolution: { value: new THREE.Vector2(size.width || 1, size.height || 1) },
+      uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+    }),
+    // Mutated in place — never re-create, or React will recompile the shader.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
-
-  const linesState = useMemo(() => {
-    const linePositions = new Float32Array(MAX_CONNECTIONS * 2 * 3);
-    const lineColors = new Float32Array(MAX_CONNECTIONS * 2 * 3);
-    const lineAlphas = new Float32Array(MAX_CONNECTIONS * 2);
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute(
-      "position",
-      new THREE.BufferAttribute(linePositions, 3).setUsage(THREE.DynamicDrawUsage),
-    );
-    geo.setAttribute(
-      "aLineColor",
-      new THREE.BufferAttribute(lineColors, 3).setUsage(THREE.DynamicDrawUsage),
-    );
-    geo.setAttribute(
-      "aLineAlpha",
-      new THREE.BufferAttribute(lineAlphas, 1).setUsage(THREE.DynamicDrawUsage),
-    );
-    geo.setDrawRange(0, 0);
-    return { linePositions, lineColors, lineAlphas, geo };
-  }, []);
-
-  const linesMaterial = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader: lineVertexShader,
-        fragmentShader: lineFragmentShader,
-        transparent: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      }),
-    [],
-  );
-
-  const smoothMouse = useRef(new THREE.Vector3(0, 0, 0));
-  const bondCounts = useMemo(() => new Uint8Array(PARTICLE_COUNT), []);
-
-  useFrame((_, delta) => {
-    const dt = Math.min(delta, 0.05);
-    const time = performance.now() * 0.001;
-
-    const pos = state.positions;
-    const home = state.homePositions;
-    const vel = state.velocities;
-    const phases = state.phases;
-    const mouseRef = mouse.current;
-
-    // Mouse world position
-    if (mouseRef && mouseRef.active) {
-      const mouseNDC = new THREE.Vector3(mouseRef.x, mouseRef.y, 0.5);
-      mouseNDC.unproject(camera);
-      const dir = mouseNDC.sub(camera.position).normalize();
-      const t = -camera.position.z / dir.z;
-      const worldMouse = camera.position.clone().add(dir.multiplyScalar(t));
-      smoothMouse.current.lerp(worldMouse, 0.08);
-    }
-
-    const mx = smoothMouse.current.x;
-    const my = smoothMouse.current.y;
-    const mouseActive = mouseRef ? mouseRef.active : false;
-
-    // Update particles
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
-
-      // Ambient drift
-      const phase = phases[i];
-      vel[i3] += Math.sin(time * 0.3 + phase) * AMBIENT_SPEED * dt;
-      vel[i3 + 1] += Math.cos(time * 0.25 + phase * 1.3) * AMBIENT_SPEED * dt;
-      vel[i3 + 2] += Math.sin(time * 0.2 + phase * 0.7) * AMBIENT_SPEED * 0.2 * dt;
-
-      // Mouse ATTRACTION (particles follow cursor)
-      if (mouseActive) {
-        const dx = mx - pos[i3];
-        const dy = my - pos[i3 + 1];
-        const distSq = dx * dx + dy * dy;
-        const dist = Math.sqrt(distSq);
-        if (dist < MOUSE_RADIUS && dist > 0.01) {
-          const strength = (1.0 - dist / MOUSE_RADIUS) * MOUSE_FORCE;
-          vel[i3] += (dx / dist) * strength;
-          vel[i3 + 1] += (dy / dist) * strength;
-        }
-      }
-
-      // Return to home
-      vel[i3] += (home[i3] - pos[i3]) * RETURN_STRENGTH;
-      vel[i3 + 1] += (home[i3 + 1] - pos[i3 + 1]) * RETURN_STRENGTH;
-      vel[i3 + 2] += (home[i3 + 2] - pos[i3 + 2]) * RETURN_STRENGTH;
-
-      // Damping
-      vel[i3] *= DAMPING;
-      vel[i3 + 1] *= DAMPING;
-      vel[i3 + 2] *= DAMPING;
-
-      // Update position
-      pos[i3] += vel[i3];
-      pos[i3 + 1] += vel[i3 + 1];
-      pos[i3 + 2] += vel[i3 + 2];
-    }
-
-    const posAttr = pointsGeometry.getAttribute("position");
-    (posAttr as THREE.BufferAttribute).needsUpdate = true;
-
-    // Connection lines with bond limit
-    const lp = linesState.linePositions;
-    const lc = linesState.lineColors;
-    const la = linesState.lineAlphas;
-    let lineIdx = 0;
-
-    bondCounts.fill(0);
-
-    for (let i = 0; i < PARTICLE_COUNT && lineIdx < MAX_CONNECTIONS; i++) {
-      if (bondCounts[i] >= MAX_BONDS_PER_PARTICLE) continue;
-
-      const i3 = i * 3;
-      const ix = pos[i3];
-      const iy = pos[i3 + 1];
-      const iz = pos[i3 + 2];
-
-      for (let j = i + 1; j < PARTICLE_COUNT && lineIdx < MAX_CONNECTIONS; j++) {
-        if (bondCounts[j] >= MAX_BONDS_PER_PARTICLE) continue;
-
-        const j3 = j * 3;
-        const dx = ix - pos[j3];
-        const dy = iy - pos[j3 + 1];
-        const dz = iz - pos[j3 + 2];
-        const distSq = dx * dx + dy * dy + dz * dz;
-
-        if (distSq < CONNECTION_DISTANCE_SQ) {
-          const v = lineIdx * 6;
-          const a = lineIdx * 2;
-
-          lp[v] = ix;
-          lp[v + 1] = iy;
-          lp[v + 2] = iz;
-          lp[v + 3] = pos[j3];
-          lp[v + 4] = pos[j3 + 1];
-          lp[v + 5] = pos[j3 + 2];
-
-          // Proximity to mouse affects line brightness
-          const midX = (ix + pos[j3]) * 0.5;
-          const midY = (iy + pos[j3 + 1]) * 0.5;
-          const mouseDist = Math.sqrt((midX - mx) * (midX - mx) + (midY - my) * (midY - my));
-          const mouseInfluence = mouseActive ? Math.max(0, 1.0 - mouseDist / MOUSE_RADIUS) : 0;
-
-          const ratio = distSq / CONNECTION_DISTANCE_SQ;
-          const baseAlpha = (1.0 - ratio) * 0.08;
-          const alpha = baseAlpha + mouseInfluence * 0.06;
-
-          const lineColor = mouseInfluence > 0.3 ? LINE_COLOR_ACTIVE : LINE_COLOR_IDLE;
-          lc[v] = lineColor.r;
-          lc[v + 1] = lineColor.g;
-          lc[v + 2] = lineColor.b;
-          lc[v + 3] = lineColor.r;
-          lc[v + 4] = lineColor.g;
-          lc[v + 5] = lineColor.b;
-
-          la[a] = alpha;
-          la[a + 1] = alpha;
-
-          bondCounts[i]++;
-          bondCounts[j]++;
-          lineIdx++;
-        }
-      }
-    }
-
-    linesState.geo.setDrawRange(0, lineIdx * 2);
-    (linesState.geo.getAttribute("position") as THREE.BufferAttribute).needsUpdate = true;
-    (linesState.geo.getAttribute("aLineColor") as THREE.BufferAttribute).needsUpdate = true;
-    (linesState.geo.getAttribute("aLineAlpha") as THREE.BufferAttribute).needsUpdate = true;
-  });
 
   useEffect(() => {
-    return () => {
-      pointsGeometry.dispose();
-      pointsMaterial.dispose();
-      linesState.geo.dispose();
-      linesMaterial.dispose();
-    };
-  }, [pointsGeometry, pointsMaterial, linesState.geo, linesMaterial]);
+    uniforms.uResolution.value.set(size.width, size.height);
+  }, [size.width, size.height, uniforms]);
+
+  // Smoothed mouse — buttery 60fps response without raw jitter.
+  const smoothed = useRef({ x: 0.5, y: 0.5 });
+
+  useFrame((state) => {
+    uniforms.uTime.value = state.clock.elapsedTime;
+    const m = mouse.current;
+    if (!m) return;
+    smoothed.current.x += (m.x - smoothed.current.x) * 0.12;
+    smoothed.current.y += (m.y - smoothed.current.y) * 0.12;
+    uniforms.uMouse.value.set(smoothed.current.x, smoothed.current.y);
+  });
 
   return (
-    <>
-      <points ref={pointsRef} geometry={pointsGeometry} material={pointsMaterial} />
-      <lineSegments ref={linesRef} geometry={linesState.geo} material={linesMaterial} />
-    </>
+    <mesh frustumCulled={false}>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        ref={matRef}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        uniforms={uniforms}
+        depthWrite={false}
+        depthTest={false}
+        toneMapped={false}
+      />
+    </mesh>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Wrapper
 // ---------------------------------------------------------------------------
 
 function MeshGradientInner() {
-  const mouse = useRef<ParticleMouseRef>({ x: 0, y: 0, active: false });
+  const mouse = useRef<MouseRef>({ x: 0.5, y: 0.5 });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const cachedRect = useRef<DOMRect | null>(null);
 
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      mouse.current.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.current.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-      mouse.current.active = true;
-    },
-    [],
-  );
+  // Pause Canvas entirely when hero scrolls out of view.
+  const [visible, setVisible] = useState(true);
 
-  const handlePointerLeave = useCallback(() => {
-    mouse.current.active = false;
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+
+    const refreshRect = () => {
+      cachedRect.current = el.getBoundingClientRect();
+    };
+    refreshRect();
+
+    const ro = new ResizeObserver(refreshRect);
+    ro.observe(el);
+    window.addEventListener("scroll", refreshRect, { passive: true });
+
+    const io = new IntersectionObserver(
+      (entries) => setVisible(entries[0]?.isIntersecting ?? true),
+      { threshold: 0.01 },
+    );
+    io.observe(el);
+
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+      window.removeEventListener("scroll", refreshRect);
+    };
+  }, []);
+
+  // Pointer listener bound to the wrapper — only fires while cursor is over
+  // the hero. No window-level traffic, no layout reads on every event.
+  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = cachedRect.current;
+    if (!rect) return;
+    mouse.current.x = (e.clientX - rect.left) / rect.width;
+    mouse.current.y = 1 - (e.clientY - rect.top) / rect.height;
   }, []);
 
   return (
     <div
+      ref={wrapperRef}
       className="absolute inset-0 z-0"
       onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
     >
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        camera={{ position: [0, 0, 1], fov: 50 }}
         dpr={[1, 1.5]}
         gl={{ antialias: false, alpha: false }}
         style={{ background: "#0B1221" }}
+        frameloop={visible ? "always" : "never"}
       >
-        <ParticleField mouse={mouse} />
+        <SilkPlane mouse={mouse} />
       </Canvas>
     </div>
   );
