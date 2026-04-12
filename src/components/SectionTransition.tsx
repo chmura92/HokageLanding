@@ -3,165 +3,149 @@
 import { useRef, useEffect } from "react";
 
 // ---------------------------------------------------------------------------
-// Git branch tree transition — Canvas 2D
+// Git graph transition — Canvas 2D
 //
-// Four bezier branches (main, feature, hotfix, sub-feature) draw left→right
-// on first scroll-into-view, then commit nodes pulse indefinitely.
-// Background gradient handled by the canvas so SSR shows a plain colour.
+// Three horizontal lanes (hotfix / main / feature) connected by 45° diagonal
+// segments at branch and merge points. A single left→right sweep draws all
+// lines; commit nodes pop as the sweep reaches each one.
 // ---------------------------------------------------------------------------
 
 export type TransitionDirection = "dark-to-light" | "light-to-dark";
 
-interface Segment {
-  p0: [number, number]; // normalised [0..1] x, y
-  p1: [number, number];
-  p2: [number, number];
-  p3: [number, number];
-}
+// Lane Y positions (normalised 0=top 1=bottom)
+const HOTFIX = 0.18;
+const MAIN   = 0.42;
+const FEAT   = 0.72;
 
-interface Branch {
+// Accent colours from globals.css
+const BLUE  = "#4A9EE5";
+const TEAL  = "#2DD4BF";
+const EMBER = "#E85D3A";
+
+interface Seg {
+  x0: number; y0: number;
+  x1: number; y1: number;
   color: string;
-  lineWidth: number;
-  startDelay: number; // ms after animation start before this branch begins drawing
-  segments: Segment[];
-  commits: [number, number][]; // normalised [x, y] positions
+  lw: number; // line width in px
 }
 
-// All coordinates normalised: x 0=left 1=right, y 0=top 1=bottom
-const BRANCHES: Branch[] = [
-  // main — blue, straight horizontal at y=0.33
-  {
-    color: "#4A9EE5",
-    lineWidth: 2,
-    startDelay: 0,
-    segments: [
-      { p0: [0, 0.33], p1: [0.33, 0.33], p2: [0.67, 0.33], p3: [1, 0.33] },
-    ],
-    commits: [
-      [0.15, 0.33],
-      [0.50, 0.33],
-      [0.82, 0.33],
-    ],
-  },
-  // feature — teal, arcs down from main then merges back
-  {
-    color: "#2DD4BF",
-    lineWidth: 1.5,
-    startDelay: 120,
-    segments: [
-      { p0: [0.22, 0.33], p1: [0.22, 0.55], p2: [0.30, 0.62], p3: [0.38, 0.62] },
-      { p0: [0.38, 0.62], p1: [0.45, 0.62], p2: [0.52, 0.62], p3: [0.60, 0.62] },
-      { p0: [0.60, 0.62], p1: [0.67, 0.62], p2: [0.72, 0.45], p3: [0.72, 0.33] },
-    ],
-    commits: [
-      [0.44, 0.62],
-      [0.56, 0.62],
-    ],
-  },
-  // hotfix — ember, arcs up from main then merges back
-  {
-    color: "#E85D3A",
-    lineWidth: 1.5,
-    startDelay: 200,
-    segments: [
-      { p0: [0.48, 0.33], p1: [0.48, 0.15], p2: [0.56, 0.13], p3: [0.63, 0.13] },
-      { p0: [0.63, 0.13], p1: [0.68, 0.13], p2: [0.72, 0.13], p3: [0.77, 0.13] },
-      { p0: [0.77, 0.13], p1: [0.83, 0.13], p2: [0.85, 0.22], p3: [0.85, 0.33] },
-    ],
-    commits: [
-      [0.65, 0.13],
-    ],
-  },
-  // sub-feature — teal (abandoned), spawns from feature branch and stops
-  {
-    color: "#2DD4BF",
-    lineWidth: 1.2,
-    startDelay: 270,
-    segments: [
-      { p0: [0.42, 0.62], p1: [0.42, 0.75], p2: [0.48, 0.82], p3: [0.55, 0.82] },
-      { p0: [0.55, 0.82], p1: [0.58, 0.82], p2: [0.60, 0.82], p3: [0.63, 0.82] },
-    ],
-    commits: [
-      [0.57, 0.82],
-    ],
-  },
+interface Dot {
+  x: number; y: number;
+  color: string;
+  r: number; // radius in px
+}
+
+// ---------------------------------------------------------------------------
+// Graph definition
+// All x/y values are normalised [0..1].
+// Segments are drawn in order — overlapping is intentional (nodes draw on top).
+// ---------------------------------------------------------------------------
+const SEGS: Seg[] = [
+  // Main: full width horizontal
+  { x0: 0,    y0: MAIN,   x1: 1,    y1: MAIN,   color: BLUE,  lw: 3   },
+
+  // Feature: spawn diagonal from main at x=0.18, lands on FEAT at x=0.26
+  { x0: 0.18, y0: MAIN,   x1: 0.26, y1: FEAT,   color: TEAL,  lw: 2.5 },
+  // Feature: horizontal run
+  { x0: 0.26, y0: FEAT,   x1: 0.65, y1: FEAT,   color: TEAL,  lw: 2.5 },
+  // Feature: merge diagonal back to main at x=0.73
+  { x0: 0.65, y0: FEAT,   x1: 0.73, y1: MAIN,   color: TEAL,  lw: 2.5 },
+
+  // Hotfix: spawn diagonal from main at x=0.42, rises to HOTFIX at x=0.50
+  { x0: 0.42, y0: MAIN,   x1: 0.50, y1: HOTFIX, color: EMBER, lw: 2.5 },
+  // Hotfix: horizontal run
+  { x0: 0.50, y0: HOTFIX, x1: 0.75, y1: HOTFIX, color: EMBER, lw: 2.5 },
+  // Hotfix: merge diagonal back to main at x=0.83
+  { x0: 0.75, y0: HOTFIX, x1: 0.83, y1: MAIN,   color: EMBER, lw: 2.5 },
 ];
 
-const DRAW_DURATION_MS = 900; // ms for each branch to fully draw once it starts
+const DOTS: Dot[] = [
+  // Main commits
+  { x: 0.06, y: MAIN,   color: BLUE,  r: 5 },
+  { x: 0.18, y: MAIN,   color: BLUE,  r: 5 }, // branch point → feature
+  { x: 0.42, y: MAIN,   color: BLUE,  r: 5 }, // branch point → hotfix
+  { x: 0.60, y: MAIN,   color: BLUE,  r: 5 }, // regular commit
+  { x: 0.73, y: MAIN,   color: BLUE,  r: 6 }, // merge from feature
+  { x: 0.83, y: MAIN,   color: BLUE,  r: 6 }, // merge from hotfix
+  { x: 0.93, y: MAIN,   color: BLUE,  r: 5 }, // trailing commit
+
+  // Feature commits
+  { x: 0.26, y: FEAT,   color: TEAL,  r: 5 }, // branch start
+  { x: 0.38, y: FEAT,   color: TEAL,  r: 5 },
+  { x: 0.54, y: FEAT,   color: TEAL,  r: 5 },
+  { x: 0.65, y: FEAT,   color: TEAL,  r: 5 }, // merge end
+
+  // Hotfix commits
+  { x: 0.50, y: HOTFIX, color: EMBER, r: 5 }, // branch start
+  { x: 0.62, y: HOTFIX, color: EMBER, r: 5 },
+  { x: 0.75, y: HOTFIX, color: EMBER, r: 5 }, // merge end
+];
+
+const SWEEP_MS   = 1400; // ms for the sweep to cross the full width
+const FADE_MS    = 250;  // ms for a commit node to fade in
 
 // ---------------------------------------------------------------------------
 // Drawing helpers
 // ---------------------------------------------------------------------------
 
-function bezierPoint(
-  p0: [number, number],
-  p1: [number, number],
-  p2: [number, number],
-  p3: [number, number],
-  t: number,
-): [number, number] {
-  const mt = 1 - t;
-  return [
-    mt * mt * mt * p0[0] + 3 * mt * mt * t * p1[0] + 3 * mt * t * t * p2[0] + t * t * t * p3[0],
-    mt * mt * mt * p0[1] + 3 * mt * mt * t * p1[1] + 3 * mt * t * t * p2[1] + t * t * t * p3[1],
-  ];
-}
-
-function drawPartialBezier(
+function drawSeg(
   ctx: CanvasRenderingContext2D,
-  seg: Segment,
-  progress: number, // 0..1 — how much of this segment to draw
+  seg: Seg,
+  sweepX: number,
   W: number,
   H: number,
 ) {
-  if (progress <= 0) return;
-  const steps = Math.max(2, Math.ceil(60 * progress));
-  const [sx, sy] = bezierPoint(seg.p0, seg.p1, seg.p2, seg.p3, 0);
-  ctx.beginPath();
-  ctx.moveTo(sx * W, sy * H);
-  for (let i = 1; i <= steps; i++) {
-    const t = (i / steps) * progress;
-    const [x, y] = bezierPoint(seg.p0, seg.p1, seg.p2, seg.p3, t);
-    ctx.lineTo(x * W, y * H);
+  if (sweepX <= seg.x0) return; // sweep hasn't reached this segment yet
+
+  let ex = seg.x1;
+  let ey = seg.y1;
+
+  if (sweepX < seg.x1) {
+    // Partially drawn: interpolate endpoint to sweep position
+    const t = (sweepX - seg.x0) / (seg.x1 - seg.x0);
+    ex = sweepX;
+    ey = seg.y0 + t * (seg.y1 - seg.y0);
   }
+
+  ctx.strokeStyle = seg.color;
+  ctx.lineWidth   = seg.lw;
+  ctx.beginPath();
+  ctx.moveTo(seg.x0 * W, seg.y0 * H);
+  ctx.lineTo(ex    * W, ey    * H);
   ctx.stroke();
 }
 
-function drawCommitNode(
+function drawDot(
   ctx: CanvasRenderingContext2D,
-  nx: number,
-  ny: number,
+  dot: Dot,
+  alpha: number,
   W: number,
   H: number,
-  color: string,
-  alpha: number,
 ) {
-  const x = nx * W;
-  const y = ny * H;
+  const x = dot.x * W;
+  const y = dot.y * H;
+
   ctx.save();
   ctx.globalAlpha = alpha;
 
   // Glow halo
-  const grd = ctx.createRadialGradient(x, y, 0, x, y, 9);
-  grd.addColorStop(0, color + "50");
-  grd.addColorStop(1, color + "00");
+  const glowR = dot.r * 2.4;
+  const grd = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+  grd.addColorStop(0, dot.color + "60");
+  grd.addColorStop(1, dot.color + "00");
   ctx.fillStyle = grd;
   ctx.beginPath();
-  ctx.arc(x, y, 9, 0, Math.PI * 2);
+  ctx.arc(x, y, glowR, 0, Math.PI * 2);
   ctx.fill();
 
-  // Ring
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 1.5;
+  // Filled circle with white centre
+  ctx.fillStyle   = dot.color;
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth   = 1.5;
   ctx.beginPath();
-  ctx.arc(x, y, 4, 0, Math.PI * 2);
+  ctx.arc(x, y, dot.r, 0, Math.PI * 2);
+  ctx.fill();
   ctx.stroke();
-
-  // Centre dot
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(x, y, 2, 0, Math.PI * 2);
-  ctx.fill();
 
   ctx.restore();
 }
@@ -176,36 +160,32 @@ interface Props {
 
 export default function SectionTransition({ direction = "dark-to-light" }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const sizeRef = useRef({ W: 0, H: 0 });
-
-  // All mutable animation state lives here — avoids stale closure issues
-  const animRef = useRef({
-    startTime: -1,   // timestamp of first visibility; -1 = not started
-    rafId: -1,       // current RAF handle; -1 = not running
-    visible: false,
+  const canvasRef  = useRef<HTMLCanvasElement>(null);
+  const sizeRef    = useRef({ W: 0, H: 0 });
+  const animRef    = useRef({
+    startTime: -1,
+    rafId:     -1,
+    visible:   false,
   });
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
-    const canvas = canvasRef.current;
+    const canvas  = canvasRef.current;
     if (!wrapper || !canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // ---- Resize --------------------------------------------------------
+    // ---- Resize ----------------------------------------------------------
     function resize() {
       const dpr = window.devicePixelRatio || 1;
-      const W = wrapper!.clientWidth;
-      const H = wrapper!.clientHeight;
-      canvas!.width  = Math.round(W * dpr);
-      canvas!.height = Math.round(H * dpr);
-      canvas!.style.width  = `${W}px`;
-      canvas!.style.height = `${H}px`;
-      // Re-apply scale after every resize — setting canvas.width resets ctx state
-      ctx!.scale(dpr, dpr);
+      const W   = wrapper!.clientWidth;
+      const H   = wrapper!.clientHeight;
+      canvas!.width          = Math.round(W * dpr);
+      canvas!.height         = Math.round(H * dpr);
+      canvas!.style.width    = `${W}px`;
+      canvas!.style.height   = `${H}px`;
+      ctx!.scale(dpr, dpr); // resets on every canvas.width assignment
       sizeRef.current = { W, H };
     }
 
@@ -213,11 +193,10 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     const ro = new ResizeObserver(resize);
     ro.observe(wrapper);
 
-    // ---- Render --------------------------------------------------------
+    // ---- Render ----------------------------------------------------------
     function render(timestamp: number) {
-      const anim = animRef.current;
-
-      const { W, H } = sizeRef.current;
+      const anim       = animRef.current;
+      const { W, H }   = sizeRef.current;
       if (W === 0 || H === 0) {
         anim.rafId = requestAnimationFrame(render);
         return;
@@ -239,41 +218,26 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
 
       if (anim.startTime >= 0) {
         const elapsed = timestamp - anim.startTime;
+        const sweepX  = Math.min(elapsed / SWEEP_MS, 1);
 
-        ctx!.lineCap = "round";
-        ctx!.lineJoin = "round";
-        for (const branch of BRANCHES) {
-          const branchElapsed = elapsed - branch.startDelay;
-          if (branchElapsed <= 0) continue;
+        // Draw all line segments clipped to sweep position
+        ctx!.lineCap  = "butt";
+        ctx!.lineJoin = "miter";
+        for (const seg of SEGS) {
+          drawSeg(ctx!, seg, sweepX, W, H);
+        }
 
-          ctx!.strokeStyle = branch.color;
-          ctx!.lineWidth = branch.lineWidth;
-
-          const totalProgress = Math.min(branchElapsed / DRAW_DURATION_MS, 1);
-          const segCount = branch.segments.length;
-          const segShare = 1 / segCount; // each segment owns an equal slice of totalProgress
-
-          for (let si = 0; si < segCount; si++) {
-            const segProgress = Math.min(
-              Math.max((totalProgress - si * segShare) / segShare, 0),
-              1,
-            );
-            drawPartialBezier(ctx!, branch.segments[si], segProgress, W, H);
-          }
-
-          // Commit nodes fade in after branch fully drawn, then pulse
-          if (totalProgress >= 1) {
-            const nodeAge = branchElapsed - DRAW_DURATION_MS;
-            const fadeIn = Math.min(nodeAge / 400, 1);
-            const pulse = fadeIn * (0.65 + 0.35 * Math.sin((nodeAge / 1200) * Math.PI));
-            for (const [nx, ny] of branch.commits) {
-              drawCommitNode(ctx!, nx, ny, W, H, branch.color, pulse);
-            }
-          }
+        // Draw commit nodes — pop as sweep reaches each one
+        for (const dot of DOTS) {
+          if (sweepX < dot.x) continue;
+          const dotAge = elapsed - dot.x * SWEEP_MS;
+          const fade   = Math.min(dotAge / FADE_MS, 1);
+          // Once faded in, add a gentle idle pulse
+          const pulse  = fade < 1 ? fade : 0.75 + 0.25 * Math.sin((elapsed / 1800) * Math.PI);
+          drawDot(ctx!, dot, pulse, W, H);
         }
       }
 
-      // Re-schedule as long as the element is visible
       if (animRef.current.visible) {
         anim.rafId = requestAnimationFrame(render);
       } else {
@@ -281,29 +245,25 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       }
     }
 
-    // ---- Visibility ----------------------------------------------------
+    // ---- Visibility ------------------------------------------------------
     function startRendering() {
       const anim = animRef.current;
       anim.visible = true;
-      if (anim.rafId >= 0) return; // already running
+      if (anim.rafId >= 0) return;
       anim.rafId = requestAnimationFrame((ts) => {
-        if (anim.startTime < 0) anim.startTime = ts; // first entry: begin draw-in
+        if (anim.startTime < 0) anim.startTime = ts;
         render(ts);
       });
     }
 
     function stopRendering() {
       animRef.current.visible = false;
-      // render() will not re-schedule itself on next frame
     }
 
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) {
-          startRendering();
-        } else {
-          stopRendering();
-        }
+        if (entries[0]?.isIntersecting) startRendering();
+        else stopRendering();
       },
       { threshold: 0.01 },
     );
@@ -316,7 +276,6 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     };
   }, [direction]);
 
-  // SSR fallback colour matches the gradient start so there is no flash
   const ssrBg = direction === "dark-to-light" ? "#111827" : "#F8FAFC";
 
   return (
