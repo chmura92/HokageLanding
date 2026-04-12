@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
 const IS_MOBILE =
@@ -17,6 +17,11 @@ const SPREAD_X = 8;
 const SPREAD_Y_TOP = 3.0;      // local y for spawn top
 const SPREAD_Y_BOTTOM = -3.0;  // local y for respawn trigger
 const SPREAD_Z = 2.0;
+
+const CONNECTION_DISTANCE = IS_MOBILE ? 1.2 : 1.6;
+const CONNECTION_DISTANCE_SQ = CONNECTION_DISTANCE * CONNECTION_DISTANCE;
+const MAX_BONDS_PER_PARTICLE = 3;
+const MAX_CONNECTIONS = PARTICLE_COUNT * MAX_BONDS_PER_PARTICLE;
 
 const COLOR_WHITE = new THREE.Color(0.9, 0.92, 0.95);
 const COLOR_LIGHT_BLUE = new THREE.Color(0.7, 0.85, 1.0);
@@ -71,11 +76,38 @@ const pointFragmentShader = /* glsl */ `
   }
 `;
 
+const lineVertexShader = /* glsl */ `
+  attribute vec3 aColor;
+  varying vec3 vColor;
+  varying float vLocalY;
+
+  void main() {
+    vColor = aColor;
+    vLocalY = position.y;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const lineFragmentShader = /* glsl */ `
+  varying vec3 vColor;
+  varying float vLocalY;
+
+  void main() {
+    float localY01 = clamp((vLocalY + 3.0) / 6.0, 0.0, 1.0);
+    // Bonds fade earlier than dots: start fading at 0.1, fully opaque only at 0.75.
+    float dissolve = smoothstep(0.1, 0.75, localY01);
+    float alpha = dissolve * 0.25;
+    gl_FragColor = vec4(vColor, alpha);
+  }
+`;
+
 interface ParticleState {
   positions: Float32Array;
   baseVel: Float32Array;
   sizes: Float32Array;
   colors: Float32Array;
+  linePositions: Float32Array;
+  lineColors: Float32Array;
 }
 
 function seedParticleState(): ParticleState {
@@ -83,6 +115,10 @@ function seedParticleState(): ParticleState {
   const baseVel = new Float32Array(PARTICLE_COUNT * 3);
   const sizes = new Float32Array(PARTICLE_COUNT);
   const colors = new Float32Array(PARTICLE_COUNT * 3);
+
+  // Line buffers: each bond = 2 vertices × 3 floats position + 3 floats color
+  const linePositions = new Float32Array(MAX_CONNECTIONS * 2 * 3);
+  const lineColors = new Float32Array(MAX_CONNECTIONS * 2 * 3);
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const i3 = i * 3;
@@ -111,7 +147,7 @@ function seedParticleState(): ParticleState {
     colors[i3 + 2] = col.b;
   }
 
-  return { positions, baseVel, sizes, colors };
+  return { positions, baseVel, sizes, colors, linePositions, lineColors };
 }
 
 function ParticleField() {
@@ -137,27 +173,119 @@ function ParticleField() {
     [],
   );
 
+  const lineGeometry = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute(
+      "position",
+      new THREE.BufferAttribute(state.linePositions, 3),
+    );
+    g.setAttribute("aColor", new THREE.BufferAttribute(state.lineColors, 3));
+    g.setDrawRange(0, 0);
+    return g;
+  }, [state]);
+
+  const lineMaterial = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: lineVertexShader,
+        fragmentShader: lineFragmentShader,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    [],
+  );
+
+  const bondCountsRef = useRef<Uint8Array | null>(null);
+  if (bondCountsRef.current === null) {
+    bondCountsRef.current = new Uint8Array(PARTICLE_COUNT);
+  }
+  const bondCounts = bondCountsRef.current;
+
   useFrame(() => {
     const posAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
     const positions = posAttr.array as Float32Array;
 
+    // 1. Advance particles, respawn off-bottom.
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const i3 = i * 3;
       positions[i3] += state.baseVel[i3];
       positions[i3 + 1] += state.baseVel[i3 + 1];
 
-      // Respawn at top when falling off the bottom.
       if (positions[i3 + 1] < SPREAD_Y_BOTTOM) {
         positions[i3] = (Math.random() - 0.5) * SPREAD_X;
         positions[i3 + 1] = SPREAD_Y_TOP;
         positions[i3 + 2] = (Math.random() - 0.5) * SPREAD_Z;
       }
     }
-
     posAttr.needsUpdate = true;
+
+    // 2. Rebuild bonds — O(n²) is fine at n=80.
+    bondCounts.fill(0);
+    const linePosAttr = lineGeometry.getAttribute(
+      "position",
+    ) as THREE.BufferAttribute;
+    const lineColAttr = lineGeometry.getAttribute(
+      "aColor",
+    ) as THREE.BufferAttribute;
+    const linePos = linePosAttr.array as Float32Array;
+    const lineCol = lineColAttr.array as Float32Array;
+    let write = 0;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      if (bondCounts[i] >= MAX_BONDS_PER_PARTICLE) continue;
+      const i3 = i * 3;
+      const ax = positions[i3];
+      const ay = positions[i3 + 1];
+      const az = positions[i3 + 2];
+      const acR = state.colors[i3];
+      const acG = state.colors[i3 + 1];
+      const acB = state.colors[i3 + 2];
+
+      for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+        if (bondCounts[j] >= MAX_BONDS_PER_PARTICLE) continue;
+        const j3 = j * 3;
+        const dx = ax - positions[j3];
+        const dy = ay - positions[j3 + 1];
+        const dz = az - positions[j3 + 2];
+        const d2 = dx * dx + dy * dy + dz * dz;
+        if (d2 > CONNECTION_DISTANCE_SQ) continue;
+
+        // Write line segment A → B.
+        linePos[write * 6 + 0] = ax;
+        linePos[write * 6 + 1] = ay;
+        linePos[write * 6 + 2] = az;
+        linePos[write * 6 + 3] = positions[j3];
+        linePos[write * 6 + 4] = positions[j3 + 1];
+        linePos[write * 6 + 5] = positions[j3 + 2];
+
+        lineCol[write * 6 + 0] = acR;
+        lineCol[write * 6 + 1] = acG;
+        lineCol[write * 6 + 2] = acB;
+        lineCol[write * 6 + 3] = state.colors[j3];
+        lineCol[write * 6 + 4] = state.colors[j3 + 1];
+        lineCol[write * 6 + 5] = state.colors[j3 + 2];
+
+        bondCounts[i]++;
+        bondCounts[j]++;
+        write++;
+        if (write >= MAX_CONNECTIONS) break;
+        if (bondCounts[i] >= MAX_BONDS_PER_PARTICLE) break;
+      }
+      if (write >= MAX_CONNECTIONS) break;
+    }
+
+    linePosAttr.needsUpdate = true;
+    lineColAttr.needsUpdate = true;
+    lineGeometry.setDrawRange(0, write * 2);
   });
 
-  return <points geometry={geometry} material={material} />;
+  return (
+    <>
+      <points geometry={geometry} material={material} />
+      <lineSegments geometry={lineGeometry} material={lineMaterial} />
+    </>
+  );
 }
 
 export default function DissolveField() {
