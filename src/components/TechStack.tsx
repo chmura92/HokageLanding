@@ -40,12 +40,16 @@ function TechCard({ name, index }: { name: string; index: number }) {
 }
 
 const buzzwordVariants = {
-  hidden: { opacity: 0, y: 10, scale: 0.95 },
+  hidden: { opacity: 0, y: 8, scale: 0.96 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { delay: i * 0.07, duration: 0.4, ease: "easeOut" as const },
+    transition: {
+      delay: Math.sqrt(i) * 0.05,
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
   }),
 };
 

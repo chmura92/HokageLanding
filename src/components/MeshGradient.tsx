@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState, useCallback } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import dynamic from "next/dynamic";
@@ -145,8 +145,8 @@ function SilkPlane({ mouse }: { mouse: React.RefObject<MouseRef> }) {
     uniforms.uTime.value = state.clock.elapsedTime;
     const m = mouse.current;
     if (!m) return;
-    smoothed.current.x += (m.x - smoothed.current.x) * 0.12;
-    smoothed.current.y += (m.y - smoothed.current.y) * 0.12;
+    smoothed.current.x += (m.x - smoothed.current.x) * 0.22;
+    smoothed.current.y += (m.y - smoothed.current.y) * 0.22;
     uniforms.uMouse.value.set(smoothed.current.x, smoothed.current.y);
   });
 
@@ -202,21 +202,29 @@ function MeshGradientInner() {
     };
   }, []);
 
-  // Pointer listener bound to the wrapper — only fires while cursor is over
-  // the hero. No window-level traffic, no layout reads on every event.
-  const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    const rect = cachedRect.current;
-    if (!rect) return;
-    mouse.current.x = (e.clientX - rect.left) / rect.width;
-    mouse.current.y = 1 - (e.clientY - rect.top) / rect.height;
+  // Window-level pointer listener — covers the entire hero rect, including
+  // areas behind child content (photo, headline, buttons) where a wrapper-
+  // bound listener wouldn't fire because pointer events get consumed by the
+  // foreground elements. The cached rect makes the bounds check O(1) so we
+  // don't pay any layout cost per event.
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      const rect = cachedRect.current;
+      if (!rect) return;
+      const x = e.clientX;
+      const y = e.clientY;
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+        return; // outside hero — don't update, freeze last position
+      }
+      mouse.current.x = (x - rect.left) / rect.width;
+      mouse.current.y = 1 - (y - rect.top) / rect.height;
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
   }, []);
 
   return (
-    <div
-      ref={wrapperRef}
-      className="absolute inset-0 z-0"
-      onPointerMove={handlePointerMove}
-    >
+    <div ref={wrapperRef} className="absolute inset-0 z-0">
       <Canvas
         camera={{ position: [0, 0, 1], fov: 50 }}
         dpr={[1, 1.5]}
