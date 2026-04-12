@@ -81,9 +81,11 @@ function hexRgb(hex: string): [number, number, number] {
 }
 
 // canvas widths per second — deliberate, slow
-const SIGNAL_SPEED = 0.07;
+const SIGNAL_SPEED  = 0.07;
 // tail length in normalised canvas widths
-const TAIL_LEN = 0.10;
+const TAIL_LEN      = 0.10;
+// expanding ring duration when signal touches a node
+const PING_DURATION = 900;
 
 const SIGNALS: BranchSignal[] = [
   { segs: [SEGS[0]],                   color: BLUE,  rgb: hexRgb(BLUE),  phase: 0.00 },
@@ -162,26 +164,50 @@ function drawSignal(
   }
 }
 
-/** Draw a commit node, brightness boosted when the signal is nearby. */
+/** Returns which SIGNALS index owns this dot (by lane y). */
+function signalIndexForDot(dot: Dot): number {
+  if (Math.abs(dot.y - MAIN) < 0.001) return 0;
+  if (Math.abs(dot.y - FEAT) < 0.001) return 1;
+  return 2;
+}
+
+/** Draw a commit node with optional proximity boost and ping ring. */
 function drawDot(
   ctx: CanvasRenderingContext2D,
   dot: Dot,
   baseAlpha: number,
-  signalHeadX: number | null, // null = no active signal near this dot
+  signalHeadX: number | null,
+  pingProgress: number, // 0 = inactive, 0→1 = ring expanding
   W: number,
   H: number,
 ) {
   const x = dot.x * W;
   const y = dot.y * H;
+  const [r, g, b] = hexRgb(dot.color);
 
-  // Boost alpha when signal head is close (within TAIL_LEN/2)
+  // Expanding ping ring — drawn first so the dot sits on top
+  if (pingProgress > 0 && pingProgress < 1) {
+    const ringR = dot.r * (1 + pingProgress * 3.2);
+    const ringA = (1 - pingProgress) * 0.75;
+    ctx.save();
+    ctx.globalAlpha = ringA;
+    ctx.strokeStyle = dot.color;
+    ctx.lineWidth   = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, ringR, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Alpha: base + proximity boost + brief flash at ping start
   let alpha = baseAlpha;
   if (signalHeadX !== null) {
     const proximity = Math.max(0, 1 - Math.abs(dot.x - signalHeadX) / (TAIL_LEN * 0.8));
-    alpha = Math.min(1, baseAlpha + (1 - baseAlpha) * proximity);
+    alpha = Math.min(1, alpha + (1 - alpha) * proximity);
   }
-
-  const [r, g, b] = hexRgb(dot.color);
+  if (pingProgress > 0 && pingProgress < 0.25) {
+    alpha = Math.min(1, alpha + (1 - alpha) * (1 - pingProgress / 0.25) * 0.6);
+  }
 
   ctx.save();
   ctx.globalAlpha = alpha;
@@ -217,10 +243,14 @@ interface Props {
 }
 
 export default function SectionTransition({ direction = "dark-to-light" }: Props) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const sizeRef    = useRef({ W: 0, H: 0 });
-  const animRef    = useRef({ rafId: -1, visible: false });
+  const wrapperRef    = useRef<HTMLDivElement>(null);
+  const canvasRef     = useRef<HTMLCanvasElement>(null);
+  const sizeRef       = useRef({ W: 0, H: 0 });
+  const animRef       = useRef({ rafId: -1, visible: false });
+  // pingTimesRef[i] = timestamp when DOTS[i] last received a ping (-Infinity = never)
+  const pingTimesRef  = useRef<number[]>(DOTS.map(() => -Infinity));
+  // prevHeadsRef[i] = signal head x from the previous frame (for crossing detection)
+  const prevHeadsRef  = useRef<number[]>(SIGNALS.map(() => -1));
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -276,20 +306,33 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
         return xStart + t * xRange;
       });
 
-      // ---- Commit nodes — boosted by nearest signal ----------------------
-      const baseDotAlpha = 0.55;
-      for (const dot of DOTS) {
-        // Find the signal that's closest on the same branch
-        let nearestHead: number | null = null;
-        for (let i = 0; i < SIGNALS.length; i++) {
-          const sig     = SIGNALS[i];
-          const headX   = signalHeads[i];
-          const onBranch = sig.segs.some(s => dot.y === s.y0 || dot.y === s.y1);
-          if (onBranch && Math.abs(dot.x - headX) < TAIL_LEN * 1.5) {
-            nearestHead = headX;
+      // ---- Ping detection: trigger when a signal head crosses a dot ------
+      for (let si = 0; si < SIGNALS.length; si++) {
+        const headX = signalHeads[si];
+        const prevX = prevHeadsRef.current[si];
+        if (prevX >= 0) {
+          const looped = headX < prevX - 0.01; // signal wrapped around
+          for (let di = 0; di < DOTS.length; di++) {
+            if (signalIndexForDot(DOTS[di]) !== si) continue;
+            const dx      = DOTS[di].x;
+            const crossed = looped ? (dx > prevX || dx <= headX) : (dx > prevX && dx <= headX);
+            if (crossed) pingTimesRef.current[di] = timestamp;
           }
         }
-        drawDot(ctx!, dot, baseDotAlpha, nearestHead, W, H);
+        prevHeadsRef.current[si] = headX;
+      }
+
+      // ---- Commit nodes — proximity boost + ping ring --------------------
+      const baseDotAlpha = 0.55;
+      for (let di = 0; di < DOTS.length; di++) {
+        const dot = DOTS[di];
+        const si  = signalIndexForDot(dot);
+        const nearestHead = Math.abs(dot.x - signalHeads[si]) < TAIL_LEN * 1.5
+          ? signalHeads[si]
+          : null;
+        const pingAge      = timestamp - pingTimesRef.current[di];
+        const pingProgress = pingAge < PING_DURATION ? pingAge / PING_DURATION : 0;
+        drawDot(ctx!, dot, baseDotAlpha, nearestHead, pingProgress, W, H);
       }
 
       // ---- Signals on top ------------------------------------------------
