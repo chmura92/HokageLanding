@@ -19,6 +19,7 @@ const FEAT   = 0.78;
 const BLUE  = "#7BADC8";
 const TEAL  = "#5BBCAC";
 const EMBER = "#C47A5A";
+const GREEN = "#4ADE80";
 
 interface Seg {
   x0: number; y0: number;
@@ -240,9 +241,10 @@ function drawDot(
 
 interface Props {
   direction?: TransitionDirection;
+  mirrored?: boolean;
 }
 
-export default function SectionTransition({ direction = "dark-to-light" }: Props) {
+export default function SectionTransition({ direction = "dark-to-light", mirrored = false }: Props) {
   const wrapperRef    = useRef<HTMLDivElement>(null);
   const canvasRef     = useRef<HTMLCanvasElement>(null);
   const sizeRef       = useRef({ W: 0, H: 0 });
@@ -251,6 +253,15 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
   const pingTimesRef  = useRef<number[]>(DOTS.map(() => -Infinity));
   // prevHeadsRef[i] = signal head x from the previous frame (for crossing detection)
   const prevHeadsRef  = useRef<number[]>(SIGNALS.map(() => -1));
+
+  // When mirrored the FEAT lane appears at top — swap TEAL → GREEN
+  const featCol = mirrored ? GREEN : TEAL;
+  const colorsRef = useRef({ segs: SEGS, dots: DOTS, signals: SIGNALS });
+  colorsRef.current = {
+    segs:    SEGS.map(s    => s.color    === TEAL ? { ...s,   color: featCol }                            : s),
+    dots:    DOTS.map(d    => d.color    === TEAL ? { ...d,   color: featCol }                            : d),
+    signals: SIGNALS.map(sig => sig.color === TEAL ? { ...sig, color: featCol, rgb: hexRgb(featCol) }     : sig),
+  };
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
@@ -284,10 +295,11 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       ctx!.clearRect(0, 0, W, H);
 
       // ---- Base lines at reduced opacity ---------------------------------
+      const { segs, dots, signals } = colorsRef.current;
       ctx!.lineCap  = "butt";
       ctx!.lineJoin = "miter";
       ctx!.globalAlpha = 0.35;
-      for (const seg of SEGS) {
+      for (const seg of segs) {
         ctx!.strokeStyle = seg.color;
         ctx!.lineWidth   = seg.lw;
         ctx!.beginPath();
@@ -298,7 +310,7 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       ctx!.globalAlpha = 1;
 
       // ---- Compute signal head positions ---------------------------------
-      const signalHeads: number[] = SIGNALS.map(sig => {
+      const signalHeads: number[] = signals.map(sig => {
         const xStart = sig.segs[0].x0;
         const xEnd   = sig.segs[sig.segs.length - 1].x1;
         const xRange = xEnd - xStart;
@@ -307,14 +319,14 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       });
 
       // ---- Ping detection: trigger when a signal head crosses a dot ------
-      for (let si = 0; si < SIGNALS.length; si++) {
+      for (let si = 0; si < signals.length; si++) {
         const headX = signalHeads[si];
         const prevX = prevHeadsRef.current[si];
         if (prevX >= 0) {
           const looped = headX < prevX - 0.01; // signal wrapped around
-          for (let di = 0; di < DOTS.length; di++) {
-            if (signalIndexForDot(DOTS[di]) !== si) continue;
-            const dx      = DOTS[di].x;
+          for (let di = 0; di < dots.length; di++) {
+            if (signalIndexForDot(dots[di]) !== si) continue;
+            const dx      = dots[di].x;
             const crossed = looped ? (dx > prevX || dx <= headX) : (dx > prevX && dx <= headX);
             if (crossed) pingTimesRef.current[di] = timestamp;
           }
@@ -324,8 +336,8 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
 
       // ---- Commit nodes — proximity boost + ping ring --------------------
       const baseDotAlpha = 0.55;
-      for (let di = 0; di < DOTS.length; di++) {
-        const dot = DOTS[di];
+      for (let di = 0; di < dots.length; di++) {
+        const dot = dots[di];
         const si  = signalIndexForDot(dot);
         const nearestHead = Math.abs(dot.x - signalHeads[si]) < TAIL_LEN * 1.5
           ? signalHeads[si]
@@ -336,8 +348,8 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       }
 
       // ---- Signals on top ------------------------------------------------
-      for (let i = 0; i < SIGNALS.length; i++) {
-        drawSignal(ctx!, SIGNALS[i], signalHeads[i], W, H);
+      for (let i = 0; i < signals.length; i++) {
+        drawSignal(ctx!, signals[i], signalHeads[i], W, H);
       }
 
       if (animRef.current.visible) {
@@ -363,7 +375,7 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     io.observe(wrapper);
 
     return () => { stopRendering(); io.disconnect(); ro.disconnect(); };
-  }, [direction]);
+  }, [direction, mirrored, featCol]);
 
   const splitBg = direction === "dark-to-light"
     ? "linear-gradient(to bottom, #111827 50%, #F8FAFC 50%)"
@@ -375,7 +387,11 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
       className="relative overflow-hidden h-[320px]"
       style={{ background: splitBg }}
     >
-      <canvas ref={canvasRef} className="absolute inset-0" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0"
+        style={mirrored ? { transform: "scaleY(-1)" } : undefined}
+      />
     </div>
   );
 }

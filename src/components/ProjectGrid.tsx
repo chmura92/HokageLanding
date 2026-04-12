@@ -7,7 +7,8 @@ export default function ProjectGrid() {
   return (
     <section className="bg-surface-light py-16 px-6">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-sm font-semibold tracking-[0.2em] uppercase text-ink-muted mb-8 text-center">
+        <h2 className="text-sm font-semibold tracking-[0.2em] uppercase text-ink-muted mb-8 text-center flex items-center justify-center gap-2.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-ember/70" aria-hidden />
           Projects
         </h2>
 

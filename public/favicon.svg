@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Hat body: warm amber, visible on both light and dark backgrounds -->
+  <polygon points="16,1 1,23 31,23" fill="#F0A060" stroke="#8B2500" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- Brim -->
+  <path d="M1,23 Q16,31 31,23 Q16,28 1,23Z" fill="#C0390E"/>
+  <!-- 火 kanji -->
+  <text x="16" y="19" text-anchor="middle" font-size="11" font-weight="bold" fill="#8B2500" font-family="serif">火</text>
+</svg>

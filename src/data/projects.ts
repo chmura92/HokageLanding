@@ -5,6 +5,7 @@ export interface Project {
   roleType: "professional" | "side-project";
   tech: string[];
   url?: string;
+  image?: string;
 }
 
 export const projects: Project[] = [
@@ -14,6 +15,7 @@ export const projects: Project[] = [
     role: "Senior Engineer",
     roleType: "professional",
     tech: [".NET 8", "Angular", "GraphQL", "Kubernetes"],
+    image: "/projects/stocktrack2.png",
   },
   {
     name: "PurpleApp",
@@ -22,6 +24,7 @@ export const projects: Project[] = [
     roleType: "professional",
     tech: [".NET 6", "React", "React Native"],
     url: "https://portacapena.com/en/projects",
+    image: "/projects/purpleapp1.webp",
   },
   {
     name: "Axon",
@@ -30,6 +33,7 @@ export const projects: Project[] = [
     roleType: "professional",
     tech: [".NET Core", "Angular", "Xamarin"],
     url: "https://portacapena.com/en/projects",
+    image: "/projects/axon1.webp",
   },
   {
     name: "StablyPro",
@@ -38,6 +42,7 @@ export const projects: Project[] = [
     roleType: "side-project",
     tech: ["Scheduling", "SMS", "Analytics"],
     url: "https://stablypro.hokage.pl",
+    image: "/projects/stablypro3.png",
   },
   {
     name: "Z Drugiej Bajki",
@@ -46,5 +51,6 @@ export const projects: Project[] = [
     roleType: "side-project",
     tech: ["Next.js", "Medusa"],
     url: "https://zdrugiejbajki.pl",
+    image: "/projects/zdrugiejbajki1.png",
   },
 ];

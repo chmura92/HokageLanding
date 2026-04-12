@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import MeshGradient from "./MeshGradient";
 import ScrollChevron from "./ScrollChevron";
@@ -18,7 +17,7 @@ const wordVariants = {
 };
 
 /* Simple pill-style tech labels */
-const techLabels = [".NET", "Angular", "React", "Azure", "Docker"];
+const techLabels = [".NET", "Angular", "React", "Azure"];
 
 export default function Hero() {
   return (
@@ -39,14 +38,25 @@ export default function Hero() {
             transition={{ delay: 0.9, duration: 0.5 }}
             className="shrink-0"
           >
-            <Image
-              src="/photo.png"
-              alt="Roman Duzynski"
-              width={160}
-              height={160}
-              priority
-              className="rounded-full w-32 h-32 md:w-40 md:h-40 object-cover object-[center_15%] ring-2 ring-accent-blue/30"
-            />
+            <div
+              className="relative rounded-full w-32 h-32 md:w-40 md:h-40 ring-2 ring-accent-blue/40 shadow-[0_0_0_5px_rgba(232,93,58,0.15)] overflow-hidden"
+              style={{
+                backgroundImage: "url(/me.jpg)",
+                backgroundSize: "230%",
+                backgroundPosition: "50% 12%",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "#0B1221",
+              }}
+            >
+              {/* Vignette: fades white photo background into site dark navy */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle at 50% 38%, transparent 28%, rgba(11,18,33,0.55) 58%, rgba(11,18,33,0.96) 78%)",
+                }}
+              />
+            </div>
           </motion.div>
 
           {/* Text content */}
@@ -126,7 +136,7 @@ export default function Hero() {
               </button>
               <a
                 href="#"
-                className="border border-white/20 text-white px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-white/5 hover:border-accent-ember hover:text-accent-ember-soft"
+                className="bg-accent-ember/15 border border-accent-ember/50 text-accent-ember-soft px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-accent-ember hover:border-accent-ember hover:text-white"
               >
                 Download CV
               </a>

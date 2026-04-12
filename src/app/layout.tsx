@@ -13,8 +13,7 @@ export const metadata: Metadata = {
   description:
     "Senior Full-Stack .NET Architect. 10+ years building enterprise systems. Teams, products, and code — end to end.",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.png",
+    icon: { url: "/favicon.svg", type: "image/svg+xml" },
   },
 };
 
@@ -24,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
-      <body className="bg-space-deep text-white">{children}</body>
+    <html lang="en" className={`${inter.variable} antialiased`} suppressHydrationWarning>
+      <body className="bg-space-deep text-white" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

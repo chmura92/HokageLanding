@@ -66,6 +66,7 @@ export default function ContactForm() {
     <form
       onSubmit={handleSubmit}
       className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8"
+      suppressHydrationWarning
     >
       <div className="space-y-5">
         {/* Name */}
@@ -83,6 +84,7 @@ export default function ContactForm() {
             }
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/20 transition-colors"
             required
+            suppressHydrationWarning
           />
         </div>
 
@@ -101,6 +103,7 @@ export default function ContactForm() {
             }
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/20 transition-colors"
             required
+            suppressHydrationWarning
           />
         </div>
 
@@ -121,6 +124,7 @@ export default function ContactForm() {
             }
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:border-accent-blue/50 focus:outline-none focus:ring-1 focus:ring-accent-blue/20 transition-colors min-h-[120px] resize-none"
             required
+            suppressHydrationWarning
           />
         </div>
       </div>

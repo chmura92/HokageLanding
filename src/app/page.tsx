@@ -15,7 +15,7 @@ export default function Home() {
       <main>
         <Hero />
         <TechStack />
-        <SectionTransition />
+        <SectionTransition mirrored />
         <FeaturedProject />
         <ProjectGrid />
         <CareerTimeline />

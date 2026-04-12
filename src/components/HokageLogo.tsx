@@ -5,7 +5,7 @@ interface HokageLogoProps {
 export default function HokageLogo({ className }: HokageLogoProps) {
   return (
     <svg
-      viewBox="0 0 160 50"
+      viewBox="0 0 160 30"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import CountUpMetric from "./CountUpMetric";
 
@@ -113,10 +114,14 @@ export default function FeaturedProject() {
 
           {/* Right column — visual (~40%) */}
           <div className="lg:w-[40%] w-full">
-            <div className="rounded-xl bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200 aspect-video w-full shadow-lg flex items-center justify-center">
-              <span className="text-gray-400 text-lg font-medium select-none">
-                Screenshot
-              </span>
+            <div className="rounded-xl overflow-hidden aspect-video w-full shadow-lg relative">
+              <Image
+                src="/projects/nexus1.png"
+                alt="Nexus logistics platform screenshot"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 100vw, 40vw"
+              />
             </div>
           </div>
         </div>
