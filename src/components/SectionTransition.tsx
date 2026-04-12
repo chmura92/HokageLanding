@@ -13,9 +13,10 @@ import { useRef, useEffect } from "react";
 export type TransitionDirection = "dark-to-light" | "light-to-dark";
 
 // Lane Y positions (normalised 0=top 1=bottom)
-const HOTFIX = 0.18;
-const MAIN   = 0.42;
-const FEAT   = 0.72;
+// MAIN sits exactly at the dark/light boundary (y=0.5)
+const HOTFIX = 0.22;
+const MAIN   = 0.50;
+const FEAT   = 0.78;
 
 // Muted accent colours — desaturated so they read as technical, not decorative
 const BLUE  = "#7BADC8";
@@ -42,43 +43,43 @@ interface Dot {
 // ---------------------------------------------------------------------------
 const SEGS: Seg[] = [
   // Main: full width horizontal
-  { x0: 0,    y0: MAIN,   x1: 1,    y1: MAIN,   color: BLUE,  lw: 4   },
+  { x0: 0,    y0: MAIN,   x1: 1,    y1: MAIN,   color: BLUE,  lw: 6   },
 
   // Feature: spawn diagonal from main at x=0.18, lands on FEAT at x=0.26
-  { x0: 0.18, y0: MAIN,   x1: 0.26, y1: FEAT,   color: TEAL,  lw: 3 },
+  { x0: 0.18, y0: MAIN,   x1: 0.26, y1: FEAT,   color: TEAL,  lw: 4 },
   // Feature: horizontal run
-  { x0: 0.26, y0: FEAT,   x1: 0.65, y1: FEAT,   color: TEAL,  lw: 3 },
+  { x0: 0.26, y0: FEAT,   x1: 0.65, y1: FEAT,   color: TEAL,  lw: 4 },
   // Feature: merge diagonal back to main at x=0.73
-  { x0: 0.65, y0: FEAT,   x1: 0.73, y1: MAIN,   color: TEAL,  lw: 3 },
+  { x0: 0.65, y0: FEAT,   x1: 0.73, y1: MAIN,   color: TEAL,  lw: 4 },
 
   // Hotfix: spawn diagonal from main at x=0.42, rises to HOTFIX at x=0.50
-  { x0: 0.42, y0: MAIN,   x1: 0.50, y1: HOTFIX, color: EMBER, lw: 3 },
+  { x0: 0.42, y0: MAIN,   x1: 0.50, y1: HOTFIX, color: EMBER, lw: 4 },
   // Hotfix: horizontal run
-  { x0: 0.50, y0: HOTFIX, x1: 0.75, y1: HOTFIX, color: EMBER, lw: 3 },
+  { x0: 0.50, y0: HOTFIX, x1: 0.75, y1: HOTFIX, color: EMBER, lw: 4 },
   // Hotfix: merge diagonal back to main at x=0.83
-  { x0: 0.75, y0: HOTFIX, x1: 0.83, y1: MAIN,   color: EMBER, lw: 3 },
+  { x0: 0.75, y0: HOTFIX, x1: 0.83, y1: MAIN,   color: EMBER, lw: 4 },
 ];
 
 const DOTS: Dot[] = [
   // Main commits
-  { x: 0.06, y: MAIN,   color: BLUE,  r: 5 },
-  { x: 0.18, y: MAIN,   color: BLUE,  r: 5 }, // branch point → feature
-  { x: 0.42, y: MAIN,   color: BLUE,  r: 5 }, // branch point → hotfix
-  { x: 0.60, y: MAIN,   color: BLUE,  r: 5 }, // regular commit
-  { x: 0.73, y: MAIN,   color: BLUE,  r: 6 }, // merge from feature
-  { x: 0.83, y: MAIN,   color: BLUE,  r: 6 }, // merge from hotfix
-  { x: 0.93, y: MAIN,   color: BLUE,  r: 5 }, // trailing commit
+  { x: 0.06, y: MAIN,   color: BLUE,  r: 7 },
+  { x: 0.18, y: MAIN,   color: BLUE,  r: 7 }, // branch point → feature
+  { x: 0.42, y: MAIN,   color: BLUE,  r: 7 }, // branch point → hotfix
+  { x: 0.60, y: MAIN,   color: BLUE,  r: 7 }, // regular commit
+  { x: 0.73, y: MAIN,   color: BLUE,  r: 8 }, // merge from feature
+  { x: 0.83, y: MAIN,   color: BLUE,  r: 8 }, // merge from hotfix
+  { x: 0.93, y: MAIN,   color: BLUE,  r: 7 }, // trailing commit
 
   // Feature commits
-  { x: 0.26, y: FEAT,   color: TEAL,  r: 5 }, // branch start
-  { x: 0.38, y: FEAT,   color: TEAL,  r: 5 },
-  { x: 0.54, y: FEAT,   color: TEAL,  r: 5 },
-  { x: 0.65, y: FEAT,   color: TEAL,  r: 5 }, // merge end
+  { x: 0.26, y: FEAT,   color: TEAL,  r: 6 }, // branch start
+  { x: 0.38, y: FEAT,   color: TEAL,  r: 6 },
+  { x: 0.54, y: FEAT,   color: TEAL,  r: 6 },
+  { x: 0.65, y: FEAT,   color: TEAL,  r: 6 }, // merge end
 
   // Hotfix commits
-  { x: 0.50, y: HOTFIX, color: EMBER, r: 5 }, // branch start
-  { x: 0.62, y: HOTFIX, color: EMBER, r: 5 },
-  { x: 0.75, y: HOTFIX, color: EMBER, r: 5 }, // merge end
+  { x: 0.50, y: HOTFIX, color: EMBER, r: 6 }, // branch start
+  { x: 0.62, y: HOTFIX, color: EMBER, r: 6 },
+  { x: 0.75, y: HOTFIX, color: EMBER, r: 6 }, // merge end
 ];
 
 const SWEEP_MS   = 1400; // ms for the sweep to cross the full width
@@ -265,14 +266,16 @@ export default function SectionTransition({ direction = "dark-to-light" }: Props
     };
   }, [direction]);
 
-  // Solid background matching the section this transition sits at the bottom of
-  const ssrBg = direction === "dark-to-light" ? "#111827" : "#F8FAFC";
+  // Hard split at 50%: dark above the main branch line, light below (or vice versa)
+  const splitBg = direction === "dark-to-light"
+    ? "linear-gradient(to bottom, #111827 50%, #F8FAFC 50%)"
+    : "linear-gradient(to bottom, #F8FAFC 50%, #0B1221 50%)";
 
   return (
     <div
       ref={wrapperRef}
       className="relative overflow-hidden h-[320px]"
-      style={{ background: ssrBg }}
+      style={{ background: splitBg }}
     >
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
