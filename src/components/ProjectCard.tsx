@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import type { Project } from "@/data/projects";
+import { useReveal } from "@/hooks/useReveal";
 
 const gradients = [
   "bg-gradient-to-br from-space-deep/80 to-accent-blue/20",
@@ -20,14 +20,13 @@ export default function ProjectCard({
   index: number;
 }) {
   const gradient = gradients[index % gradients.length];
+  const ref = useReveal<HTMLDivElement>();
 
   const card = (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:-translate-y-1.5 hover:shadow-lg hover:shadow-accent-blue/10 hover:border-gray-200 transition-all duration-300"
+    <div
+      ref={ref}
+      style={{ "--reveal-delay": `${index * 0.1}s` } as React.CSSProperties}
+      className="reveal-fade-up bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:-translate-y-1.5 hover:shadow-lg hover:shadow-accent-blue/10 hover:border-gray-200 transition-all duration-300"
     >
       {/* Screenshot / placeholder image area */}
       <div className={`aspect-video relative overflow-hidden ${!project.image ? gradient : "bg-gray-100"}`}>
@@ -89,7 +88,7 @@ export default function ProjectCard({
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 
   if (project.url) {

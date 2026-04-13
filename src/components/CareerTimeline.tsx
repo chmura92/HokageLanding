@@ -1,46 +1,45 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import { career, CareerEntry } from "@/data/career";
+import { useReveal } from "@/hooks/useReveal";
 
 interface TimelineEntryProps {
   entry: CareerEntry;
-  index: number;
   isCurrent: boolean;
   isLeft: boolean;
   isEducation: boolean;
   onReveal: (dotEl: HTMLDivElement) => void;
 }
 
-function TimelineEntry({ entry, index, isCurrent, isLeft, isEducation, onReveal }: TimelineEntryProps) {
-  const rowRef = useRef<HTMLDivElement>(null);
-  const dotRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(rowRef, { once: true, margin: "-80px 0px" });
+function TimelineEntry({ entry, isCurrent, isLeft, isEducation, onReveal }: TimelineEntryProps) {
+  const dotWrapperRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isInView && dotRef.current) {
-      onReveal(dotRef.current);
-    }
-  }, [isInView, onReveal]);
+  const handleReveal = useCallback(() => {
+    if (dotWrapperRef.current) onReveal(dotWrapperRef.current);
+  }, [onReveal]);
+
+  const rowRef = useReveal<HTMLDivElement>({
+    rootMargin: "-80px 0px",
+    onReveal: handleReveal,
+  });
+  const dotRef = useReveal<HTMLDivElement>({ rootMargin: "-80px 0px" });
+  const cardRef = useReveal<HTMLDivElement>({ rootMargin: "-50px" });
+
+  const cardClass = isLeft ? "reveal-fade-left" : "reveal-fade-right";
 
   return (
     <div ref={rowRef} className="relative flex items-start md:items-center">
       {/* Dot */}
-      <div ref={dotRef} className="absolute left-4 md:left-1/2 -translate-x-1/2 z-10">
+      <div ref={dotWrapperRef} className="absolute left-4 md:left-1/2 -translate-x-1/2 z-10">
         {isCurrent && (
-          <motion.span
-            className="absolute inset-0 -m-1.5 rounded-full bg-accent-ember/30"
-            initial={{ scale: 1, opacity: 0 }}
-            animate={{ scale: [1, 1.6, 2.2], opacity: [0, 0.6, 0] }}
-            transition={{ duration: 2, ease: "easeOut", repeat: Infinity }}
+          <span
+            className="absolute inset-0 -m-1.5 rounded-full bg-accent-ember/30 animate-career-pulse"
           />
         )}
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className={`relative w-4 h-4 rounded-full border-[3px] border-white shadow-sm ${
+        <div
+          ref={dotRef}
+          className={`reveal-scale-dot relative w-4 h-4 rounded-full border-[3px] border-white shadow-sm ${
             isCurrent ? "bg-accent-ember" : isEducation ? "bg-accent-teal" : "bg-accent-blue"
           }`}
         />
@@ -57,12 +56,9 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, isEducation, onReveal 
       <div className={`hidden md:block md:w-1/2 ${isLeft ? "md:order-2" : "md:order-1"}`} />
 
       {/* Card */}
-      <motion.div
-        initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`ml-10 md:ml-0 md:w-1/2 ${
+      <div
+        ref={cardRef}
+        className={`${cardClass} ml-10 md:ml-0 md:w-1/2 ${
           isLeft ? "md:order-1 md:pr-14" : "md:order-2 md:pl-14"
         }`}
       >
@@ -87,7 +83,7 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, isEducation, onReveal 
             </ul>
           )}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -117,12 +113,11 @@ export default function CareerTimeline() {
           <div className="absolute top-0 bottom-0 left-4 md:left-1/2 md:-translate-x-px w-0.5 bg-gray-200" />
 
           {/* Animated overlay line — only ever grows, never retracts */}
-          <motion.div
+          <div
             className="absolute top-0 left-4 md:left-1/2 md:-translate-x-px w-0.5 origin-top"
-            initial={{ height: 0 }}
-            animate={{ height: lineHeight }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
             style={{
+              height: lineHeight,
+              transition: "height 0.6s ease-out",
               background:
                 "linear-gradient(to bottom, #E85D3A 0%, #4A9EE5 35%, #4A9EE5 100%)",
             }}
@@ -133,7 +128,6 @@ export default function CareerTimeline() {
               <TimelineEntry
                 key={index}
                 entry={entry}
-                index={index}
                 isCurrent={index === 0}
                 isLeft={index % 2 === 0}
                 isEducation={!!entry.isEducation}

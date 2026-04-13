@@ -1,10 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
 import SectionTransition from "./SectionTransition";
+import { useReveal } from "@/hooks/useReveal";
 
 export default function Contact() {
+  const leftRef = useReveal<HTMLDivElement>();
+  const rightRef = useReveal<HTMLDivElement>();
+
   return (
     <section id="contact">
       {/* Gradient transition from light to dark */}
@@ -22,11 +25,7 @@ export default function Contact() {
           {/* Two columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Left column */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
+            <div ref={leftRef} className="reveal-fade-left">
               <h2 className="text-3xl font-extrabold text-white mb-4">
                 Let&apos;s work together
               </h2>
@@ -98,16 +97,12 @@ export default function Contact() {
                   hokage.pl
                 </a>
               </div>
-            </motion.div>
+            </div>
 
             {/* Right column */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
+            <div ref={rightRef} className="reveal-fade-right">
               <ContactForm />
-            </motion.div>
+            </div>
           </div>
 
           {/* Footer */}

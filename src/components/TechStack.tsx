@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { techGroups, methodologies } from "../data/skills";
 import { getIcon } from "../lib/iconMap";
+import { useReveal } from "@/hooks/useReveal";
 
 function TechCard({ name, index }: { name: string; index: number }) {
   const iconData = getIcon(name);
@@ -10,16 +10,21 @@ function TechCard({ name, index }: { name: string; index: number }) {
   const svgPath = iconData?.icon.path ?? null;
   const viewBox = (iconData?.kind === 'custom' && iconData.icon.viewBox) ? iconData.icon.viewBox : "0 0 24 24";
   const fillRule = (iconData?.kind === 'custom' ? iconData.icon.fillRule : undefined) ?? 'nonzero';
+  const ref = useReveal<HTMLDivElement>({ rootMargin: "-30px" });
+
+  const style: React.CSSProperties = {
+    "--reveal-delay": `${0.05 + index * 0.03}s`,
+  } as React.CSSProperties;
+  if (brandColor) {
+    (style as Record<string, string>)["--brand-color"] = brandColor;
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ delay: 0.05 + index * 0.03, duration: 0.3 }}
-      className="group flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-3 w-[88px] cursor-default
+    <div
+      ref={ref}
+      style={style}
+      className="reveal-fade-up group flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-3 w-[88px] cursor-default
         hover:border-white/20 hover:shadow-[0_0_16px_rgba(255,255,255,0.08)] hover:scale-105 transition-all duration-300"
-      style={brandColor ? ({ '--brand-color': brandColor } as React.CSSProperties) : {}}
     >
       {svgPath ? (
         <svg
@@ -41,23 +46,25 @@ function TechCard({ name, index }: { name: string; index: number }) {
       <span className="text-[10px] uppercase tracking-wide text-gray-400 group-hover:text-gray-200 transition-colors duration-300 text-center leading-tight w-full break-words">
         {name}
       </span>
-    </motion.div>
+    </div>
   );
 }
 
-const buzzwordVariants = {
-  hidden: { opacity: 0, y: 6, scale: 0.97 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      delay: i * 0.03,
-      duration: 0.35,
-      ease: [0.22, 1, 0.36, 1] as const,
-    },
-  }),
-};
+function MethodologyTag({ tag, index }: { tag: string; index: number }) {
+  const ref = useReveal<HTMLSpanElement>({ rootMargin: "-40px" });
+  return (
+    <span
+      ref={ref}
+      style={{ "--reveal-delay": `${index * 0.03}s` } as React.CSSProperties}
+      className="reveal-fade-up text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full px-4 py-2
+        hover:bg-white/10 hover:border-accent-blue/30 hover:text-white
+        hover:shadow-[0_0_12px_rgba(74,158,229,0.15)]
+        transition-all duration-300 cursor-default"
+    >
+      {tag}
+    </span>
+  );
+}
 
 export default function TechStack() {
   return (
@@ -92,20 +99,7 @@ export default function TechStack() {
         </h3>
         <div className="flex flex-wrap justify-center gap-3">
           {methodologies.map((tag, i) => (
-            <motion.span
-              key={tag}
-              custom={i}
-              variants={buzzwordVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              className="text-sm text-gray-300 bg-white/5 border border-white/10 rounded-full px-4 py-2
-                hover:bg-white/10 hover:border-accent-blue/30 hover:text-white
-                hover:shadow-[0_0_12px_rgba(74,158,229,0.15)]
-                transition-all duration-300 cursor-default"
-            >
-              {tag}
-            </motion.span>
+            <MethodologyTag key={tag} tag={tag} index={i} />
           ))}
         </div>
       </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import CountUpMetric from "./CountUpMetric";
+import { useReveal } from "@/hooks/useReveal";
 
 const metrics = [
   { value: 4, label: "Modules" },
@@ -25,25 +25,25 @@ const techTags = [
   "Azure CI/CD",
 ];
 
-const tagVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.05, duration: 0.3 },
-  }),
-};
+function TechTag({ tag, index }: { tag: string; index: number }) {
+  const ref = useReveal<HTMLSpanElement>();
+  return (
+    <span
+      ref={ref}
+      style={{ "--reveal-delay": `${index * 0.05}s` } as React.CSSProperties}
+      className="reveal-fade-up bg-ink-heading/5 text-ink-body text-xs px-2.5 py-1 rounded font-medium"
+    >
+      {tag}
+    </span>
+  );
+}
 
 export default function FeaturedProject() {
+  const containerRef = useReveal<HTMLDivElement>();
+
   return (
     <section id="projects" className="bg-surface-light py-24 px-6">
-      <motion.div
-        className="max-w-6xl mx-auto"
-        initial={{ opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
+      <div ref={containerRef} className="reveal-fade-left-sm max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Left column — text (~60%) */}
           <div className="lg:w-[60%] w-full">
@@ -97,17 +97,7 @@ export default function FeaturedProject() {
             {/* Tech tags */}
             <div className="flex flex-wrap gap-2 mt-6">
               {techTags.map((tag, i) => (
-                <motion.span
-                  key={tag}
-                  custom={i}
-                  variants={tagVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="bg-ink-heading/5 text-ink-body text-xs px-2.5 py-1 rounded font-medium"
-                >
-                  {tag}
-                </motion.span>
+                <TechTag key={tag} tag={tag} index={i} />
               ))}
             </div>
           </div>
@@ -125,7 +115,7 @@ export default function FeaturedProject() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

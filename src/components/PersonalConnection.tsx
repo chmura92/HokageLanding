@@ -1,16 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useReveal } from "@/hooks/useReveal";
 
 export default function PersonalConnection() {
+  const ref = useReveal<HTMLDivElement>({ rootMargin: "-50px" });
   return (
     <section className="bg-surface-light py-24 px-6">
-      <motion.div
-        className="max-w-2xl mx-auto text-center"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+      <div
+        ref={ref}
+        className="reveal-fade-up max-w-2xl mx-auto text-center"
       >
         <p className="text-2xl md:text-3xl font-bold text-ink-heading leading-relaxed">
           I care about building things that actually work
@@ -25,7 +23,7 @@ export default function PersonalConnection() {
         <p className="text-ink-muted mt-4 text-sm md:text-base">
           That&apos;s what I bring to every project &mdash; clarity under complexity.
         </p>
-      </motion.div>
+      </div>
     </section>
   );
 }

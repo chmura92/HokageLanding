@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, animate } from "framer-motion";
 
 interface CountUpMetricProps {
   value: number | string;
@@ -10,39 +9,70 @@ interface CountUpMetricProps {
 
 export default function CountUpMetric({ value, label }: CountUpMetricProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const textRef = useRef<HTMLSpanElement>(null);
   const [displayValue, setDisplayValue] = useState(0);
-  const motionValue = useMotionValue(0);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (typeof value !== "number" || !isInView) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const controls = animate(motionValue, value, {
-      duration: 1.5,
-      ease: "easeOut",
-      onUpdate: (latest) => {
-        setDisplayValue(Math.round(latest));
+    if (typeof IntersectionObserver === "undefined") {
+      setStarted(true);
+      textRef.current?.classList.add("in-view");
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setStarted(true);
+            textRef.current?.classList.add("in-view");
+            observer.unobserve(el);
+          }
+        }
       },
-    });
+      { rootMargin: "-50px" }
+    );
 
-    return () => controls.stop();
-  }, [isInView, value, motionValue]);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started || typeof value !== "number") return;
+
+    const duration = 1500;
+    const start = performance.now();
+    let raf = 0;
+
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const t = Math.min(elapsed / duration, 1);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplayValue(Math.round(value * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [started, value]);
 
   return (
     <div ref={ref} className="text-center">
       {typeof value === "number" ? (
         <span className="text-4xl font-extrabold text-ink-heading">
-          {isInView ? displayValue : 0}
+          {displayValue}
         </span>
       ) : (
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-lg font-bold text-ink-heading leading-tight"
+        <span
+          ref={textRef}
+          className="reveal-fade text-lg font-bold text-ink-heading leading-tight inline-block"
         >
           {value}
-        </motion.span>
+        </span>
       )}
       <p className="text-sm text-ink-muted mt-1">{label}</p>
     </div>

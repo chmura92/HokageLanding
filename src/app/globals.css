@@ -85,3 +85,91 @@
       scroll-chevron-bounce 2s   ease-in-out 2s infinite;
   }
 }
+
+/* ─── Scroll reveal primitives ───────────────────────────────────────────────
+   Pure CSS keyframes driven by a tiny IntersectionObserver that adds `.in-view`
+   once, then disconnects. Initial `opacity: 0` is set on the base class so SSR
+   paint matches the pre-animation state — no Framer Motion WAAPI hydration
+   window where elements can flash visible before the animation starts.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes reveal-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-fade-up-lg {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-fade-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reveal-fade-right {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reveal-fade-left-sm {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reveal-scale-dot {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes reveal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes career-dot-pulse {
+  0%   { transform: scale(1);   opacity: 0; }
+  50%  { transform: scale(1.6); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@layer utilities {
+  /* Base reveal: hidden until .in-view is added by useReveal hook */
+  .reveal-fade-up,
+  .reveal-fade-up-lg,
+  .reveal-fade-left,
+  .reveal-fade-right,
+  .reveal-fade-left-sm,
+  .reveal-scale-dot,
+  .reveal-fade {
+    opacity: 0;
+  }
+
+  .reveal-fade-up.in-view {
+    animation: reveal-fade-up 0.4s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-fade-up-lg.in-view {
+    animation: reveal-fade-up-lg 0.5s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-fade-left.in-view {
+    animation: reveal-fade-left 0.5s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-fade-right.in-view {
+    animation: reveal-fade-right 0.5s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-fade-left-sm.in-view {
+    animation: reveal-fade-left-sm 0.6s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-scale-dot.in-view {
+    animation: reveal-scale-dot 0.4s ease-out var(--reveal-delay, 0s) both;
+  }
+  .reveal-fade.in-view {
+    animation: reveal-fade 0.6s ease-out var(--reveal-delay, 0s) both;
+  }
+
+  /* Career-timeline pulse ring (infinite, runs as soon as painted) */
+  .animate-career-pulse {
+    animation: career-dot-pulse 2s ease-out infinite;
+  }
+}
