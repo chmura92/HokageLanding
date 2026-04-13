@@ -37,6 +37,7 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9, duration: 0.5 }}
             className="shrink-0 self-center"
+            style={{ opacity: 0 }}
           >
             <div
               className="relative rounded-full w-32 h-32 md:w-40 md:h-40 ring-2 ring-accent-blue/40 shadow-[0_0_0_5px_rgba(232,93,58,0.15)] overflow-hidden"
@@ -73,6 +74,7 @@ export default function Hero() {
                   key={i}
                   variants={wordVariants}
                   className="inline-block mr-4"
+                  style={{ opacity: 0 }}
                 >
                   {word}
                 </motion.span>
@@ -85,6 +87,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
               className="text-lg md:text-xl text-gray-400 mt-4"
+              style={{ opacity: 0 }}
             >
               Senior Full-Stack .NET Architect &middot; 10+ Years &middot;
               Teams, Products &amp; Code &mdash; End to End
@@ -96,6 +99,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.5 }}
               className="text-sm text-gray-500 mt-2"
+              style={{ opacity: 0 }}
             >
               Opole, Poland &middot; Remote
             </motion.p>
@@ -106,6 +110,7 @@ export default function Hero() {
               animate={{ opacity: 0.4 }}
               transition={{ delay: 1.2, duration: 0.5 }}
               className="flex flex-wrap justify-center md:justify-start gap-3 mt-6"
+              style={{ opacity: 0 }}
             >
               {techLabels.map((label) => (
                 <span
@@ -123,6 +128,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.5 }}
               className="flex flex-wrap justify-center md:justify-start gap-4 mt-8"
+              style={{ opacity: 0 }}
             >
               <button
                 onClick={() =>
