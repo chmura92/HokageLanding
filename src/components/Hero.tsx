@@ -17,7 +17,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen relative flex items-center justify-center"
+      className="min-h-screen relative flex items-center justify-center overflow-x-hidden"
     >
       {/* CSS mesh gradient background */}
       <MeshGradient />
