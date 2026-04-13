@@ -70,13 +70,13 @@ export default function TechStack() {
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {techGroups.map((group) => (
           <div key={group.label}>
-            <div className="mb-4">
+            <div className="mb-4 text-center md:text-left">
               <h3 className="text-xs uppercase tracking-wider font-semibold text-gray-500">
                 {group.label}
               </h3>
               <div className="mt-1.5 h-px bg-gradient-to-r from-white/10 to-transparent" />
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap justify-center md:justify-start gap-3">
               {group.technologies.map((tech, i) => (
                 <TechCard key={tech.name} name={tech.name} index={i} />
               ))}

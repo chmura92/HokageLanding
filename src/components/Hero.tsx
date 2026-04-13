@@ -36,7 +36,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.9, duration: 0.5 }}
-            className="shrink-0"
+            className="shrink-0 self-center"
           >
             <div
               className="relative rounded-full w-32 h-32 md:w-40 md:h-40 ring-2 ring-accent-blue/40 shadow-[0_0_0_5px_rgba(232,93,58,0.15)] overflow-hidden"
@@ -60,13 +60,13 @@ export default function Hero() {
           </motion.div>
 
           {/* Text content */}
-          <div>
+          <div className="text-center md:text-left">
             {/* Tagline */}
             <motion.h1
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="relative text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white before:absolute before:-inset-x-12 before:-inset-y-6 before:-z-10 before:rounded-full before:bg-accent-ember/30 before:blur-[80px] before:pointer-events-none"
+              className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white before:absolute before:-inset-x-12 before:-inset-y-6 before:-z-10 before:rounded-full before:bg-accent-ember/30 before:blur-[80px] before:pointer-events-none"
             >
               {["Single", "Man", "Army"].map((word, i) => (
                 <motion.span
@@ -105,7 +105,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.4 }}
               transition={{ delay: 1.2, duration: 0.5 }}
-              className="flex flex-wrap gap-3 mt-6"
+              className="flex flex-wrap justify-center md:justify-start gap-3 mt-6"
             >
               {techLabels.map((label) => (
                 <span
@@ -122,7 +122,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2, duration: 0.5 }}
-              className="flex gap-4 mt-8"
+              className="flex flex-wrap justify-center md:justify-start gap-4 mt-8"
             >
               <button
                 onClick={() =>
