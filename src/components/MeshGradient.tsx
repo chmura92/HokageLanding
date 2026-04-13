@@ -229,7 +229,26 @@ function SilkPlane({ mouse }: { mouse: React.RefObject<MouseRef> }) {
 
 // ---------------------------------------------------------------------------
 
-function MeshGradientInner() {
+// ---------------------------------------------------------------------------
+// On mobile the WebGL shader (5-octave domain-warped FBM, lightning storms)
+// saturates the mobile GPU and causes jank across all page animations.
+// Skip the Canvas entirely on narrow viewports and render a static CSS
+// background instead — visually consistent, zero GPU overhead.
+// ---------------------------------------------------------------------------
+
+function MeshGradientMobile() {
+  return (
+    <div
+      className="absolute inset-0 z-0"
+      style={{
+        background:
+          "radial-gradient(ellipse 160% 100% at 50% -5%, #1e3a5f 0%, #111827 55%, #0B1221 100%)",
+      }}
+    />
+  );
+}
+
+function MeshGradientDesktop() {
   const mouse = useRef<MouseRef>({ x: 0.5, y: 0.5 });
   const wrapperRef = useRef<HTMLDivElement>(null);
   const cachedRect = useRef<DOMRect | null>(null);
@@ -297,6 +316,16 @@ function MeshGradientInner() {
       </Canvas>
     </div>
   );
+}
+
+function MeshGradientInner() {
+  // Evaluated once on mount (client-only — this component is dynamic/ssr:false).
+  // Avoids a flash: state is correct on the very first render.
+  const [isMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
+
+  return isMobile ? <MeshGradientMobile /> : <MeshGradientDesktop />;
 }
 
 const MeshGradient = dynamic(() => Promise.resolve(MeshGradientInner), {
