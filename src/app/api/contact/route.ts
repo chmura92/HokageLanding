@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
+  console.log("[contact] POST received");
   try {
     const { name, email, message } = await req.json();
+    console.log("[contact] body parsed, name:", name, "email:", email);
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -21,8 +23,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      console.error("Contact form error: SMTP env vars not configured");
+    const smtpHost = process.env.SMTP_HOST;
+    const smtpPort = Number(process.env.SMTP_PORT) || 587;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpFrom = process.env.SMTP_FROM;
+    console.log("[contact] SMTP config — host:", smtpHost, "port:", smtpPort, "user:", smtpUser, "from:", smtpFrom, "pass set:", !!process.env.SMTP_PASS);
+
+    if (!smtpHost || !smtpUser || !process.env.SMTP_PASS) {
+      console.error("[contact] SMTP env vars missing");
       return NextResponse.json(
         { error: "Email service not configured" },
         { status: 503 }
@@ -30,30 +38,35 @@ export async function POST(req: NextRequest) {
     }
 
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: Number(process.env.SMTP_PORT) === 465,
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpPort === 465,
       connectionTimeout: 10000,
       greetingTimeout: 5000,
       socketTimeout: 10000,
       auth: {
-        user: process.env.SMTP_USER,
+        user: smtpUser,
         pass: process.env.SMTP_PASS,
       },
     });
 
+    console.log("[contact] verifying SMTP connection...");
+    await transporter.verify();
+    console.log("[contact] SMTP verified, sending mail...");
+
     await transporter.sendMail({
-      from: `"hokage.pl Contact" <${process.env.SMTP_FROM}>`,
+      from: `"hokage.pl Contact" <${smtpFrom}>`,
       to: "romduz@gmail.com",
       replyTo: email,
       subject: `[hokage.pl] Message from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
     });
 
+    console.log("[contact] mail sent successfully");
     return NextResponse.json({ success: true });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error("Contact form error:", message);
+    console.error("[contact] error:", message);
     return NextResponse.json(
       { error: "Failed to send message", detail: message },
       { status: 500 }
