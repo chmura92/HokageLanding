@@ -38,8 +38,7 @@ function TimelineEntry({ entry, index, isCurrent, isLeft, isEducation, onReveal 
         )}
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
+          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className={`relative w-4 h-4 rounded-full border-[3px] border-white shadow-sm ${
             isCurrent ? "bg-accent-ember" : isEducation ? "bg-accent-teal" : "bg-accent-blue"

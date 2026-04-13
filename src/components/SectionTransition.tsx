@@ -369,7 +369,7 @@ export default function SectionTransition({ direction = "dark-to-light", mirrore
     function stopRendering() { animRef.current.visible = false; }
 
     const io = new IntersectionObserver(
-      (entries) => { if (entries[0]?.isIntersecting) startRendering(); else stopRendering(); },
+      (entries) => { if (entries[0]?.isIntersecting) requestAnimationFrame(startRendering); else stopRendering(); },
       { threshold: 0.01 },
     );
     io.observe(wrapper);

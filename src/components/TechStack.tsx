@@ -16,7 +16,7 @@ function TechCard({ name, index }: { name: string; index: number }) {
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
-      transition={{ delay: index * 0.03, duration: 0.3 }}
+      transition={{ delay: 0.05 + index * 0.03, duration: 0.3 }}
       className="group flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-3 w-[88px] cursor-default
         hover:border-white/20 hover:shadow-[0_0_16px_rgba(255,255,255,0.08)] hover:scale-105 transition-all duration-300"
       style={brandColor ? ({ '--brand-color': brandColor } as React.CSSProperties) : {}}
