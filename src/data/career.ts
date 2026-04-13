@@ -28,7 +28,7 @@ export const career: CareerEntry[] = [
     period: "2019 – 2024",
     description: "Built the Opole branch from scratch. Hired 5 engineers. Delivered Nexus.",
     highlights: [
-      "Architected Nexus logistics platform — 5 DDD bounded contexts, 4 years, on time & on budget",
+      "Architected Nexus logistics platform — 3 modules + SOO, 3 years, on time & on budget",
       "Hired and mentored 5 engineers, established code review standards",
       "Owned Azure DevOps CI/CD pipelines across multiple live projects",
     ],
