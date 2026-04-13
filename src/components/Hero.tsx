@@ -1,23 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
 import MeshGradient from "./MeshGradient";
 import ScrollChevron from "./ScrollChevron";
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.3 },
-  },
-};
-
-const wordVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 /* Simple pill-style tech labels */
 const techLabels = [".NET", "Angular", "React", "Azure"];
+
+/* Listed explicitly so Tailwind JIT picks them up */
+const wordClasses = [
+  "animate-hero-word-1",
+  "animate-hero-word-2",
+  "animate-hero-word-3",
+] as const;
 
 export default function Hero() {
   return (
@@ -25,20 +19,14 @@ export default function Hero() {
       id="hero"
       className="min-h-screen relative flex items-center justify-center"
     >
-      {/* Three.js mesh gradient background */}
+      {/* CSS mesh gradient background */}
       <MeshGradient />
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
           {/* Photo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.9, duration: 0.5 }}
-            className="shrink-0 self-center"
-            style={{ opacity: 0 }}
-          >
+          <div className="shrink-0 self-center animate-hero-photo">
             <div
               className="relative rounded-full w-32 h-32 md:w-40 md:h-40 ring-2 ring-accent-blue/40 shadow-[0_0_0_5px_rgba(232,93,58,0.15)] overflow-hidden"
               style={{
@@ -58,60 +46,32 @@ export default function Hero() {
                 }}
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Text content */}
           <div className="text-center md:text-left">
             {/* Tagline */}
-            <motion.h1
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white before:absolute before:-inset-x-12 before:-inset-y-6 before:-z-10 before:rounded-full before:bg-accent-ember/30 before:blur-[80px] before:pointer-events-none"
-            >
+            <h1 className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white before:absolute before:-inset-x-12 before:-inset-y-6 before:-z-10 before:rounded-full before:bg-accent-ember/30 before:blur-[80px] before:pointer-events-none">
               {["Single", "Man", "Army"].map((word, i) => (
-                <motion.span
-                  key={i}
-                  variants={wordVariants}
-                  className="inline-block mr-4"
-                  style={{ opacity: 0 }}
-                >
+                <span key={i} className={`inline-block mr-4 ${wordClasses[i]}`}>
                   {word}
-                </motion.span>
+                </span>
               ))}
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="text-lg md:text-xl text-gray-400 mt-4"
-              style={{ opacity: 0 }}
-            >
+            <p className="text-lg md:text-xl text-gray-400 mt-4 animate-hero-subtitle">
               Senior Full-Stack .NET Architect &middot; 10+ Years &middot;
               Teams, Products &amp; Code &mdash; End to End
-            </motion.p>
+            </p>
 
             {/* Location */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="text-sm text-gray-500 mt-2"
-              style={{ opacity: 0 }}
-            >
+            <p className="text-sm text-gray-500 mt-2 animate-hero-location">
               Opole, Poland &middot; Remote
-            </motion.p>
+            </p>
 
             {/* Tech labels */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
-              transition={{ delay: 1.2, duration: 0.5 }}
-              className="flex flex-wrap justify-center md:justify-start gap-3 mt-6"
-              style={{ opacity: 0 }}
-            >
+            <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 animate-hero-labels">
               {techLabels.map((label) => (
                 <span
                   key={label}
@@ -120,16 +80,10 @@ export default function Hero() {
                   {label}
                 </span>
               ))}
-            </motion.div>
+            </div>
 
             {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.5 }}
-              className="flex flex-wrap justify-center md:justify-start gap-4 mt-8"
-              style={{ opacity: 0 }}
-            >
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-8 animate-hero-ctas">
               <button
                 onClick={() =>
                   document
@@ -147,7 +101,7 @@ export default function Hero() {
               >
                 Download CV
               </a>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

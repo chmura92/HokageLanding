@@ -23,3 +23,65 @@
     scroll-behavior: smooth;
   }
 }
+
+/* ─── Hero entrance animations ───────────────────────────────────────────────
+   CSS-driven so animation-fill-mode: backwards guarantees opacity:0 from the
+   very first paint — no JS hydration window where Framer Motion could flash
+   the element visible before taking control.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes hero-fade-in-up-lg {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-fade-in-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes hero-fade-in-labels {
+  from { opacity: 0; }
+  to   { opacity: 0.4; }
+}
+
+@keyframes scroll-chevron-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scroll-chevron-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+@layer utilities {
+  /* Hero words — staggered 0.1 s apart, fill:both keeps them at opacity:0 before delay */
+  .animate-hero-word-1 { animation: hero-fade-in-up-lg 0.5s ease-out 0.3s both; }
+  .animate-hero-word-2 { animation: hero-fade-in-up-lg 0.5s ease-out 0.4s both; }
+  .animate-hero-word-3 { animation: hero-fade-in-up-lg 0.5s ease-out 0.5s both; }
+
+  /* Hero supporting elements */
+  .animate-hero-subtitle { animation: hero-fade-in-up 0.5s ease-out 0.6s both; }
+  .animate-hero-location  { animation: hero-fade-in-up 0.5s ease-out 0.7s both; }
+  .animate-hero-photo     { animation: hero-scale-in  0.5s ease-out 0.9s both; }
+  .animate-hero-labels    { animation: hero-fade-in-labels 0.5s ease-out 1.2s both; }
+  .animate-hero-ctas      { animation: hero-fade-in-up 0.5s ease-out 1.2s both; }
+
+  /* Scroll chevron: fade in then bounce forever */
+  .animate-scroll-chevron {
+    animation:
+      scroll-chevron-fade   0.5s ease-out  1.5s both,
+      scroll-chevron-bounce 2s   ease-in-out 2s infinite;
+  }
+}
