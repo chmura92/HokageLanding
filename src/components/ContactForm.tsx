@@ -65,6 +65,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      noValidate
       className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 md:p-8"
       suppressHydrationWarning
     >

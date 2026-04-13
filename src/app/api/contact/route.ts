@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  console.log("[contact] POST received");
   try {
     const { name, email, message } = await req.json();
-    console.log("[contact] body parsed, name:", name, "email:", email);
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -14,7 +11,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -23,52 +19,52 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = Number(process.env.SMTP_PORT) || 587;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpFrom = process.env.SMTP_FROM;
-    console.log("[contact] SMTP config — host:", smtpHost, "port:", smtpPort, "user:", smtpUser, "from:", smtpFrom, "pass set:", !!process.env.SMTP_PASS);
+    const apiKey = process.env.SENDGRID_API_KEY;
+    const fromAddress = process.env.SMTP_FROM ?? "noreply@hokage.pl";
 
-    if (!smtpHost || !smtpUser || !process.env.SMTP_PASS) {
-      console.error("[contact] SMTP env vars missing");
+    if (!apiKey) {
+      console.error("[contact] SENDGRID_API_KEY is not set");
       return NextResponse.json(
         { error: "Email service not configured" },
         { status: 503 }
       );
     }
 
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465,
-      connectionTimeout: 10000,
-      greetingTimeout: 5000,
-      socketTimeout: 10000,
-      auth: {
-        user: smtpUser,
-        pass: process.env.SMTP_PASS,
+    const res = await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: "romduz@gmail.com" }] }],
+        from: { email: fromAddress, name: "hokage.pl Contact" },
+        reply_to: { email, name },
+        subject: `[hokage.pl] Message from ${name}`,
+        content: [
+          {
+            type: "text/plain",
+            value: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+          },
+        ],
+      }),
     });
 
-    console.log("[contact] verifying SMTP connection...");
-    await transporter.verify();
-    console.log("[contact] SMTP verified, sending mail...");
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("[contact] SendGrid error:", res.status, body);
+      return NextResponse.json(
+        { error: "Failed to send message", detail: body },
+        { status: 500 }
+      );
+    }
 
-    await transporter.sendMail({
-      from: `"hokage.pl Contact" <${smtpFrom}>`,
-      to: "romduz@gmail.com",
-      replyTo: email,
-      subject: `[hokage.pl] Message from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
-    });
-
-    console.log("[contact] mail sent successfully");
     return NextResponse.json({ success: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error("[contact] error:", message);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("[contact] unexpected error:", msg);
     return NextResponse.json(
-      { error: "Failed to send message", detail: message },
+      { error: "Failed to send message", detail: msg },
       { status: 500 }
     );
   }
