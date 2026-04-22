@@ -5,7 +5,7 @@ import CountUpMetric from "./CountUpMetric";
 import { useReveal } from "@/hooks/useReveal";
 
 const metrics = [
-  { value: 4, label: "Modules" },
+  { value: 3, label: "Modules" },
   { value: 5, label: "Engineers Led" },
   { value: 3, label: "Years" },
   { value: "On Time & On Budget", label: "Delivery" },
