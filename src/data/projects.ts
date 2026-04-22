@@ -11,7 +11,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     name: "StockTrack",
-    description: "Offshore energy logistics platform — inventory tracking, stock trades, real-time analytics.",
+    description: "Offshore energy supply chain platform — vessel operations, real-time asset tracking, stock trades, analytics.",
     role: "Senior Engineer",
     roleType: "professional",
     tech: [".NET 8", "Angular", "GraphQL", "Kubernetes"],
