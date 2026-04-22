@@ -16,8 +16,9 @@ export const career: CareerEntry[] = [
     period: "2024 – Present",
     description: "Direct technical contact for energy sector clients. No PM layer.",
     highlights: [
-      "Contributing to StockTrack — enterprise offshore logistics on Azure Kubernetes",
+      "Contributing to StockTrack — offshore energy supply chain platform on Azure Kubernetes",
       "Delivered Blazor internal tooling app, expanding team capability beyond Angular",
+      "Modernized BDD workflow with Claude and superpowers for SpecFlow step generation",
       "Architecture decisions made directly with energy sector stakeholders",
     ],
   },
@@ -28,7 +29,7 @@ export const career: CareerEntry[] = [
     period: "2019 – 2024",
     description: "Built the Opole branch from scratch. Hired 5 engineers. Delivered Nexus.",
     highlights: [
-      "Architected Nexus logistics platform — 3 modules + SOO, 3 years, on time & on budget",
+      "Architected Nexus logistics platform — 3 modules, 3 years, on time & on budget",
       "Hired and mentored 5 engineers, established code review standards",
       "Owned Azure DevOps CI/CD pipelines across multiple live projects",
     ],
@@ -41,7 +42,7 @@ export const career: CareerEntry[] = [
     description: "Cross-technology problem solver. Led Angular migration. Go-to for mobile.",
     highlights: [
       "Led frontend migration from MVC Razor to Angular on two projects",
-      "Built cross-platform mobile apps in Xamarin for iOS and Android",
+      "Shipped 3 cross-platform mobile apps in Xamarin for iOS and Android",
       "Worked across IoT energy, analytics, smart glasses, and logistics projects",
     ],
   },
@@ -52,8 +53,8 @@ export const career: CareerEntry[] = [
     period: "2015 – 2016",
     description: "Santander Group platform. Large codebase, strict deadlines.",
     highlights: [
-      "Contributed to commercial ASP.NET MVC platform for Santander Group (UK finance)",
-      "Learned discipline in a large regulated codebase with strict deadlines",
+      "Contributed to commercial ASP.NET MVC platform for Santander Group (UK regulated finance market)",
+      "Embedded in a 10+ developer team with analysts and testers on a large legacy codebase under strict deadlines",
     ],
   },
   {
