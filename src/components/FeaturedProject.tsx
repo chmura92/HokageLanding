@@ -64,11 +64,19 @@ export default function FeaturedProject() {
 
             {/* Description */}
             <p className="text-ink-body mt-4 leading-relaxed">
-              Modular monolith handling truck fleet management, route
-              optimization, GPS geofencing, real-time driver tracking, ERP
-              integration, automated reporting, and trip cost optimization.
-              Xamarin Forms mobile app with offline mode and live sync. SSO
-              across web and mobile.
+              Enterprise logistics platform dispatching{" "}
+              <strong className="text-ink-heading">
+                100+ optimized routes per day
+              </strong>{" "}
+              across an active truck fleet. Built a{" "}
+              <strong className="text-ink-heading">
+                Google OR-Tools route planner
+              </strong>{" "}
+              that automates dispatch and minimizes trip costs, replacing
+              hours of manual scheduling. Real-time GPS tracking and
+              geofencing, Odoo ERP integration, and automated PDF/Excel
+              reporting. Ships with a Xamarin Forms mobile app featuring
+              offline mode and live sync, plus SSO across web and mobile.
             </p>
 
             {/* Metrics row */}
