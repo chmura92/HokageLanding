@@ -61,9 +61,9 @@
 | 13 |  | Allianz Technology Polska | Senior .NET / Azure / Terraform | Own portal | [careers.allianz.com](https://careers.allianz.com/global/en/allianz-technology) | 📋 Todo | Apply Week 3 | Azure Fundamentals + regulated finance |
 | 14 |  | Accenture Poland | Senior .NET (any banking/insurance) | Own portal | [accenture.com/pl-pl/careers](https://www.accenture.com/pl-pl/careers) | 📋 Todo | Apply Week 3 | Ask about client account before signing |
 | 15 |  | Software Mind | Senior .NET | Own portal | [careers.softwaremind.com](https://careers.softwaremind.com/) | 📋 Todo | Apply Week 3 | Ask about end-client (fintech/banking preferred) |
-| 16 | 2026-04-22 | People More P.S.A. | Senior .NET Developer | ? | - | 📤 Applied | Wait reply | Fill channel/link |
-| 17 | 2026-04-13 | Happy Team | Senior .NET Developer (Łódź) | JustJoin.it | - | 📤 Applied | Wait reply; FU 20.04 | Fill link |
-| 18 | 2026-04-13 | Awareson | Senior .NET Developer | ? | - | 📤 Applied | Wait reply; FU 20.04 | Fill channel/link/role |
+| 16 | 2026-04-22 | People More P.S.A. | .NET Developer (confirm which listing) | JustJoin.it | [3 listings](https://justjoin.it/job-offer/people-more-p-s-a--backend-developer-net--warszawa-net) | 📤 Applied | Confirm role; wait reply | Backend WAW 100-120/h · Programista KRK 100-150/h · Solution Architect WAW 160-230/h |
+| 17 | 2026-04-13 | Happy Team | Senior .NET Developer (Łódź) | JustJoin.it | [oferta](https://justjoin.it/job-offer/happy-team-senior-net-developer-lodz-net) | 📤 Applied | Wait reply; FU 20.04 | 21-27k B2B net confirmed · eMobility/logistics/eCommerce |
+| 18 | 2026-04-13 | Awareson (staffing) | Senior .NET Developer | Awareson | [awareson.com/offer](https://awareson.com/en/offer/) | 📤 Applied | Ask Awareson who is end-client | Offer no longer live · ask recruiter for next round |
 | 19 | 2026-04-13 | PKO BP Finat | Senior Programista .NET | JustJoin.it | [oferta](https://justjoin.it/job-offer/pko-bp-finat-senior-programista-net-katowice-net) | 📤 Applied | Wait reply; FU 20.04 | Katowice, remote + 1d/msc — good for Opole |
 | 20 | 2026-04-13 | ALTIM | Senior / Tech Lead FullStack (.NET + Vue.js) | ? | - | ❌ Rejected | — | Rejected; see Dead list. Stack mismatch: Vue.js not in my stack |
 
@@ -235,33 +235,48 @@ Each section has the custom pitch (ready to paste) + a blank notes area. Keep no
 
 ---
 
-### 16. People More P.S.A. — (fill location/mode)
+### 16. People More P.S.A. — Warszawa / Kraków (confirm which)
 
-**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+Three active .NET listings on JustJoin.it as of 2026-04-22:
+- [Backend Developer (.NET) — Warszawa](https://justjoin.it/job-offer/people-more-p-s-a--backend-developer-net--warszawa-net) — 100-120 PLN/h B2B (~16-20k/mc net) — **below 24k floor**
+- [Programista .NET — Kraków](https://justjoin.it/job-offer/people-more-p-s-a--programista-net-krakow-net) — 100-150 PLN/h B2B (~16-24k/mc net) — **borderline**
+- [Solution Architect (.NET) — Warszawa](https://justjoin.it/job-offer/people-more-p-s-a--solution-architect-net--warszawa-architecture) — 160-230 PLN/h B2B (~25-37k/mc net) — **in target zone**
+
+**Pitch (EN):** _(reuse base pitch, modify one sentence to match role title once confirmed)_
 
 **Notes:**
-- [ ] Fill channel, link, role details
+- [ ] Confirm which listing you applied to (Backend WAW / Programista KRK / Solution Architect WAW)
 - [ ] Applied 2026-04-22
+- [ ] Widełki: only Solution Architect listing is above your floor
 
 ---
 
-### 17. Happy Team — Łódź
+### 17. Happy Team — Łódź (center)
 
-**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+**Listing:** [JustJoin.it — Senior .NET Developer](https://justjoin.it/job-offer/happy-team-senior-net-developer-lodz-net)
+- **Widełki:** 21 000 – 27 000 PLN net B2B/mc — **confirmed, in target zone**
+- **Domain:** eMobility, logistics, eCommerce (logistics = Nexus fit)
+- **Published:** 2026-03-05
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years. Your listing mentions eMobility and logistics — both domains I've delivered in. I architected Nexus, a 3-module DDD logistics platform for Ecoson / Darling Ingredients (GPS geofencing, route optimization, truck fleet tracking, ERP integration), delivered in 3 years on time and on budget. Currently at Yameo on StockTrack — offshore energy supply chain on Azure Kubernetes. Earlier in career worked on Santander Group's UK commercial MVC platform at CUBE.ITG. Based in Opole; open to Łódź hybrid or remote.
 
 **Notes:**
-- [ ] Fill link from JustJoin.it
 - [ ] Applied 2026-04-13 — FU on LinkedIn if no reply by 2026-04-20
+- [ ] Widełki 21-27k — middle of your target
 
 ---
 
-### 18. Awareson — (fill location/mode)
+### 18. Awareson — staffing agency (Wrocław HQ)
 
-**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+**Context:** Awareson is an IT staffing / recruitment agency (SAP + .NET + Data + Cloud). They place candidates at end-clients — the listing you applied to is no longer live ("so fast that this offer is no longer available").
+
+**Pitch (EN):** _(reuse base pitch; Awareson is a recruiter, so your profile matters more than role-specific wording)_
 
 **Notes:**
-- [ ] Fill channel, link, role title
-- [ ] Applied 2026-04-13 — FU if no reply by 2026-04-20
+- [ ] Applied 2026-04-13 — FU by email/LinkedIn if no reply by 2026-04-20
+- [ ] Ask recruiter: who was the end-client for that listing? What other .NET roles in their pipeline right now?
+- [ ] Awareson acts as intermediary — stay in their pipeline for future placements even if this role closed
 
 ---
 
