@@ -47,7 +47,7 @@
 | # | Date | Company | Role | Channel | Link | Status | Next action | Notes |
 |---|------|---------|------|---------|------|--------|-------------|-------|
 | 1 |  | Volvo Group | .NET Developer | Pracuj.pl | [oferta](https://www.pracuj.pl/praca/net-developer-wroclaw-mydlana-2,oferta,1002764399) | 📋 Todo | Apply Tue | Wrocław home office, domain 1:1 |
-| 2 |  | KRUK S.A. | Senior .NET Backend + Angular | JustJoin.it | [oferta](https://justjoin.it/job-offer/kruk-s-a-senior-net-developer---backend-angular-m-f-d--wroclaw-net) | 📋 Todo | Apply Tue | Copilot required → pitch Claude Code as equivalent |
+| 2 | 2026-04-13 | KRUK S.A. | Senior .NET Backend + Angular | JustJoin.it | [oferta](https://justjoin.it/job-offer/kruk-s-a-senior-net-developer---backend-angular-m-f-d--wroclaw-net) | 📤 Applied | Wait reply; LinkedIn FU if silence 20.04 | Auto-reply received 2026-04-13 |
 | 3 |  | Generali Polska | Senior .NET Developer | Pracuj.pl | [oferta](https://www.pracuj.pl/praca/senior-net-developer-warszawa,oferta,1001280420) | 📋 Todo | Apply Tue | Stack 1:1, Warsaw hybrid 2/3 — negotiate remote |
 | 4 |  | Allegro Pay | Software Engineer .NET (Platform) | Pracuj.pl | [oferta](https://www.pracuj.pl/praca/software-engineer-net-platform-team-allegro-pay-warszawa-zelazna-51,oferta,1003916378) | 📋 Todo | Apply Wed | Warsaw 4/1 hybrid = minus for Opole |
 | 5 |  | ITDS | Senior .NET — Financial Systems | JustJoin.it | [oferta](https://justjoin.it/job-offer/itds-senior-net-developer---financial-systems-bpms-integration-wroclaw-net) | 📋 Todo | Apply Wed | 21-24k B2B confirmed, full remote |
@@ -61,6 +61,11 @@
 | 13 |  | Allianz Technology Polska | Senior .NET / Azure / Terraform | Own portal | [careers.allianz.com](https://careers.allianz.com/global/en/allianz-technology) | 📋 Todo | Apply Week 3 | Azure Fundamentals + regulated finance |
 | 14 |  | Accenture Poland | Senior .NET (any banking/insurance) | Own portal | [accenture.com/pl-pl/careers](https://www.accenture.com/pl-pl/careers) | 📋 Todo | Apply Week 3 | Ask about client account before signing |
 | 15 |  | Software Mind | Senior .NET | Own portal | [careers.softwaremind.com](https://careers.softwaremind.com/) | 📋 Todo | Apply Week 3 | Ask about end-client (fintech/banking preferred) |
+| 16 | 2026-04-22 | People More P.S.A. | Senior .NET Developer | ? | - | 📤 Applied | Wait reply | Fill channel/link |
+| 17 | 2026-04-13 | Happy Team | Senior .NET Developer (Łódź) | JustJoin.it | - | 📤 Applied | Wait reply; FU 20.04 | Fill link |
+| 18 | 2026-04-13 | Awareson | Senior .NET Developer | ? | - | 📤 Applied | Wait reply; FU 20.04 | Fill channel/link/role |
+| 19 | 2026-04-13 | PKO BP Finat | Senior Programista .NET | JustJoin.it | [oferta](https://justjoin.it/job-offer/pko-bp-finat-senior-programista-net-katowice-net) | 📤 Applied | Wait reply; FU 20.04 | Katowice, remote + 1d/msc — good for Opole |
+| 20 | 2026-04-13 | ALTIM | Senior / Tech Lead FullStack (.NET + Vue.js) | ? | - | ❌ Rejected | — | Rejected; see Dead list. Stack mismatch: Vue.js not in my stack |
 
 ---
 
@@ -230,11 +235,65 @@ Each section has the custom pitch (ready to paste) + a blank notes area. Keep no
 
 ---
 
+### 16. People More P.S.A. — (fill location/mode)
+
+**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+
+**Notes:**
+- [ ] Fill channel, link, role details
+- [ ] Applied 2026-04-22
+
+---
+
+### 17. Happy Team — Łódź
+
+**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+
+**Notes:**
+- [ ] Fill link from JustJoin.it
+- [ ] Applied 2026-04-13 — FU on LinkedIn if no reply by 2026-04-20
+
+---
+
+### 18. Awareson — (fill location/mode)
+
+**Pitch (EN):** _(fill what was sent or reuse base pitch)_
+
+**Notes:**
+- [ ] Fill channel, link, role title
+- [ ] Applied 2026-04-13 — FU if no reply by 2026-04-20
+
+---
+
+### 19. PKO BP Finat — Katowice · remote + 1d/msc
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on regulated .NET platforms — started at CUBE.ITG on Santander Group's UK MVC platform (embedded in a 10+ developer team with analysts and testers). Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Currently on StockTrack at Yameo — offshore energy supply chain on Azure Kubernetes. Stack match with PKO BP Finat (ASP.NET Core, MS SQL, MassTransit, MS Orleans, GraphQL, React) is strong. Opole-based; Katowice (1d/month) works well.
+
+**Notes:**
+- [ ] Applied 2026-04-13 — FU if no reply by 2026-04-20
+- [ ] Confirm exact channel (JustJoin.it vs direct)
+
+---
+
+### 20. ALTIM — Senior / Tech Lead FullStack (.NET + Vue.js)
+
+**Status:** ❌ Rejected (2026-04-13)
+
+**Notes:**
+- Stack mismatch: Vue.js is not in my stack (Angular / React / Blazor instead)
+- Rule-of-thumb learning: filter listings for Vue.js before applying — or pitch Angular/React transferability up front if the role is otherwise strong
+- Title had "Tech Lead" — not strictly in my positioning rule, but worth flagging as secondary factor
+
+---
+
 ## Learnings log
 
 One-liner per application that taught you something. Scan before each new application.
 
 - 2026-04-22: Tracker set up. Baseline B2B target 24k floor / 28-32k target / 35-40k ceiling.
+- 2026-04-13: ALTIM rejected on first pass — stack mismatch on Vue.js. **Action:** add Vue.js to auto-filter-out list; or if role is otherwise attractive, lead pitch with Angular/React transferability.
+- 2026-04-13: Applied to 5 companies on a single Monday (KRUK, Happy Team, Awareson, PKO BP Finat, ALTIM). **Observation:** violates the 5/week rhythm but was pre-plan. Going forward: spread across the week.
 
 ---
 
@@ -244,4 +303,4 @@ Firms that rejected or I declined. Avoid re-spamming.
 
 | Date | Company | Why | Revisit after |
 |---|---|---|---|
-|  |  |  |  |
+| 2026-04-13 | ALTIM | Rejected — Vue.js stack mismatch | 2026-10-13 (only if they have .NET + Angular/React role) |
