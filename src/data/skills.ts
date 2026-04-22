@@ -70,15 +70,15 @@ export const techGroups: TechGroup[] = [
       { name: "xUnit" },
       { name: "Moq" },
       { name: "Playwright" },
+      { name: "SpecFlow" },
     ],
   },
   {
     label: "AI",
     technologies: [
       { name: "Claude" },
-      { name: "OpenAI" },
-      { name: "GitHub Copilot" },
-      { name: "DALL·E" },
+      { name: "Claude Code" },
+      { name: "superpowers" },
     ],
   },
 ];
