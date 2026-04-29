@@ -66,6 +66,10 @@
 | 18 | 2026-04-13 | Awareson (staffing) | Senior .NET Developer | Awareson | [awareson.com/offer](https://awareson.com/en/offer/) | 📤 Applied | Ask Awareson who is end-client | Offer no longer live · ask recruiter for next round |
 | 19 | 2026-04-13 | PKO BP Finat | Senior Programista .NET | JustJoin.it | [oferta](https://justjoin.it/job-offer/pko-bp-finat-senior-programista-net-katowice-net) | 📤 Applied | Wait reply; FU 20.04 | Katowice, remote + 1d/msc — good for Opole |
 | 20 | 2026-04-13 | ALTIM | Senior / Tech Lead FullStack (.NET + Vue.js) | ? | - | ❌ Rejected | — | Rejected; see Dead list. Stack mismatch: Vue.js not in my stack |
+| 21 |  | Credit Agricole Polska | Senior .NET Developer (in-house IT) | Own portal | [kariera](https://kariera.credit-agricole.pl/) · [obszar IT](https://www.credit-agricole.pl/kariera/obszary/it) | 📋 Todo | Apply Week 4 | Wrocław HQ (Business Garden) — 90 min od Opola; stack C#/.NET/RabbitMQ/Kafka 1:1 z KRUK |
+| 22 |  | DocPlanner (ZnanyLekarz) | Senior .NET Backend Developer | SmartRecruiters | [oferta](https://jobs.smartrecruiters.com/Docplanner/744000052583275) | 📋 Todo | Apply Week 4 | 100% remote-friendly within Warsaw; health-tech unicorn, 400+ Eng/Data/Product |
+| 23 |  | Nordea Tech Polska | Senior .NET Developer | Own portal | [careers.nordea.com](https://careers.nordea.com/) · [PL hub](https://www.nordea.com/en/careers/poland) | 📋 Todo | Apply Week 4 | Gdynia/Łódź/Warszawa hybryd; Top Employer PL 2025; weryfikuj konkretną listing — Java dominuje |
+| 24 |  | Veeam Software | Middle/Senior C# Developer (MS365 team) | Own portal | [oferta](https://careers.veeam.com/job/poland/middle-senior-c-developer-for-ms365/22681/85410658976) | 📋 Todo | Apply Week 4 | Remote w PL (must reside in PL); czysto produktowa data resilience, C#/Azure/SQL Server |
 
 ---
 
@@ -302,6 +306,73 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ---
 
+### 21. Credit Agricole Polska — Wrocław · in-house IT (Business Garden HQ)
+
+**Listing:** [kariera.credit-agricole.pl](https://kariera.credit-agricole.pl/) · [obszar IT](https://www.credit-agricole.pl/kariera/obszary/it)
+- **Domain:** retail / commercial banking — French banking giant in Polish market
+- **Setup:** ~500 osób w IT, własny stos, Wrocław Business Garden, hybryd (możliwe full remote w niektórych zespołach)
+- **Stack signals:** C#, .NET, RabbitMQ, Kafka, NoSQL, Git
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on regulated banking platforms — started at CUBE.ITG on Santander Group's UK MVC platform, embedded in a 10+ developer team with analysts and testers. Your stack lines up directly with how I work today: C#/.NET 8, RabbitMQ, Kafka, Clean Architecture, DDD. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients (3 years, on time and on budget). Currently on StockTrack at Yameo — offshore energy supply chain on Azure Kubernetes. Based in Opole; Wrocław Business Garden is a 90-minute drive — ideal for hybrid.
+
+**Notes:**
+- [ ] Wrocław proximity = strongest geographic argument across whole pipeline
+- [ ] Stack 1:1 z KRUK — można reuse pitch base z #2
+
+---
+
+### 22. DocPlanner (ZnanyLekarz) — Warszawa · 100% remote-friendly
+
+**Listing:** [SmartRecruiters — Senior .Net Backend Developer (100% remote-friendly within Warsaw)](https://jobs.smartrecruiters.com/Docplanner/744000052583275)
+- **Domain:** health-tech (booking + practice management for clinicians; multi-market: PL/IT/ES/BR/MX/TR)
+- **Setup:** ~400 osób Engineering/Data/Product, prawdziwy 100% remote, Polish unicorn (~$1B valuation)
+- **Stack signals:** .NET Backend (C#), microservices, multi-tenant SaaS
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years across regulated finance (Santander Group UK platform at CUBE.ITG), enterprise logistics (architected Nexus — 3-module DDD platform for Ecoson / Darling Ingredients, 3 years, on time and on budget) and offshore energy (StockTrack at Yameo, Azure Kubernetes). Looking to move into product-first health-tech — DocPlanner's scale and product depth (400+ engineers, multi-market platform, real product ownership) matches exactly the environment where my DDD/Clean Architecture background pays off. Based in Opole; 100% remote works perfectly.
+
+**Notes:**
+- [ ] Health-tech = nowa domena — akcentuj transferable skills (regulowana finanse → regulowane medical)
+- [ ] 100% remote = top match dla Opola w całym pipeline
+- [ ] Sprawdź widełki w SmartRecruiters listing — jeśli poniżej 24k floor, negocjuj
+
+---
+
+### 23. Nordea Tech Polska — Gdynia / Łódź / Warszawa · hybryd
+
+**Listing:** [careers.nordea.com — open jobs](https://careers.nordea.com/) · [PL hub](https://www.nordea.com/en/careers/poland)
+- **Domain:** Scandinavian retail + commercial banking — in-house tech hub od 2010
+- **Setup:** Top Employer Poland 2025; English working language; hybryd model wg agreement z Line Manager
+- **Stack signals:** .NET present, ale **Java dominuje** — weryfikuj konkretną listing przed pitchem
+
+**Pitch (EN):**
+> My career started in regulated banking — CUBE.ITG on Santander Group's UK commercial MVC platform, embedded in a 10+ developer team with analysts and testers. Since then 10+ years on .NET: architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients (3 years, on time and on budget); currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes). English working environment matches my experience on the Santander UK programme. Based in Opole; open to Łódź or Warsaw hybrid.
+
+**Notes:**
+- [ ] **Pre-apply:** filtruj careers.nordea.com po `.NET` w PL — jeśli aktualnie tylko Java/DevOps role, czekaj
+- [ ] English working language = plus
+- [ ] Łódź najbliżej Opola z trzech lokalizacji (~3h)
+
+---
+
+### 24. Veeam Software — Polska · remote (must reside in PL)
+
+**Listing:** [Middle/Senior C# Developer for MS365](https://careers.veeam.com/job/poland/middle-senior-c-developer-for-ms365/22681/85410658976) · [careers.veeam.com](https://careers.veeam.com/)
+- **Domain:** data resilience / backup — globalny lider, czysto produktowa firma
+- **Setup:** PL remote (musi być rezydent PL); ~5500 employees globalnie; SaaS + on-prem
+- **Stack signals:** C#, MS SQL Server, Azure, Git — exact match z aktualnym StockTrack stack
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD). Your MS365 product team is exactly the kind of pure-product environment I'm aiming for next: deep C#/Azure/SQL Server stack, real product ownership, no rotating consulting context. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Earlier on Santander Group's UK commercial MVC platform at CUBE.ITG. Based in Opole; remote within Poland.
+
+**Notes:**
+- [ ] Czysto produktowa firma — najdalej od konsultingowego ryzyka w całym pipeline
+- [ ] MS365 specialization = niche; sprawdź jak bardzo M365/Graph API specific jest rola
+- [ ] PL residency = OK (Opole)
+
+---
+
 ## Learnings log
 
 One-liner per application that taught you something. Scan before each new application.
@@ -309,6 +380,7 @@ One-liner per application that taught you something. Scan before each new applic
 - 2026-04-22: Tracker set up. Baseline B2B target 24k floor / 28-32k target / 35-40k ceiling.
 - 2026-04-13: ALTIM rejected on first pass — stack mismatch on Vue.js. **Action:** add Vue.js to auto-filter-out list; or if role is otherwise attractive, lead pitch with Angular/React transferability.
 - 2026-04-13: Applied to 5 companies on a single Monday (KRUK, Happy Team, Awareson, PKO BP Finat, ALTIM). **Observation:** violates the 5/week rhythm but was pre-plan. Going forward: spread across the week.
+- 2026-04-29: Pipeline expansion — dodano 4 produktowe firmy (Credit Agricole PL #21, DocPlanner #22, Nordea Tech PL #23, Veeam #24). Filtr researchu: **in-house product company**, nie konsulting/staffing. **Wykluczone z shortlisty:** Equinor BS Polska (offshore energy = StockTrack 1:1 fit, ale brak aktualnych .NET ról), InPost (głównie Java), Booksy (głównie Python), Schneider Electric PL (.NET niepotwierdzony). **Filtr na przyszłość:** sprawdź `careers.nordea.com` co 2-3 tyg. pod kątem .NET ról; obserwuj Equinor jeśli otworzą offshore-supply-chain .NET.
 
 ---
 
