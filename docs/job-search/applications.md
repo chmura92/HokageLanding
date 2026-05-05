@@ -432,6 +432,12 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 - **Setup Warsaw listing:** **Hybrid** (nie Remote); inne PL listings — Remote dla rezydentów PL
 - **Stack match z aktualnym StockTrack:** Azure, C#, SQL = exact
 
+**Inbound contact log:**
+- **~2025-05/06:** Arsenii (Talent Acquisition Sourcer at Veeam) reached out via email z linkiem LinkedIn (linkedin.com/jobs/view/4270499718) — Roman nie odpisał wtedy.
+- **2026-05-05:** Arsenii follow-up email "Checking in" z tym samym LinkedIn linkiem (404 stan na 2026-05-05 — role closed/relisted).
+- **2026-05-05:** Roman planuje reply z apology + concrete hooks (StockTrack/Nexus/Santander UK) + pytanie o aktualne openings + widełki B2B.
+- **Why this matters:** inbound sourcer contact = lepszy entry niż cold application; CRM Veeam już ma Roman profil zapisany — szansa na fast-track screening.
+
 **Pitch (EN):**
 > Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD). Your MS365 product team is exactly the kind of pure-product environment I'm aiming for next: deep C#/Azure/SQL Server stack, real product ownership, no rotating consulting context. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Earlier on Santander Group's UK commercial MVC platform at CUBE.ITG. Based in Opole; remote within Poland.
 
