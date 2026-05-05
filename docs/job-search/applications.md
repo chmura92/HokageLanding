@@ -70,7 +70,7 @@
 | 21 |  | Credit Agricole Polska | Senior .NET Developer (in-house IT) | Own portal | [kariera](https://kariera.credit-agricole.pl/) · [obszar IT](https://www.credit-agricole.pl/kariera/obszary/it) | 👁️ Watch | Sprawdzaj own portal co 7-10 dni | Wrocław HQ; CA rekrutuje **tylko** przez własny portal (brak na JJIT/NoFluff) — wymaga ręcznej obserwacji |
 | 22 |  | DocPlanner (ZnanyLekarz) | .NET Developer (warianty: Senior Backend, EHR team, Product Platform) | SmartRecruiters | [wszystkie ich oferty](https://jobs.smartrecruiters.com/Docplanner) · [careers](https://www.docplanner.com/careers) | 👁️ Watch | Sprawdzaj jobs.smartrecruiters.com/Docplanner co 7 dni; .NET role rotują często | Specyficzne listings #744000052583275 (Senior Backend WAW) i #744000038979611 (.NET 100% remote PL) wygasły 2026-05; nowe pojawiają się co 2-4 tyg. |
 | 23 |  | Nordea Tech Polska | .NET Developer (rzadkie — Java dominuje) | Own portal | [careers.nordea.com](https://careers.nordea.com/) · [PL hub](https://www.nordea.com/en/careers/poland) | 👁️ Watch | Sprawdzaj co 2-3 tyg. — filtruj `.NET` Poland | JJIT listing Nordea CIC Gdynia (back-end) — 404 (zamknięta); .NET role w Nordea rzadkie, kandydat głównie Java |
-| 24 | 2026-05-05 | Veeam Software | Middle/Senior C# Developer | Own portal | [oferta WAW Remote](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) · [C# Dev PL](https://careers.veeam.com/job/poland/c-developer/22681/89540556928) · [Platform Engineer Cloud PL](https://careers.veeam.com/en/job/poland/platform-engineer-cloud/22681/85234590032) | 📋 Todo | Apply tę środę 2026-05-06 | **3 aktywne oferty**, Warsaw Remote dostępne; widełki Veeam range 274.8-455.8k PLN/rok ≈ ~28-46k B2B equiv; czysto produktowa, C#/Azure |
+| 24 | 2026-05-05 | Veeam Software | Middle/Senior C# Developer | Own portal | [oferta WAW Hybrid (posted 2026-04-27)](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) · [C# Dev PL](https://careers.veeam.com/job/poland/c-developer/22681/89540556928) · [Platform Engineer Cloud PL](https://careers.veeam.com/en/job/poland/platform-engineer-cloud/22681/85234590032) | 📋 Todo | Apply tę środę 2026-05-06 | **3 aktywne oferty**; WAW listing **Hybrid (nie Remote)**; **widełki NIE na ofercie** — pytać rekrutera; benchmark Senior Veeam PL ≈ 252-389k PLN/rok (~21-32k UoP gross / ~27-43k B2B net); czysto produktowa, C#/.NET 8/Azure |
 | 25 |  | TAURON Obsługa Klienta | Senior Developer .NET (m/f) | JustJoin.it | [oferta — apply by 2026-05-26](https://justjoin.it/job-offer/tauron-obsluga-klienta-sp-z-o-o--developer-net-m-f--wroclaw-net) | 📋 Todo | Apply Week 1 (deadline 2026-05-26) | Wrocław/Katowice/Kraków hybryd; **polski energetyczny giant — produktowy, państwowy, ekstremalna stabilność**; widełki 10.5-16.2k UoP **poniżej floor 24k B2B** — ale stack: .NET Core/Framework, Blazor, Telerik, MS SQL, Oracle, K8s, DDD; energy domain = StockTrack 1:1 |
 | 26 |  | Miaplaza | Senior Full Stack Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "Miaplaza") | 📋 Todo | Apply Week 1 | US EdTech (homeschooling K-12), **100% remote w PL**; widełki 341.5-597.7k PLN/rok ≈ ~28-49k PLN/mc — **w target zone**; produktowa firma; nowa domena (edu) |
 | 27 |  | ServiceTitan | Staff Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "ServiceTitan") | 📋 Todo | Apply Week 2 | US SaaS dla home services (HVAC, plumbing); **remote PL**; widełki 26.9-40.4k PLN/mc — **w target zone**; produktowa firma, IPO 2024 |
@@ -407,19 +407,30 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ---
 
-### 24. Veeam Software — Polska · remote (must reside in PL)
+### 24. Veeam Software — Polska · Hybrid (Warszawa) lub Remote (must reside in PL)
 
 **Aktualne live oferty (zweryfikowane 2026-05-05):**
-- [Middle/Senior C# Developer — Warsaw, Remote](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) ⭐ **głównie aplikuj tu**
+- [Middle/Senior C# Developer — Warsaw, **Hybrid**, posted 2026-04-27](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) ⭐ **głównie aplikuj tu**
 - [C# Developer — Poland](https://careers.veeam.com/job/poland/c-developer/22681/89540556928)
 - [Platform Engineer Cloud — Poland](https://careers.veeam.com/en/job/poland/platform-engineer-cloud/22681/85234590032) — DevOps-leaning
 
-**Salary range Veeam (z public listing):** 274,800-455,840 PLN/rok (~22.9-38k PLN/mc gross UoP, B2B equiv ~28-46k) ✅ **w target zone**
+**Salary range — NIE PODANE NA OFERCIE Warsaw Hybrid (#94442121344).** Strona pokazuje stack/benefits/wymagania ale brak widełek.
+- **Wcześniejsza widełka 274,800-455,840 PLN/rok** dotyczyła ekspirowanej oferty MS365 team (#85410658976, 404 od 2026-05-05) — **NIE traktuj jako pewnik dla aktualnej Warsaw listing**.
+- **Benchmark Senior C#/.NET w Veeam PL** (Levels.fyi, Glassdoor, raporty rynkowe): ~252-389k PLN/rok ≈ **~21-32k PLN/mc gross UoP** lub **~27-43k PLN/mc B2B net** (rule +30%).
+- **Pytanie #1 do rekrutera Veeam (HR call):** *"What's the budgeted compensation range for the Senior end of this Middle/Senior listing on B2B?"*
+- **Roman anchor:** floor 24k B2B / target 28-32k / ceiling 35-40k.
 
-- **Domain:** data resilience / backup — globalny lider, czysto produktowa firma (#1 w branży)
-- **Setup:** PL remote (musi być rezydent PL); ~5500 employees globalnie; SaaS + on-prem
-- **Stack signals:** C#, MS SQL Server, Azure, Git — exact match z aktualnym StockTrack stack
-- **Wcześniejsza listing #85410658976 (MS365 team)** — 404 stan na 2026-05-05; ale dostępne 3 inne aktualne
+**Stack i wymagania (z #94442121344):**
+- C#, .NET 8, Windows/Linux, Azure Cloud, MS SQL/PostgreSQL, multithreading, Git, TFS, Visual Studio, Rider
+- Bonus: SaaS/enterprise background, virtualization (VMware, Hyper-V, Nutanix, Proxmox, QEMU/KVM)
+- Doświadczenie: 5+ y dla seniora; software architecture design — Roman 1:1
+
+**Benefits:**
+- 26 dni urlopu + 4 VeeaMe Days, MultiSport pełen, 450 PLN/mc Edenred, PPK, 12 sesji terapii rocznie, ubezpieczenia zdrowotne/życiowe/inwalidzkie, urlop rodzicielski/macierzyński/ojcowski
+
+- **Domain:** data resilience / backup — globalny lider, czysto produktowa firma (#1 w branży, ~5500 employees)
+- **Setup Warsaw listing:** **Hybrid** (nie Remote); inne PL listings — Remote dla rezydentów PL
+- **Stack match z aktualnym StockTrack:** Azure, C#, SQL = exact
 
 **Pitch (EN):**
 > Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD). Your MS365 product team is exactly the kind of pure-product environment I'm aiming for next: deep C#/Azure/SQL Server stack, real product ownership, no rotating consulting context. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Earlier on Santander Group's UK commercial MVC platform at CUBE.ITG. Based in Opole; remote within Poland.
