@@ -74,6 +74,7 @@
 | 25 |  | TAURON Obsługa Klienta | Senior Developer .NET (m/f) | JustJoin.it | [oferta — apply by 2026-05-26](https://justjoin.it/job-offer/tauron-obsluga-klienta-sp-z-o-o--developer-net-m-f--wroclaw-net) | 📋 Todo | Apply Week 1 (deadline 2026-05-26) | Wrocław/Katowice/Kraków hybryd; **polski energetyczny giant — produktowy, państwowy, ekstremalna stabilność**; widełki 10.5-16.2k UoP **poniżej floor 24k B2B** — ale stack: .NET Core/Framework, Blazor, Telerik, MS SQL, Oracle, K8s, DDD; energy domain = StockTrack 1:1 |
 | 26 |  | Miaplaza | Senior Full Stack Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "Miaplaza") | 📋 Todo | Apply Week 1 | US EdTech (homeschooling K-12), **100% remote w PL**; widełki 341.5-597.7k PLN/rok ≈ ~28-49k PLN/mc — **w target zone**; produktowa firma; nowa domena (edu) |
 | 27 |  | ServiceTitan | Staff Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "ServiceTitan") | 📋 Todo | Apply Week 2 | US SaaS dla home services (HVAC, plumbing); **remote PL**; widełki 26.9-40.4k PLN/mc — **w target zone**; produktowa firma, IPO 2024 |
+| 28 | 2026-05-05 | Vistulo (staffing → end-client: NA bank capital markets) | C# Engineer Full Stack — Finance | JustJoin.it | [oferta — expires 2026-05-20](https://justjoin.it/job-offer/vistulo-c-engineer-full-stack-finance--warszawa-net) | 📤 Applied | Wait reply; LinkedIn FU 2026-05-12 if silence | **Staffing model** (Vistulo placuje u klienta), end-client = North American bank's capital markets (liquidity monitoring + risk assessment); 160-180 PLN/h B2B ≈ ~26-30k/mc net **w target zone**; remote PL z 2h+ daily overlap z US ET; stack C#/.NET/PostgreSQL/SQL Server/Angular/Kafka |
 
 ---
 
@@ -488,6 +489,35 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ---
 
+### 28. Vistulo (staffing → end-client NA bank) — Warszawa · remote PL
+
+**Listing:** [JustJoin.it — C# Engineer Full Stack, Finance](https://justjoin.it/job-offer/vistulo-c-engineer-full-stack-finance--warszawa-net) — expires 2026-05-20
+
+**Status:** 📤 Applied 2026-05-05
+
+- **Vistulo:** staffing/consulting firm placuje deweloperów u end-client; nie produktowa (różni się od reszty Roman pipeline)
+- **End client:** North American bank's capital markets division
+- **Product (u klienta):** liquidity monitoring + risk assessment system dla operacji rynków kapitałowych (trading activity)
+- **Domain match:** finance/banking = **Santander/CUBE.ITG fit** (regulowane kodowanie); nowy sub-domain to capital markets/trading (nie stricte retail banking jak CUBE.ITG)
+- **Setup:** fully remote PL; 2h+ daily overlap z US Eastern (steady state); 6h overlap pierwsze 2 mc onboarding — czyli czas pracy popołudnia/wieczory PL
+- **Widełki:** 160-180 PLN/h B2B ≈ ~26.4-29.7k PLN net/mc (165h) — ✅ **w target zone (24k floor / 28-32k target)**
+- **Stack:** C#, .NET, PostgreSQL, SQL Server 2008+, Angular, Kafka, Windows/Linux, NUnit/MS Test
+- **Listing seniority:** Mid-level (3+ years) — **overshoot dla Roman 10+ lat**, ale OK
+- **Caveats vs preferencje:** (1) staffing nie produkt — różni się od reszty pipeline; (2) US time zone overlap — wieczorowy schedule
+
+**Pitch (paste-ready, EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on regulated financial platforms. Started at CUBE.ITG on Santander Group's UK MVC platform — embedded in a 10+ developer team with analysts and testers — so the rhythm of US capital-markets work, regulated codebase discipline, and risk-system criticality is familiar. Architected Nexus — a 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Currently on StockTrack at Yameo — offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD, distributed systems with stakeholder-facing operational visibility (parallels liquidity monitoring). Stack match is exact: C#/.NET, PostgreSQL, SQL Server, Angular, Kafka. Comfortable with US Eastern overlap from Opole. Available for the 6-hour onboarding window.
+
+**Notes:**
+- [ ] **2026-05-05:** Applied via JustJoin.it
+- [ ] **2026-05-12:** LinkedIn follow-up to a Vistulo recruiter if no reply
+- [ ] Listing requires only Mid-level (3+ y) — Roman wyraźnie senior; akcentuj scope (Nexus 3-module DDD architect) zamiast lat
+- [ ] **Sprawdź u rekrutera przed offer:** kim jest end-client (nazwa banku), długość kontraktu, ścieżka extension/permanent
+- [ ] Capital markets/risk = nowy sub-domain (vs retail banking) — przygotuj 2-3 zdania o liquidity/risk concepts
+- [ ] Time zone schedule (popołudnia + wieczory) — porównaj z aktualnym Yameo arrangement
+
+---
+
 ## Learnings log
 
 One-liner per application that taught you something. Scan before each new application.
@@ -498,6 +528,7 @@ One-liner per application that taught you something. Scan before each new applic
 - 2026-04-29: Pipeline expansion — dodano 4 produktowe firmy (Credit Agricole PL #21, DocPlanner #22, Nordea Tech PL #23, Veeam #24). Filtr researchu: **in-house product company**, nie konsulting/staffing. **Wykluczone z shortlisty:** Equinor BS Polska (offshore energy = StockTrack 1:1 fit, ale brak aktualnych .NET ról), InPost (głównie Java), Booksy (głównie Python), Schneider Electric PL (.NET niepotwierdzony). **Filtr na przyszłość:** sprawdź `careers.nordea.com` co 2-3 tyg. pod kątem .NET ról; obserwuj Equinor jeśli otworzą offshore-supply-chain .NET.
 - 2026-05-05: **Lekcja o link rot.** Po tygodniu większość konkretnych URL ofert wygasła (DocPlanner Senior Backend WAW + .NET 100% remote PL → "expired"; Veeam MS365 → 404; BigTime Wrocław → "Offer expired"; Citi Senior .Net Warsaw → 404). **Wniosek:** linki do indywidualnych ofert wygasają w 7-21 dni. **Nowa zasada strategiczna:** prymarne linki w trackerze powinny prowadzić do (a) filtrowanych wyszukiwarek (JJIT/NoFluff/Pracuj — sekcja "Search anchors"), (b) own portali firm (banki: Credit Agricole, Nordea, mBank, PKO BP), (c) głównych stron ATS (jobs.smartrecruiters.com/Docplanner, careers.veeam.com/poland). Konkretne listing-URLe trzymaj tylko z datą weryfikacji i deadline.
 - 2026-05-05: **Pipeline refresh** — dodano 3 firmy z konkretnymi LIVE ofertami: TAURON Obsługa Klienta #25 (energy state-owned, Wrocław hybryd, deadline 2026-05-26 — top priority pomimo niskich UoP widełek bo domain 1:1 ze StockTrack), Miaplaza #26 (US EdTech remote PL, 28-49k = top widełki w pipeline), ServiceTitan #27 (US vertical SaaS post-IPO remote PL, 27-40k). Credit Agricole #21, DocPlanner #22, Nordea #23 → status zmieniony na 👁️ Watch (no live listing right now). Veeam #24 → 3 nowe live listings zweryfikowane. **Best stack-and-domain match teraz:** TAURON (energy + .NET/Blazor/Oracle 1:1).
+- 2026-05-05: Applied #28 Vistulo (staffing → NA bank capital markets, liquidity/risk system, 160-180 PLN/h B2B remote PL z US ET overlap). **Caveat:** to staffing model (nie in-house produktowa), więc rozluźnia regułę "tylko produktowe" — pragmatic exception bo widełki w target zone i banking/finance domain match z CUBE.ITG/Santander. Listing był Mid-level (3+ y) — Roman pivotuje akcent z lat na scope (Nexus DDD architect). Watch list dla follow-up: 2026-05-12 LinkedIn FU jeśli silence.
 
 ---
 
