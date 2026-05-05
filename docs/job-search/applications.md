@@ -28,6 +28,7 @@
 | ❌ | Rejected | They said no |
 | 🚫 | Declined | I said no |
 | 💤 | Ghosted | >21 days silence |
+| 👁️ | Watch | No live listing right now — monitor employer's own portal |
 
 ---
 
@@ -66,10 +67,56 @@
 | 18 | 2026-04-13 | Awareson (staffing) | Senior .NET Developer | Awareson | [awareson.com/offer](https://awareson.com/en/offer/) | 📤 Applied | Ask Awareson who is end-client | Offer no longer live · ask recruiter for next round |
 | 19 | 2026-04-13 | PKO BP Finat | Senior Programista .NET | JustJoin.it | [oferta](https://justjoin.it/job-offer/pko-bp-finat-senior-programista-net-katowice-net) | 📤 Applied | Wait reply; FU 20.04 | Katowice, remote + 1d/msc — good for Opole |
 | 20 | 2026-04-13 | ALTIM | Senior / Tech Lead FullStack (.NET + Vue.js) | ? | - | ❌ Rejected | — | Rejected; see Dead list. Stack mismatch: Vue.js not in my stack |
-| 21 |  | Credit Agricole Polska | Senior .NET Developer (in-house IT) | Own portal | [kariera](https://kariera.credit-agricole.pl/) · [obszar IT](https://www.credit-agricole.pl/kariera/obszary/it) | 📋 Todo | Apply Week 4 | Wrocław HQ (Business Garden) — 90 min od Opola; stack C#/.NET/RabbitMQ/Kafka 1:1 z KRUK |
-| 22 |  | DocPlanner (ZnanyLekarz) | Senior .NET Backend Developer | SmartRecruiters | [oferta](https://jobs.smartrecruiters.com/Docplanner/744000052583275) | 📋 Todo | Apply Week 4 | 100% remote-friendly within Warsaw; health-tech unicorn, 400+ Eng/Data/Product |
-| 23 |  | Nordea Tech Polska | Senior .NET Developer | Own portal | [careers.nordea.com](https://careers.nordea.com/) · [PL hub](https://www.nordea.com/en/careers/poland) | 📋 Todo | Apply Week 4 | Gdynia/Łódź/Warszawa hybryd; Top Employer PL 2025; weryfikuj konkretną listing — Java dominuje |
-| 24 |  | Veeam Software | Middle/Senior C# Developer (MS365 team) | Own portal | [oferta](https://careers.veeam.com/job/poland/middle-senior-c-developer-for-ms365/22681/85410658976) | 📋 Todo | Apply Week 4 | Remote w PL (must reside in PL); czysto produktowa data resilience, C#/Azure/SQL Server |
+| 21 |  | Credit Agricole Polska | Senior .NET Developer (in-house IT) | Own portal | [kariera](https://kariera.credit-agricole.pl/) · [obszar IT](https://www.credit-agricole.pl/kariera/obszary/it) | 👁️ Watch | Sprawdzaj own portal co 7-10 dni | Wrocław HQ; CA rekrutuje **tylko** przez własny portal (brak na JJIT/NoFluff) — wymaga ręcznej obserwacji |
+| 22 |  | DocPlanner (ZnanyLekarz) | .NET Developer (warianty: Senior Backend, EHR team, Product Platform) | SmartRecruiters | [wszystkie ich oferty](https://jobs.smartrecruiters.com/Docplanner) · [careers](https://www.docplanner.com/careers) | 👁️ Watch | Sprawdzaj jobs.smartrecruiters.com/Docplanner co 7 dni; .NET role rotują często | Specyficzne listings #744000052583275 (Senior Backend WAW) i #744000038979611 (.NET 100% remote PL) wygasły 2026-05; nowe pojawiają się co 2-4 tyg. |
+| 23 |  | Nordea Tech Polska | .NET Developer (rzadkie — Java dominuje) | Own portal | [careers.nordea.com](https://careers.nordea.com/) · [PL hub](https://www.nordea.com/en/careers/poland) | 👁️ Watch | Sprawdzaj co 2-3 tyg. — filtruj `.NET` Poland | JJIT listing Nordea CIC Gdynia (back-end) — 404 (zamknięta); .NET role w Nordea rzadkie, kandydat głównie Java |
+| 24 | 2026-05-05 | Veeam Software | Middle/Senior C# Developer | Own portal | [oferta WAW Remote](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) · [C# Dev PL](https://careers.veeam.com/job/poland/c-developer/22681/89540556928) · [Platform Engineer Cloud PL](https://careers.veeam.com/en/job/poland/platform-engineer-cloud/22681/85234590032) | 📋 Todo | Apply tę środę 2026-05-06 | **3 aktywne oferty**, Warsaw Remote dostępne; widełki Veeam range 274.8-455.8k PLN/rok ≈ ~28-46k B2B equiv; czysto produktowa, C#/Azure |
+| 25 |  | TAURON Obsługa Klienta | Senior Developer .NET (m/f) | JustJoin.it | [oferta — apply by 2026-05-26](https://justjoin.it/job-offer/tauron-obsluga-klienta-sp-z-o-o--developer-net-m-f--wroclaw-net) | 📋 Todo | Apply Week 1 (deadline 2026-05-26) | Wrocław/Katowice/Kraków hybryd; **polski energetyczny giant — produktowy, państwowy, ekstremalna stabilność**; widełki 10.5-16.2k UoP **poniżej floor 24k B2B** — ale stack: .NET Core/Framework, Blazor, Telerik, MS SQL, Oracle, K8s, DDD; energy domain = StockTrack 1:1 |
+| 26 |  | Miaplaza | Senior Full Stack Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "Miaplaza") | 📋 Todo | Apply Week 1 | US EdTech (homeschooling K-12), **100% remote w PL**; widełki 341.5-597.7k PLN/rok ≈ ~28-49k PLN/mc — **w target zone**; produktowa firma; nowa domena (edu) |
+| 27 |  | ServiceTitan | Staff Software Engineer (.NET) | JustJoin.it | [filtr remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "ServiceTitan") | 📋 Todo | Apply Week 2 | US SaaS dla home services (HVAC, plumbing); **remote PL**; widełki 26.9-40.4k PLN/mc — **w target zone**; produktowa firma, IPO 2024 |
+
+---
+
+## Search anchors (filtrowane wyszukiwarki — nie wygasają)
+
+Konkretne oferty rotują w 7-21 dni. Te URL-e zawsze pokażą aktualne. Sprawdzaj co 7-10 dni.
+
+### JustJoin.it
+
+- [Senior .NET — Wrocław](https://justjoin.it/job-offers/wroclaw/net?experience-level=senior)
+- [Senior .NET — Remote (cała Polska)](https://justjoin.it/job-offers/remote/net?experience-level=senior)
+- [Senior .NET — Warszawa](https://justjoin.it/job-offers/warszawa/net?experience-level=senior)
+- [Senior .NET — Kraków](https://justjoin.it/job-offers/krakow/net?experience-level=senior)
+- [Senior .NET — Łódź](https://justjoin.it/job-offers/lodz/net?experience-level=senior)
+- [Senior .NET — Katowice](https://justjoin.it/job-offers/katowice/net?experience-level=senior)
+
+### NoFluffJobs
+
+- [Senior .NET PL](https://nofluffjobs.com/pl/.NET?criteria=seniority%3Dsenior)
+
+### Pracuj.pl
+
+- [.NET Wrocław](https://www.pracuj.pl/praca/.net;kw/wroclaw;wp)
+- [.NET Polska (filtr senior)](https://www.pracuj.pl/praca/.net;kw)
+
+### Own portale (firmy które nie publikują na agregatorach)
+
+- [Credit Agricole Polska](https://kariera.credit-agricole.pl/) — bank rekrutuje tylko tu
+- [Nordea (PL filter)](https://careers.nordea.com/) — filtruj Poland + .NET
+- [Veeam careers (Poland)](https://careers.veeam.com/poland) — własny ATS, listings rotują
+- [DocPlanner SmartRecruiters](https://jobs.smartrecruiters.com/Docplanner) — wszystkie ich aktualne oferty
+- [Citi Warsaw careers](https://jobs.citi.com/search-jobs?ac=Warsaw&alp=PL) — global ATS, .NET listings przerywane
+- [PZU Kariera](https://www.pzu.pl/kariera/oferty-pracy) — mostly junior/mid .NET
+- [LPP Kariera](https://www.lpp.com/en/career/job-offers/) — Silky Coders tech sub
+- [mBank IT](https://itwmbanku.pl/) — własny portal techniczny
+- [PKO BP Finat](https://www.pkobp.pl/finat/kariera/) — .NET często
+
+### Filter rules (kogo kliknąć, kogo skipnąć)
+
+Po wejściu w listę z JustJoin.it/NoFluff filtruj **wzrokiem**:
+- ✅ **Produktowe**: TAURON OK, Veeam, Miaplaza, ServiceTitan, BigTime, DocPlanner, iChoosr, Allegro, InPost (jeśli .NET), banki/ubezpieczenia in-house
+- ❌ **Skip**: Sii, Spyrosoft, CSHARK, Capgemini, Link Group, N-iX, emagine, Bee Talents, Reply, Software Mind, ITDS, Jit Team, B2Bnetwork, ITLT, Speeron — to consulting/staffing/software house
+- ⚠️ **Verify** (mieszane): Asseco (czasem produktowe), Comarch (czasem), Tieto/TietoEvry, Accenture (klient by klient)
 
 ---
 
@@ -322,12 +369,15 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ---
 
-### 22. DocPlanner (ZnanyLekarz) — Warszawa · 100% remote-friendly
+### 22. DocPlanner (ZnanyLekarz) — Warszawa · 100% remote-friendly · 👁️ Watch
 
-**Listing:** [SmartRecruiters — Senior .Net Backend Developer (100% remote-friendly within Warsaw)](https://jobs.smartrecruiters.com/Docplanner/744000052583275)
+**⚠️ Specyficzne listings z 2026-04-29 wygasły** (#744000052583275 Senior Backend WAW, #744000038979611 .NET 100% remote PL — oba "This job has expired" stan na 2026-05-05).
+
+**Aktualne oferty:** [jobs.smartrecruiters.com/Docplanner](https://jobs.smartrecruiters.com/Docplanner) — sprawdzaj co 7 dni, .NET role rotują często.
 - **Domain:** health-tech (booking + practice management for clinicians; multi-market: PL/IT/ES/BR/MX/TR)
 - **Setup:** ~400 osób Engineering/Data/Product, prawdziwy 100% remote, Polish unicorn (~$1B valuation)
-- **Stack signals:** .NET Backend (C#), microservices, multi-tenant SaaS
+- **Historyczne .NET role w DocPlanner:** Senior .NET Backend, .NET Developer, Backend Engineer (.NET, EHR team), Staff Software Engineer (Product Platform) — wszystkie 100% remote PL
+- **Stack signals:** .NET Backend (C#), microservices, multi-tenant SaaS, EHR (Electronic Health Records)
 
 **Pitch (EN):**
 > Senior Full-Stack .NET Engineer with 10+ years across regulated finance (Santander Group UK platform at CUBE.ITG), enterprise logistics (architected Nexus — 3-module DDD platform for Ecoson / Darling Ingredients, 3 years, on time and on budget) and offshore energy (StockTrack at Yameo, Azure Kubernetes). Looking to move into product-first health-tech — DocPlanner's scale and product depth (400+ engineers, multi-market platform, real product ownership) matches exactly the environment where my DDD/Clean Architecture background pays off. Based in Opole; 100% remote works perfectly.
@@ -358,10 +408,17 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ### 24. Veeam Software — Polska · remote (must reside in PL)
 
-**Listing:** [Middle/Senior C# Developer for MS365](https://careers.veeam.com/job/poland/middle-senior-c-developer-for-ms365/22681/85410658976) · [careers.veeam.com](https://careers.veeam.com/)
-- **Domain:** data resilience / backup — globalny lider, czysto produktowa firma
+**Aktualne live oferty (zweryfikowane 2026-05-05):**
+- [Middle/Senior C# Developer — Warsaw, Remote](https://careers.veeam.com/job/warsaw/middle-senior-c-developer/22681/94442121344) ⭐ **głównie aplikuj tu**
+- [C# Developer — Poland](https://careers.veeam.com/job/poland/c-developer/22681/89540556928)
+- [Platform Engineer Cloud — Poland](https://careers.veeam.com/en/job/poland/platform-engineer-cloud/22681/85234590032) — DevOps-leaning
+
+**Salary range Veeam (z public listing):** 274,800-455,840 PLN/rok (~22.9-38k PLN/mc gross UoP, B2B equiv ~28-46k) ✅ **w target zone**
+
+- **Domain:** data resilience / backup — globalny lider, czysto produktowa firma (#1 w branży)
 - **Setup:** PL remote (musi być rezydent PL); ~5500 employees globalnie; SaaS + on-prem
 - **Stack signals:** C#, MS SQL Server, Azure, Git — exact match z aktualnym StockTrack stack
+- **Wcześniejsza listing #85410658976 (MS365 team)** — 404 stan na 2026-05-05; ale dostępne 3 inne aktualne
 
 **Pitch (EN):**
 > Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD). Your MS365 product team is exactly the kind of pure-product environment I'm aiming for next: deep C#/Azure/SQL Server stack, real product ownership, no rotating consulting context. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients, delivered in 3 years on time and on budget. Earlier on Santander Group's UK commercial MVC platform at CUBE.ITG. Based in Opole; remote within Poland.
@@ -373,6 +430,64 @@ Three active .NET listings on JustJoin.it as of 2026-04-22:
 
 ---
 
+### 25. TAURON Obsługa Klienta — Wrocław/Katowice/Kraków · hybryd
+
+**Listing:** [JustJoin.it — Developer .NET (m/f), apply by 2026-05-26](https://justjoin.it/job-offer/tauron-obsluga-klienta-sp-z-o-o--developer-net-m-f--wroclaw-net)
+- **Domain:** energy utility (PL state-owned giant) — **StockTrack 1:1 fit** (Roman robi offshore energy w Yameo)
+- **Setup:** UoP (nie B2B w listing), hybryd home/office, Wrocław/Katowice/Kraków
+- **Widełki:** 10,500-16,200 PLN gross/mc (UoP) — **poniżej 24k B2B floor**; ale benefits państwowej firmy mocne (stock options, ZFŚS, Enel-Med, dodatek urlopowy)
+- **Stack:** .NET Core, .NET Framework, Entity Framework, Blazor, Telerik, MS SQL, Oracle, Git, DDD, Agile
+- **Nice-to-have:** React, Kubernetes/OpenShift
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — currently on StockTrack at Yameo (offshore energy supply chain on Azure Kubernetes, Jenkins CI/CD, direct stakeholder communication with energy-sector clients). Your domain is the closest fit I could bring to TAURON: energy operations, regulatory environment, large-scale customer-facing services. Architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients (3 years, on time and on budget). Earlier on Santander Group's UK commercial MVC platform at CUBE.ITG. Stack match (Blazor, Telerik, MS SQL/Oracle, DDD) is exact. Based in Opole; Wrocław or Kraków hybrid is a 90-minute drive.
+
+**Notes:**
+- [ ] **Apply deadline:** 2026-05-26 — top priority Week 1
+- [ ] Widełki UoP poniżej target — **negocjuj wzwyż**, lub zaakcepuj że to senior na seniorskie zadania, nie na seniorskie pieniądze (państwowy)
+- [ ] Wrocław proximity = atut (90 min od Opola)
+- [ ] Domain match (energy) = najmocniejszy w pipeline
+- [ ] Blazor i Telerik w stacku = nice transferability dla Yameo doświadczenia
+
+---
+
+### 26. Miaplaza — Remote PL · US EdTech
+
+**Listing:** wymaga aktualnego sprawdzenia przez [filtr JJIT remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "Miaplaza")
+- **Domain:** EdTech (homeschooling K-12, własne platformy SaaS dla Miacademy/Always Icecream/Clever Dragons)
+- **Setup:** US-headquartered (Florida), pure remote w PL
+- **Widełki:** 341,552-597,716 PLN/rok (~28-49k PLN/mc) ✅ **w target zone, włącznie z ceiling**
+- **Stack signals:** .NET Full Stack — exact role title to "Senior Full Stack Software Engineer"
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years across regulated finance (Santander Group UK platform at CUBE.ITG, embedded in 10+ developer team), enterprise logistics (architected Nexus — 3-module DDD platform for Ecoson / Darling Ingredients, 3 years, on time and on budget), and offshore energy (StockTrack at Yameo, Azure Kubernetes). Looking for a fully-remote, product-first environment where DDD/Clean Architecture pays off — Miaplaza's EdTech platforms with millions of K-12 students fit that profile. Based in Opole; remote works perfectly.
+
+**Notes:**
+- [ ] **Pre-apply:** sprawdź czy listing aktywny na JJIT — Miaplaza listings rotują
+- [ ] Nowa domena (EdTech) — akcentuj transferable skills (multi-tenant SaaS, scale)
+- [ ] US-headquartered = English-only; Roman fluent (Santander UK MVC platform doświadczenie)
+- [ ] **Top widełki w pipeline** — 28-49k pokrywa cały target zone
+
+---
+
+### 27. ServiceTitan — Remote PL · US SaaS
+
+**Listing:** wymaga aktualnego sprawdzenia przez [filtr JJIT remote senior .NET](https://justjoin.it/job-offers/remote/net?experience-level=senior) (szukaj "ServiceTitan")
+- **Domain:** vertical SaaS dla home services (HVAC, plumbing, electrical, garage door, roofing)
+- **Setup:** US-headquartered (LA, IPO 2024 — public company, NASDAQ:TTAN), pure remote w PL
+- **Widełki:** 26.9-40.4k PLN/mc ✅ **w target zone**
+- **Role title:** Staff Software Engineer (.NET) — *uwaga:* "Staff" to senior+ IC role w US sense, **nie jest "Lead"** strukturalnie (IC track, nie people management)
+
+**Pitch (EN):**
+> Senior Full-Stack .NET Engineer with 10+ years on enterprise .NET — most recent work on StockTrack at Yameo (offshore energy supply chain, Azure Kubernetes), architected Nexus — 3-module DDD logistics platform for Ecoson / Darling Ingredients (3 years, on time and on budget), and CUBE.ITG on Santander Group's UK MVC platform. ServiceTitan's vertical-SaaS scale — millions of service jobs, multi-tenant platform, post-IPO product maturity — aligns with my regulated-codebase background. Based in Opole; remote works perfectly. Strong IC track interest.
+
+**Notes:**
+- [ ] **Pre-apply:** zweryfikuj czy "Staff" w ServiceTitan to IC track (= OK z Roman positioning) czy people-management (= skip per memory)
+- [ ] Post-IPO = stabilność (publicly traded, raportowanie SEC)
+- [ ] Vertical SaaS dla blue-collar trades = nowa domena, ale enterprise multi-tenant doświadczenie z DocPlanner-class
+
+---
+
 ## Learnings log
 
 One-liner per application that taught you something. Scan before each new application.
@@ -381,6 +496,8 @@ One-liner per application that taught you something. Scan before each new applic
 - 2026-04-13: ALTIM rejected on first pass — stack mismatch on Vue.js. **Action:** add Vue.js to auto-filter-out list; or if role is otherwise attractive, lead pitch with Angular/React transferability.
 - 2026-04-13: Applied to 5 companies on a single Monday (KRUK, Happy Team, Awareson, PKO BP Finat, ALTIM). **Observation:** violates the 5/week rhythm but was pre-plan. Going forward: spread across the week.
 - 2026-04-29: Pipeline expansion — dodano 4 produktowe firmy (Credit Agricole PL #21, DocPlanner #22, Nordea Tech PL #23, Veeam #24). Filtr researchu: **in-house product company**, nie konsulting/staffing. **Wykluczone z shortlisty:** Equinor BS Polska (offshore energy = StockTrack 1:1 fit, ale brak aktualnych .NET ról), InPost (głównie Java), Booksy (głównie Python), Schneider Electric PL (.NET niepotwierdzony). **Filtr na przyszłość:** sprawdź `careers.nordea.com` co 2-3 tyg. pod kątem .NET ról; obserwuj Equinor jeśli otworzą offshore-supply-chain .NET.
+- 2026-05-05: **Lekcja o link rot.** Po tygodniu większość konkretnych URL ofert wygasła (DocPlanner Senior Backend WAW + .NET 100% remote PL → "expired"; Veeam MS365 → 404; BigTime Wrocław → "Offer expired"; Citi Senior .Net Warsaw → 404). **Wniosek:** linki do indywidualnych ofert wygasają w 7-21 dni. **Nowa zasada strategiczna:** prymarne linki w trackerze powinny prowadzić do (a) filtrowanych wyszukiwarek (JJIT/NoFluff/Pracuj — sekcja "Search anchors"), (b) own portali firm (banki: Credit Agricole, Nordea, mBank, PKO BP), (c) głównych stron ATS (jobs.smartrecruiters.com/Docplanner, careers.veeam.com/poland). Konkretne listing-URLe trzymaj tylko z datą weryfikacji i deadline.
+- 2026-05-05: **Pipeline refresh** — dodano 3 firmy z konkretnymi LIVE ofertami: TAURON Obsługa Klienta #25 (energy state-owned, Wrocław hybryd, deadline 2026-05-26 — top priority pomimo niskich UoP widełek bo domain 1:1 ze StockTrack), Miaplaza #26 (US EdTech remote PL, 28-49k = top widełki w pipeline), ServiceTitan #27 (US vertical SaaS post-IPO remote PL, 27-40k). Credit Agricole #21, DocPlanner #22, Nordea #23 → status zmieniony na 👁️ Watch (no live listing right now). Veeam #24 → 3 nowe live listings zweryfikowane. **Best stack-and-domain match teraz:** TAURON (energy + .NET/Blazor/Oracle 1:1).
 
 ---
 
